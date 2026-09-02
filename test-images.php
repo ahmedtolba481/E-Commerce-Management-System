@@ -1,3 +1,7 @@
+<?php include'config/database.php' ;
+$selectall ="select * from products";
+$result=mysqli_query($conn,$selectall);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +14,7 @@
 
 <h2>Products</h2>
 
-<img src="assets/images/products/iphone15.jpg" width="200">
+<img src="assets/images/products/<?php echo mysqli_fetch_assoc($result)['image']; ?>" width="200">
 <img src="assets/images/products/galaxy-s24.jpg" width="200">
 <img src="assets/images/products/macbook-air.jpg" width="200">
 <img src="assets/images/products/lenovo-ideapad.jpg" width="200">

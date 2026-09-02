@@ -1,0 +1,265 @@
+.clients-page {
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  color: var(--dark);
+}
+
+.clients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.clients-header h1 {
+  margin: 5px 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.clients-header p {
+  margin: 0;
+  color: var(--text);
+}
+
+.clients-eyebrow {
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.client-create-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 11px 17px;
+}
+
+.clients-table-wrap,
+.client-form-card {
+  overflow-x: auto;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.06);
+}
+
+.clients-table {
+  min-width: 850px;
+  margin: 0;
+}
+
+.clients-table thead th {
+  padding: 16px;
+  color: var(--text);
+  background: var(--mint);
+  border-bottom: 1px solid #e5eaf1;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.clients-table tbody td {
+  padding: 16px;
+  vertical-align: middle;
+  border-color: var(--line);
+}
+
+.client-form-card {
+  max-width: 920px;
+  padding: 30px;
+}
+
+.client-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px;
+}
+
+.client-form-section h2 {
+  margin: 7px 0 22px;
+  font-size: 21px;
+}
+
+.client-form-section label {
+  display: block;
+  margin: 16px 0 7px;
+  color: var(--dark);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.client-form-section input,
+.client-form-section .form-select {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  color: var(--dark);
+  background: var(--white);
+}
+
+.client-form-section .form-control {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  color: #172033;
+  background: #ffffff;
+}
+
+.client-form-section .form-select:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.18);
+  border-color: var(--primary);
+}
+
+.client-form-section .form-control:disabled {
+  background: var(--background);
+  color: var(--text);
+}
+
+.client-form-section input:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.18);
+  border-color: var(--primary);
+}
+
+.client-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid #edf0f5;
+}
+
+.client-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.client-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.client-detail-card {
+  max-width: 920px;
+  padding: 32px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.06);
+}
+
+.client-profile-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.client-avatar {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.client-profile-heading h2 {
+  margin: 5px 0 4px;
+  font-size: 23px;
+}
+
+.client-profile-heading p {
+  margin: 0;
+  color: var(--text);
+}
+
+.client-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding-top: 26px;
+}
+
+.client-detail-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.client-detail-grid span {
+  color: #667085;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.client-detail-grid strong {
+  color: var(--dark);
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.client-detail-wide {
+  grid-column: span 2;
+}
+
+@media (max-width: 800px) {
+  .clients-page {
+    width: 100%;
+    padding: 0;
+  }
+
+  .clients-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .client-form-card {
+    padding: 22px;
+  }
+
+  .client-form-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .client-detail-card {
+    padding: 22px;
+  }
+
+  .client-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .client-detail-wide {
+    grid-column: auto;
+  }
+
+  .client-header-actions {
+    width: 100%;
+  }
+
+  .client-header-actions .btn {
+    flex: 1;
+  }
+}
