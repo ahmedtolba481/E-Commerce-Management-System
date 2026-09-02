@@ -6,8 +6,9 @@
 
 
     <a
-        href="/E-Commerce-Management-System/admin/index.php"
+        href="/Projects/E-Commerce-Management-System/admin/index.php"
         class="sidebar-link"
+        data-page="dashboard"
     >
         <div class="sidebar-icon">
             <i class="bi bi-grid-1x2-fill"></i>
@@ -25,6 +26,7 @@
     <a
         href="/E-Commerce-Management-System/admin/categories/index.php"
         class="sidebar-link"
+        data-page="categories"
     >
         <div class="sidebar-icon">
             <i class="bi bi-grid-fill"></i>
@@ -37,6 +39,7 @@
     <a
         href="/E-Commerce-Management-System/admin/brands/index.php"
         class="sidebar-link"
+        data-page="brands"
     >
         <div class="sidebar-icon">
             <i class="bi bi-patch-check-fill"></i>
@@ -49,6 +52,7 @@
     <a
         href="/E-Commerce-Management-System/admin/products/index.php"
         class="sidebar-link"
+        data-page="products"
     >
         <div class="sidebar-icon">
             <i class="bi bi-box-seam-fill"></i>
@@ -66,6 +70,7 @@
     <a
         href="/E-Commerce-Management-System/admin/orders/index.php"
         class="sidebar-link"
+        data-page="orders"
     >
         <div class="sidebar-icon">
             <i class="bi bi-cart-check-fill"></i>
@@ -80,6 +85,7 @@
     <a
         href="/E-Commerce-Management-System/admin/clients/index.php"
         class="sidebar-link"
+        data-page="clients"
     >
         <div class="sidebar-icon">
             <i class="bi bi-people-fill"></i>
@@ -97,6 +103,7 @@
     <a
         href="/E-Commerce-Management-System/admin/team/index.php"
         class="sidebar-link"
+        data-page="team"
     >
         <div class="sidebar-icon">
             <i class="bi bi-person-badge-fill"></i>
@@ -109,6 +116,7 @@
     <a
         href="/E-Commerce-Management-System/admin/partners/index.php"
         class="sidebar-link"
+        data-page="partners"
     >
         <div class="sidebar-icon">
             <i class="bi bi-buildings-fill"></i>
@@ -124,8 +132,9 @@
 
 
     <a
-        href="/E-Commerce-Management-System/admin/users/index.php"
+        href="./pages/users/index.php"
         class="sidebar-link"
+        data-page="users"
     >
         <div class="sidebar-icon">
             <i class="bi bi-person-gear"></i>
