@@ -50,12 +50,20 @@ if ($conn->connect_error) {
                 <li class="nav-item"><a class="nav-link" href="#product-collection">PRODUCTS</a></li>
                 <li class="nav-item"><a class="nav-link" href="cart.php">CART</a></li>
 
-              
-             
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        DROPDOWN
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Option 1</a></li>
+                        <li><a class="dropdown-item" href="#">Option 2</a></li>
+                        <li><a class="dropdown-item" href="#">Option 3</a></li>
+                    </ul>
 
-                
-                <li class="nav-item"><a class="nav-link"   href="#contact" >CONTACT</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.php">LOGIN in</a></li>
+                </li>
+
+                <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>
 
             </ul>
         </div>
@@ -85,12 +93,9 @@ if ($conn->connect_error) {
 
             <div class="col-12 col-lg-3">
                 <div class="header-actions d-flex justify-content-center justify-content-lg-end gap-4">
-                    
                     <div class="header-item">
-                        
                         <i class="bi bi-geo-alt"></i>
                         <span>Location</span>
-                        
                     </div>
 
                     <div class="header-item">
@@ -148,7 +153,7 @@ if ($conn->connect_error) {
                             </p>
 
                             <div class="hero-buttons d-flex justify-content-center justify-content-lg-start flex-wrap">
-                                <a href="./products.php" class="btn-shop">
+                                <a href="#" class="btn-shop">
                                     SHOP NOW <i class="bi bi-arrow-right"></i>
                                 </a>
                                 <a href="#" class="btn-explore">EXPLORE</a>
@@ -315,7 +320,7 @@ if ($conn->connect_error) {
 
         <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">Featured Products</h2>
-    <a href="./products.php" class="text-decoration-none fw-semibold text-success">View All Products <i class="bi bi-arrow-right"></i></a>
+    <a href="all-products.php" class="text-decoration-none fw-semibold text-success">View All Products <i class="bi bi-arrow-right"></i></a>
 </div>
     </div>
 </section>
@@ -534,7 +539,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_message'])) {
 ?>
 
 <!-- ================= CONTACT US SECTION ================= -->
-<section id="contact" class="contact-section py-5 bg-light">
+<section class="contact-section py-5 bg-light">
     <div class="container">
         <div class="section-title text-center mb-5">
             <h2 class="fw-bold">Contact Us</h2>
@@ -635,6 +640,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_message'])) {
         </div>
     </div>
 </section>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
