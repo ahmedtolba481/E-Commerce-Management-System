@@ -48,11 +48,47 @@ $result = $conn->query($sql);
                                 <div class="d-flex align-items-center justify-content-between mt-auto">
                                     <span class="fw-bold text-success fs-5">$<?php echo htmlspecialchars($row['price']); ?></span>
                                     <a href="product-details.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3">View Details</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card">
+                            <div class="position-relative bg-white text-center p-3">
+                                <img src="images/<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="img-fluid" style="height: 180px; object-fit: contain;">
+                                <span class="badge bg-success position-absolute top-0 start-0 m-3">New</span>
+                            </div>
+                            <div class="card-body d-flex flex-column bg-white">
+                                <h5 class="fw-bold fs-6 mb-2"><?php echo htmlspecialchars($row['name']); ?></h5>
+                                <p class="text-muted small mb-3 flex-grow-1"><?php echo substr(htmlspecialchars($row['description']), 0, 60); ?>...</p>
+                                <div class="d-flex align-items-center justify-content-between mt-auto">
+                                    <span class="fw-bold text-success fs-5">$<?php echo htmlspecialchars($row['price']); ?></span>
+                                    <a href="product-details.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3">View Details</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card">
+                            <div class="position-relative bg-white text-center p-3">
+                                <img src="images/<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="img-fluid" style="height: 180px; object-fit: contain;">
+                                <span class="badge bg-success position-absolute top-0 start-0 m-3">New</span>
+                            </div>
+                            <div class="card-body d-flex flex-column bg-white">
+                                <h5 class="fw-bold fs-6 mb-2"><?php echo htmlspecialchars($row['name']); ?></h5>
+                                <p class="text-muted small mb-3 flex-grow-1"><?php echo substr(htmlspecialchars($row['description']), 0, 60); ?>...</p>
+                                <div class="d-flex align-items-center justify-content-between mt-auto">
+                                    <span class="fw-bold text-success fs-5">$<?php echo htmlspecialchars($row['price']); ?></span>
+                                    <a href="product-details.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3">View Details</a>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                     <?php
+                                  
                 }
             } else {
                 echo '<div class="col-12 text-center py-5"><p class="text-muted">No products found at the moment.</p></div>';
@@ -60,6 +96,26 @@ $result = $conn->query($sql);
             ?>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
