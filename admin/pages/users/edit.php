@@ -11,7 +11,7 @@ $id = $_GET['id'];
 
     $sql = "SELECT * from users where id = $id";
 
-    $result = mysqli_query($connection, $sql);
+    $result = mysqli_query($conn, $sql);
     $user = mysqli_fetch_array($result);
 
 if (isset($_POST['submit'])) {
@@ -31,14 +31,14 @@ if (isset($_POST['submit'])) {
                 password = '$password'
             WHERE id = $id";
 
-    if (mysqli_query($connection, $sql)) {
+    if (mysqli_query($conn, $sql)) {
 
         header("Location: index.php");
         exit;
 
     } else {
 
-        echo "Error: " . mysqli_error($connection);
+        echo "Error: " . mysqli_error($conn);
 
     }
 }

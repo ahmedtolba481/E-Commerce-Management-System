@@ -2,7 +2,7 @@
 include '../../../config/database.php';
 $id = $_GET['id'];
 
-$sql = "DELETE FROM users
+$sql = "DELETE FROM categories
         WHERE id = $id";
 
 

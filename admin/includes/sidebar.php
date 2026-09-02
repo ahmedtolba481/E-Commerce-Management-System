@@ -29,7 +29,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
     </div>
 
     <a
-        href="/E-Commerce-Management-System/admin/categories/index.php"
+        href="/E-Commerce-Management-System/admin/pages/categories/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/categories/') !== false ? 'active' : '' ?>"
         data-page="categories"
     >
@@ -42,7 +42,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
 
     <a
-        href="/E-Commerce-Management-System/admin/brands/index.php"
+        href="/E-Commerce-Management-System/admin/pages/brands/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/brands/') !== false ? 'active' : '' ?>"
         data-page="brands"
     >
@@ -55,7 +55,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
 
     <a
-        href="/E-Commerce-Management-System/admin/products/index.php"
+        href="/E-Commerce-Management-System/admin/pages/products/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/products/') !== false ? 'active' : '' ?>"
         data-page="products"
     >
@@ -73,7 +73,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
 
     <a
-        href="/E-Commerce-Management-System/admin/orders/index.php"
+        href="/E-Commerce-Management-System/admin/pages/orders/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/orders/') !== false ? 'active' : '' ?>"
         data-page="orders"
     >
@@ -117,7 +117,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
 
     <a
-        href="/E-Commerce-Management-System/admin/partners/index.php"
+        href="/E-Commerce-Management-System/admin/pages/partners/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/partners/') !== false ? 'active' : '' ?>"
         data-page="partners"
     >

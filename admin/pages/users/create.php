@@ -18,14 +18,14 @@ if (isset($_POST['submit'])) {
     $sql = "INSERT INTO users (name, email, password, role)
             VALUES ('$name', '$email', '$password', '$role')";
 
-    if (mysqli_query($connection, $sql)) {
+    if (mysqli_query($conn, $sql)) {
 
         header("Location: index.php");
         exit;
 
     } else {
 
-        echo "Error: " . mysqli_error($connection);
+        echo "Error: " . mysqli_error($conn);
 
     }
 }
@@ -194,11 +194,13 @@ if (isset($_POST['submit'])) {
                                         Select user role
                                     </option>
 
-                                    <option value="admin">
+                                    <option value="Admin">
                                         Administrator
                                     </option>
-
-                                    <option value="staff">
+                                    <option value="Client">
+                                        Client
+                                    </option>
+                                    <option value="Staff">
                                         Staff
                                     </option>
 

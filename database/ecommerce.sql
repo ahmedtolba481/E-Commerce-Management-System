@@ -174,4 +174,4 @@ CREATE TABLE order_items (
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 ALTER TABLE users
-MODIFY role VARCHAR(100);
+MODIFY COLUMN role ENUM('Admin','Clients','Staff');
