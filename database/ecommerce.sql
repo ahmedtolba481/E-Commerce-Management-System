@@ -2,7 +2,7 @@
 -- E-COMMERCE DATABASE
 -- =========================================================
 
-CREATE DATABASE IF NOT EXISTS ecommerce
+CREATE DATABASE IF NOT EXISTS ecommerce;
 
 USE ecommerce;
 
