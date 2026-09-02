@@ -1,123 +1,90 @@
 <?php
 include '../../includes/auth.php';
 require_admin_role();
-$pageTitle = "Brands | SmartStore";
-$pageKey = "brands";
+$pageTitle = "Brands | ShopEase Admin";
+$pageHeading = "Brands";
 
 include '../../includes/header.php';
-include '../../includes/navbar.php';
 include '../../../config/database.php';
 
-$query = 'SELECT * from brands;';
+$query = 'SELECT * FROM brands ORDER BY id DESC;';
 $result = mysqli_query($conn, $query);
 
+$brandsList = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $brandsList[] = $row;
+    }
+}
 ?>
 
 <div class="admin-layout">
-
     <?php include '../../includes/sidebar.php'; ?>
 
     <main class="admin-content">
+        <?php include '../../includes/navbar.php'; ?>
 
         <div class="page-header">
             <div>
-                <div class="page-eyebrow">Management</div>
+                <span class="page-eyebrow">CATALOG MANAGEMENT</span>
                 <h1>Brands</h1>
-                <p>Manage brands.</p>
+                <p>Manage product brands and manufacturers.</p>
             </div>
 
             <div class="page-actions">
                 <a href="create.php" class="btn btn-primary">
                     <i class="bi bi-plus-lg"></i>
-                    Add Brands
+                    <span>Add Brand</span>
                 </a>
             </div>
         </div>
 
-        <div class="users-table-card">
+        <?php if (!empty($brandsList)) { ?>
+            <div class="entity-card-grid">
+                <?php foreach ($brandsList as $brand) { ?>
+                    <article class="entity-card">
+                        <div class="card-media-wrap logo-container">
+                            <?php if (!empty($brand['logo'])) { ?>
+                                <img src="/E-Commerce-Management-System/admin/assets/images/brands/<?= htmlspecialchars($brand['logo']); ?>" alt="<?= htmlspecialchars($brand['name']); ?>" loading="lazy">
+                            <?php } else { ?>
+                                <i class="bi bi-patch-check card-media-placeholder"></i>
+                            <?php } ?>
+                        </div>
 
-    <div class="section-heading" style="padding: 22px 24px 0;">
-        <div>
-            <div class="section-eyebrow">System Brands</div>
-            <h2>All Brands</h2>
-        </div>
-    </div>
+                        <div class="entity-card-body">
+                            <span class="entity-subtitle">BRAND #<?= $brand['id']; ?></span>
+                            <h2 class="entity-title"><?= htmlspecialchars($brand['name']); ?></h2>
+                            <p class="entity-description"><?= htmlspecialchars($brand['description'] ?? 'No description available.'); ?></p>
 
-    <div class="table-responsive">
-
-        <table class="users-table">
-
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Logo</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <?php while ($brands = mysqli_fetch_array($result)) { ?>
-
-                            <tr>
-
-                                <td>
-                                    <?php echo $brands['id']; ?>
-                                </td>
-
-                                <td>
-                                    <strong><?php echo $brands['name']; ?></strong>
-                                </td>
-
-                                <td>
-                                    <?php echo ($brands['description']); ?>
-                                </td>
-
-                                <td>
-                                    <span class="brands$brands-role">
-                                        <img src="/E-Commerce-Management-System/admin/assets/images/brands/<?php echo ($brands['logo']); ?>" alt="<?php echo ($brands['logo']); ?>">
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <?php echo $brands['created_at']; ?>
-                                </td>
-
-                                <td>
-                                    <div class="brands$brands-actions">
-
-                                        <a href="edit.php?id=<?= $brands['id']; ?>"
-                                        class="brands$brands-action edit"
-                                        title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-
-                                        <a href="delete.php?id=<?= $brands['id']; ?>"
-                                        class="brands$brands-action delete"
-                                        title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-
-                                    </div>
-                                </td>
-
-                            </tr>
-
-                        <?php } ?>
-
-                    </tbody>
-
-                </table>
-
+                            <div class="entity-card-footer">
+                                <span class="badge badge-mint">Official Brand</span>
+                                <div class="icon-action-group">
+                                    <a href="edit.php?id=<?= $brand['id']; ?>" class="icon-action action-edit" aria-label="Edit brand" title="Edit Brand">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="delete.php?id=<?= $brand['id']; ?>" class="icon-action action-delete" aria-label="Delete brand" title="Delete Brand">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                <?php } ?>
             </div>
-
-        </div>
-
+        <?php } else { ?>
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-patch-check"></i>
+                </div>
+                <h3>No Brands Found</h3>
+                <p>There are currently no product brands in your system.</p>
+                <a href="create.php" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Add Brand</span>
+                </a>
+            </div>
+        <?php } ?>
     </main>
-
 </div>
 
 <?php include '../../includes/footer.php'; ?>

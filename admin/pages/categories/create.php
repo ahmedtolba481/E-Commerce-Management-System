@@ -1,214 +1,136 @@
 <?php
 include '../../includes/auth.php';
 require_admin_role();
-$pageTitle = "Add Category | SmartStore";
-$pageKey = "categories";
+$pageTitle = "Create Category | ShopEase Admin";
+$pageHeading = "Create Category";
 
 include '../../../config/database.php';
 
-if (isset($_POST['submit'])) {
+$error = "";
 
-    $name = $_POST['name'];
-    $description = $_POST['description'];
+if (isset($_POST['submit'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
 
     // Image upload
-    $imageName = $_FILES['image']['name'];
-    $imageTmpName = $_FILES['image']['tmp_name'];
+    $imageName = $_FILES['image']['name'] ?? '';
+    $imageTmpName = $_FILES['image']['tmp_name'] ?? '';
 
     $uploadDirectory = '../../assets/images/categories/';
+    if (!is_dir($uploadDirectory)) {
+        mkdir($uploadDirectory, 0777, true);
+    }
 
-    // Create a unique filename
-    $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
-    $newImageName = uniqid() . '.' . $imageExtension;
+    $newImageName = "";
+    if (!empty($imageName)) {
+        $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
+        $newImageName = uniqid() . '.' . $imageExtension;
+        move_uploaded_file($imageTmpName, $uploadDirectory . $newImageName);
+    }
 
-    // Move image to categories folder
-    if (move_uploaded_file($imageTmpName, $uploadDirectory . $newImageName)) {
-
-        $sql = "INSERT INTO categories (name, description, image)
-                VALUES ('$name', '$description', '$newImageName')";
-
-        if (mysqli_query($conn, $sql)) {
-
-            header("Location: index.php");
-            exit;
-
-        } else {
-
-            echo "Error: " . mysqli_error($conn);
-
-        }
-
+    $sql = "INSERT INTO categories (name, description, image) VALUES ('$name', '$description', '$newImageName')";
+    if (mysqli_query($conn, $sql)) {
+        header("Location: index.php");
+        exit;
     } else {
-
-        echo "Error uploading image.";
-
+        $error = "Database Error: " . mysqli_error($conn);
     }
 }
 
 include '../../includes/header.php';
-include '../../includes/navbar.php';
-
 ?>
 
 <div class="admin-layout">
-
     <?php include '../../includes/sidebar.php'; ?>
 
     <main class="admin-content">
+        <?php include '../../includes/navbar.php'; ?>
 
         <div class="page-header">
-
             <div>
-
-                <div class="page-eyebrow">
-                    Category Management
-                </div>
-
-                <h1>Add Category</h1>
-
-                <p>
-                    Create a new category for the system.
-                </p>
-
+                <span class="page-eyebrow">CATALOG MANAGEMENT</span>
+                <h1>Add New Category</h1>
+                <p>Create a new category for your store catalog.</p>
             </div>
-
+            <div class="page-actions">
+                <a href="index.php" class="btn btn-outline">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Categories</span>
+                </a>
+            </div>
         </div>
 
+        <?php if (!empty($error)) { ?>
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span><?= htmlspecialchars($error) ?></span>
+            </div>
+        <?php } ?>
+
         <div class="form-card">
-
             <div class="form-header">
-
-                <div class="section-eyebrow">
-                    Category Information
-                </div>
-
-                <h2>Create New Category</h2>
-
-                <p>
-                    Enter the category's information below.
-                </p>
-
+                <h2>Category Information</h2>
+                <p class="text-muted">Enter the details below to add a new category.</p>
             </div>
 
             <form method="POST" enctype="multipart/form-data">
-
-                <div class="form-body">
-
-                    <div class="row">
-
-                        
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-
-                                <label
-                                    for="name"
-                                    class="form-label"
-                                >
-                                    Name <span>*</span>
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    class="form-input"
-                                    placeholder="Enter category name"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                       
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-
-                                <label
-                                    for="image"
-                                    class="form-label"
-                                >
-                                    Image <span>*</span>
-                                </label>
-
-                                <input
-                                    type="file"
-                                    id="image"
-                                    name="image"
-                                    class="form-input"
-                                    accept="image/*"
-                                    required
-                                >
-
-                                <small class="form-help">
-                                    Select an image for this category.
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        
-                        <div class="col-12">
-
-                            <div class="form-group">
-
-                                <label
-                                    for="description"
-                                    class="form-label"
-                                >
-                                    Description <span>*</span>
-                                </label>
-
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    class="form-textarea"
-                                    placeholder="Enter category description"
-                                    required
-                                ></textarea>
-
-                            </div>
-
-                        </div>
-
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Category Name <span>*</span></label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control"
+                            placeholder="e.g. Electronics & Gadgets"
+                            required
+                        >
                     </div>
 
+                    <div class="form-group">
+                        <label for="image" class="form-label">Category Image <span>*</span></label>
+                        <input
+                            type="file"
+                            id="image"
+                            name="image"
+                            class="form-control"
+                            accept="image/*"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description" class="form-label">Description <span>*</span></label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="form-control"
+                            placeholder="Write a clear description for this category..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Image Preview</label>
+                        <div class="image-preview-container">
+                            <div class="image-preview-placeholder">
+                                <i class="bi bi-image"></i>
+                                <p class="m-0 small text-muted">Select an image above to see live preview</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-
-                
-                <div class="form-footer">
-
-                    <a
-                        href="index.php"
-                        class="btn-secondary"
-                    >
-                        <i class="bi bi-arrow-left"></i>
-                        Cancel
-                    </a>
-
-                    <button
-                        type="submit"
-                        name="submit"
-                        class="btn-primary"
-                    >
+                <div class="form-actions">
+                    <a href="index.php" class="btn btn-outline">Cancel</a>
+                    <button type="submit" name="submit" class="btn btn-primary">
                         <i class="bi bi-plus-lg"></i>
-                        Create Category
+                        <span>Create Category</span>
                     </button>
-
                 </div>
-
             </form>
-
         </div>
-
     </main>
-
 </div>
 
 <?php include '../../includes/footer.php'; ?>

@@ -1,186 +1,98 @@
 <?php
 include '../../includes/auth.php';
 require_admin_role();
-$pageTitle = "Users | SmartStore";
-$pageKey = "users";
+$pageTitle = "Users | ShopEase Admin";
+$pageHeading = "Users";
 
 include '../../includes/header.php';
-include '../../includes/navbar.php';
 include '../../../config/database.php';
 
-$query = "SELECT * FROM users";
+$query = 'SELECT * FROM users ORDER BY id DESC;';
 $result = mysqli_query($conn, $query);
 
+$usersList = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $usersList[] = $row;
+    }
+}
 ?>
 
 <div class="admin-layout">
-
     <?php include '../../includes/sidebar.php'; ?>
 
     <main class="admin-content">
-
-        <?php if (isset($_GET['error']) && $_GET['error'] == 'orders') { ?>
-
-            <div class="delete-error">
-                You can't delete this user because they have orders.
-            </div>
-
-        <?php } ?>
+        <?php include '../../includes/navbar.php'; ?>
 
         <div class="page-header">
-
             <div>
-                <div class="page-eyebrow">Management</div>
-
-                <h1>Users</h1>
-
-                <p>Manage system users and their accounts.</p>
+                <span class="page-eyebrow">SYSTEM & ACCESS CONTROL</span>
+                <h1>System Users</h1>
+                <p>Manage administrative accounts, staff, and customer accounts.</p>
             </div>
 
             <div class="page-actions">
-
                 <a href="create.php" class="btn btn-primary">
-
-                    <i class="bi bi-plus-lg"></i>
-
-                    Add User
-
+                    <i class="bi bi-person-plus"></i>
+                    <span>Add User</span>
                 </a>
-
             </div>
-
         </div>
 
+        <?php if (!empty($usersList)) { ?>
+            <div class="entity-card-grid">
+                <?php foreach ($usersList as $user) { 
+                    $roleClass = 'badge-mint';
+                    if ($user['role'] === 'Admin') $roleClass = 'badge-mint';
+                    elseif ($user['role'] === 'Staff') $roleClass = 'badge-dark';
+                    else $roleClass = 'badge-info';
+                ?>
+                    <article class="entity-card">
+                        <div class="entity-card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="admin-avatar" style="width: 48px; height: 48px; font-size: 1.25rem;">
+                                    <?= strtoupper(substr($user['name'], 0, 1)) ?>
+                                </div>
+                                <span class="badge <?= $roleClass ?>"><?= htmlspecialchars($user['role'] ?? 'User') ?></span>
+                            </div>
 
-        <div class="users-table-card">
+                            <span class="entity-subtitle">USER #<?= $user['id']; ?></span>
+                            <h2 class="entity-title mb-1"><?= htmlspecialchars($user['name']); ?></h2>
 
-            <div class="section-heading" style="padding: 22px 24px 0;">
+                            <div class="info-row mb-3">
+                                <i class="bi bi-envelope"></i>
+                                <span class="text-truncate"><?= htmlspecialchars($user['email']); ?></span>
+                            </div>
 
-                <div>
-
-                    <div class="section-eyebrow">
-                        System Users
-                    </div>
-
-                    <h2>
-                        All Users
-                    </h2>
-
+                            <div class="entity-card-footer">
+                                <span class="text-muted small">ID: <?= $user['id'] ?></span>
+                                <div class="icon-action-group">
+                                    <a href="edit.php?id=<?= $user['id']; ?>" class="icon-action action-edit" aria-label="Edit user" title="Edit User">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="delete.php?id=<?= $user['id']; ?>" class="icon-action action-delete" aria-label="Delete user" title="Delete User">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                <?php } ?>
+            </div>
+        <?php } else { ?>
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-person-gear"></i>
                 </div>
-
+                <h3>No Users Found</h3>
+                <p>There are currently no user accounts in the system.</p>
+                <a href="create.php" class="btn btn-primary">
+                    <i class="bi bi-person-plus"></i>
+                    <span>Add User</span>
+                </a>
             </div>
-
-
-            <div class="table-responsive">
-
-                <table class="users-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>#</th>
-
-                            <th>Name</th>
-
-                            <th>Email</th>
-
-                            <th>Role</th>
-
-                            <th>Created At</th>
-
-                            <th>Actions</th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        <?php while ($user = mysqli_fetch_array($result)) { ?>
-
-                            <tr>
-
-                                <td>
-                                    <?php echo $user['id']; ?>
-                                </td>
-
-
-                                <td>
-
-                                    <strong>
-                                        <?php echo $user['name']; ?>
-                                    </strong>
-
-                                </td>
-
-
-                                <td>
-                                    <?php echo $user['email']; ?>
-                                </td>
-
-
-                                <td>
-
-                                    <span class="user-role">
-
-                                        <?php echo $user['role']; ?>
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-                                    <?php echo $user['created_at']; ?>
-                                </td>
-
-
-                                <td>
-
-                                    <div class="user-actions">
-
-                                        <a
-                                            href="edit.php?id=<?= $user['id']; ?>"
-                                            class="user-action edit"
-                                            title="Edit"
-                                        >
-
-                                            <i class="bi bi-pencil"></i>
-
-                                        </a>
-
-
-                                        <a
-                                            href="delete.php?id=<?= $user['id']; ?>"
-                                            class="user-action delete"
-                                            title="Delete"
-                                        >
-
-                                            <i class="bi bi-trash"></i>
-
-                                        </a>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        <?php } ?>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
+        <?php } ?>
     </main>
-
 </div>
-
 
 <?php include '../../includes/footer.php'; ?>

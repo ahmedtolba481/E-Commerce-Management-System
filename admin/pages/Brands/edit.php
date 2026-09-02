@@ -1,303 +1,160 @@
 <?php
 include '../../includes/auth.php';
 require_admin_role();
-$pageTitle = "Edit Brand | SmartStore";
-$pageKey = "brands";
+$pageTitle = "Edit Brand | ShopEase Admin";
+$pageHeading = "Edit Brand";
 
 include '../../../config/database.php';
 
-$id = $_GET['id'];
-
-
-
+$id = (int)($_GET['id'] ?? 0);
 $sql = "SELECT * FROM brands WHERE id = $id";
 $result = mysqli_query($conn, $sql);
-
-$brand = mysqli_fetch_array($result);
+$brand = mysqli_fetch_assoc($result);
 
 if (!$brand) {
-    die("Brand not found.");
+    header("Location: index.php");
+    exit;
 }
 
-
-
+$error = "";
 
 if (isset($_POST['submit'])) {
-
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-
-    $oldImage = $brand['logo'];
-
-    
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $oldLogo = $brand['logo'];
 
     if (!empty($_FILES['logo']['name'])) {
-
-        $imageName = $_FILES['logo']['name'];
-        $imageTmpName = $_FILES['logo']['tmp_name'];
-
+        $logoName = $_FILES['logo']['name'];
+        $logoTmpName = $_FILES['logo']['tmp_name'];
         $uploadDirectory = '../../assets/images/brands/';
-
-        
-        $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
-
-        
-        $newImageName = uniqid() . '.' . $imageExtension;
-
-        
-        if (move_uploaded_file(
-            $imageTmpName,
-            $uploadDirectory . $newImageName
-        )) {
-
-            $logo = $newImageName;
-
-            
-
-            if (!empty($oldImage)) {
-
-                $oldImagePath = $uploadDirectory . $oldImage;
-
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-            }
-
-        } else {
-
-            echo "Error uploading logo.";
-            exit;
+        if (!is_dir($uploadDirectory)) {
+            mkdir($uploadDirectory, 0777, true);
         }
 
-    } else {
+        $logoExtension = pathinfo($logoName, PATHINFO_EXTENSION);
+        $newLogoName = uniqid() . '.' . $logoExtension;
 
-        
-        $logo = $oldImage;
+        if (move_uploaded_file($logoTmpName, $uploadDirectory . $newLogoName)) {
+            $logo = $newLogoName;
+            if (!empty($oldLogo) && file_exists($uploadDirectory . $oldLogo)) {
+                unlink($uploadDirectory . $oldLogo);
+            }
+        } else {
+            $error = "Error uploading logo image.";
+            $logo = $oldLogo;
+        }
+    } else {
+        $logo = $oldLogo;
     }
 
-
-    
-
-    $sql = "UPDATE brands SET
-                name = '$name',
-                description = '$description',
-                logo = '$logo'
-            WHERE id = $id";
-
-    if (mysqli_query($conn, $sql)) {
-
-        header("Location: index.php");
-        exit;
-
-    } else {
-
-        echo "Error: " . mysqli_error($conn);
+    if (empty($error)) {
+        $sqlUpdate = "UPDATE brands SET name = '$name', description = '$description', logo = '$logo' WHERE id = $id";
+        if (mysqli_query($conn, $sqlUpdate)) {
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Database Error: " . mysqli_error($conn);
+        }
     }
 }
 
-
 include '../../includes/header.php';
-include '../../includes/navbar.php';
-
 ?>
 
 <div class="admin-layout">
-
     <?php include '../../includes/sidebar.php'; ?>
 
     <main class="admin-content">
+        <?php include '../../includes/navbar.php'; ?>
 
         <div class="page-header">
-
             <div>
-
-                <div class="page-eyebrow">
-                    Brand Management
-                </div>
-
-                <h1>Edit Brand</h1>
-
-                <p>
-                    Update the brand's information.
-                </p>
-
+                <span class="page-eyebrow">CATALOG MANAGEMENT</span>
+                <h1>Edit Brand #<?= $brand['id'] ?></h1>
+                <p>Update brand information and logo image.</p>
             </div>
-
+            <div class="page-actions">
+                <a href="index.php" class="btn btn-outline">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Brands</span>
+                </a>
+            </div>
         </div>
 
+        <?php if (!empty($error)) { ?>
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span><?= htmlspecialchars($error) ?></span>
+            </div>
+        <?php } ?>
 
         <div class="form-card">
-
             <div class="form-header">
-
-                <div class="section-eyebrow">
-                    Brand Information
-                </div>
-
-                <h2>Edit Brand</h2>
-
-                <p>
-                    Update the brand's information below.
-                </p>
-
+                <h2>Modify Brand</h2>
+                <p class="text-muted">Update fields below to edit brand details.</p>
             </div>
 
-
             <form method="POST" enctype="multipart/form-data">
-
-                <div class="form-body">
-
-                    <div class="row">
-
-
-                        
-
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-
-                                <label
-                                    for="name"
-                                    class="form-label"
-                                >
-                                    Name <span>*</span>
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    class="form-input"
-                                    value="<?= htmlspecialchars($brand['name']); ?>"
-                                    placeholder="Enter brand name"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        
-
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-
-                                <label
-                                    for="logo"
-                                    class="form-label"
-                                >
-                                    Image
-                                </label>
-
-                                <input
-                                    type="file"
-                                    id="logo"
-                                    name="logo"
-                                    class="form-input"
-                                    accept="logo/*"
-                                >
-
-                                <small class="form-help">
-                                    Leave empty to keep the current logo.
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        
-
-                        <div class="col-12">
-
-                            <div class="form-group">
-
-                                <label
-                                    for="description"
-                                    class="form-label"
-                                >
-                                    Description <span>*</span>
-                                </label>
-
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    class="form-textarea"
-                                    placeholder="Enter brand description"
-                                    required
-                                ><?= htmlspecialchars($brand['description']); ?></textarea>
-
-                            </div>
-
-                        </div>
-
-
-                        
-
-                        <div class="col-12">
-
-                            <div class="form-group">
-
-                                <label class="form-label">
-                                    Current Image
-                                </label>
-
-                                <?php if (!empty($brand['logo'])) { ?>
-
-                                    <img
-                                        src="../../assets/images/brands/<?= htmlspecialchars($brand['logo']); ?>"
-                                        alt="<?= htmlspecialchars($brand['name']); ?>"
-                                        style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px; border: 1px solid #e2e8f0;"
-                                    >
-
-                                <?php } else { ?>
-
-                                    <p class="form-help">
-                                        No logo uploaded.
-                                    </p>
-
-                                <?php } ?>
-
-                            </div>
-
-                        </div>
-
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Brand Name <span>*</span></label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control"
+                            value="<?= htmlspecialchars($brand['name']); ?>"
+                            required
+                        >
                     </div>
 
+                    <div class="form-group">
+                        <label for="logo" class="form-label">Update Logo</label>
+                        <input
+                            type="file"
+                            id="logo"
+                            name="logo"
+                            class="form-control"
+                            accept="image/*"
+                        >
+                        <small class="text-muted mt-1">Leave blank to keep existing logo.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description" class="form-label">Description <span>*</span></label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="form-control"
+                            required
+                        ><?= htmlspecialchars($brand['description']); ?></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Current Logo Preview</label>
+                        <div class="image-preview-container" style="height: 160px;">
+                            <?php if (!empty($brand['logo'])) { ?>
+                                <img src="../../assets/images/brands/<?= htmlspecialchars($brand['logo']); ?>" alt="<?= htmlspecialchars($brand['name']); ?>">
+                            <?php } else { ?>
+                                <div class="image-preview-placeholder">
+                                    <i class="bi bi-patch-check fs-1 text-muted"></i>
+                                    <p class="m-0 small text-muted">No logo uploaded</p>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
                 </div>
 
-
-                
-
-                <div class="form-footer">
-
-                    <a
-                        href="index.php"
-                        class="btn-secondary"
-                    >
-                        <i class="bi bi-arrow-left"></i>
-                        Cancel
-                    </a>
-
-                    <button
-                        type="submit"
-                        name="submit"
-                        class="btn-primary"
-                    >
+                <div class="form-actions">
+                    <a href="index.php" class="btn btn-outline">Cancel</a>
+                    <button type="submit" name="submit" class="btn btn-primary">
                         <i class="bi bi-check-lg"></i>
-                        Update Brand
+                        <span>Save Changes</span>
                     </button>
-
                 </div>
-
             </form>
-
         </div>
-
     </main>
-
 </div>
 
 <?php include '../../includes/footer.php'; ?>

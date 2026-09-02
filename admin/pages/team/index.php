@@ -1,124 +1,103 @@
 <?php
-
-include "../../includes/auth.php";
+include '../../includes/auth.php';
 require_admin_role();
-include "../../../config/database.php";
+$pageTitle = "Team Members | ShopEase Admin";
+$pageHeading = "Team Members";
 
-$query = "SELECT * FROM team ORDER BY id DESC";
+include '../../includes/header.php';
+include '../../../config/database.php';
+
+$query = 'SELECT * FROM team ORDER BY id DESC;';
 $result = mysqli_query($conn, $query);
 
-include "../../includes/header.php";
-
+$teamList = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $teamList[] = $row;
+    }
+}
 ?>
-<link rel="stylesheet" href="../../assets/css/team.css">
-<?php 
-include "../../includes/navbar.php";
-include "../../includes/sidebar.php";
-?>
 
-<div class="team-page">
+<div class="admin-layout">
+    <?php include '../../includes/sidebar.php'; ?>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Team Members</h2>
+    <main class="admin-content">
+        <?php include '../../includes/navbar.php'; ?>
 
-        <a href="create.php" class="btn btn-primary">
-            Add Team Member
-        </a>
-    </div>
+        <div class="page-header">
+            <div>
+                <span class="page-eyebrow">ORGANIZATION</span>
+                <h1>Team Members</h1>
+                <p>Manage store staff and executive profiles.</p>
+            </div>
 
-    <table class="table table-bordered table-striped">
+            <div class="page-actions">
+                <a href="create.php" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Add Member</span>
+                </a>
+            </div>
+        </div>
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Description</th>
-                <th>Facebook</th>
-                <th>Instagram</th>
-                <th>LinkedIn</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <?php if (!empty($teamList)) { ?>
+            <div class="entity-card-grid">
+                <?php foreach ($teamList as $member) { ?>
+                    <article class="entity-card">
+                        <div class="card-media-wrap profile-container">
+                            <?php if (!empty($member['image'])) { ?>
+                                <img src="/E-Commerce-Management-System/admin/assets/images/team/<?= htmlspecialchars($member['image']); ?>" alt="<?= htmlspecialchars($member['name']); ?>" loading="lazy">
+                            <?php } else { ?>
+                                <i class="bi bi-person card-media-placeholder"></i>
+                            <?php } ?>
+                        </div>
 
-        <tbody>
+                        <div class="entity-card-body">
+                            <span class="entity-subtitle"><?= htmlspecialchars($member['position'] ?? 'Team Member'); ?></span>
+                            <h2 class="entity-title"><?= htmlspecialchars($member['name']); ?></h2>
+                            <p class="entity-description"><?= htmlspecialchars($member['description'] ?? 'No bio description available.'); ?></p>
 
-        <?php while ($member = mysqli_fetch_assoc($result)) { ?>
+                            <!-- Social Links -->
+                            <div class="social-links">
+                                <?php if (!empty($member['facebook'])) { ?>
+                                    <a href="<?= htmlspecialchars($member['facebook']); ?>" target="_blank" class="social-icon" title="Facebook"><i class="bi bi-facebook"></i></a>
+                                <?php } ?>
+                                <?php if (!empty($member['instagram'])) { ?>
+                                    <a href="<?= htmlspecialchars($member['instagram']); ?>" target="_blank" class="social-icon" title="Instagram"><i class="bi bi-instagram"></i></a>
+                                <?php } ?>
+                                <?php if (!empty($member['linkedin'])) { ?>
+                                    <a href="<?= htmlspecialchars($member['linkedin']); ?>" target="_blank" class="social-icon" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                                <?php } ?>
+                            </div>
 
-            <tr>
-
-                <td>
-                    <?= $member["id"] ?>
-                </td>
-
-                <td>
-                <?php if (!empty($member["image"])) { ?>
-        <img
-            src="../../assets/images/team/<?= htmlspecialchars($member["image"]) ?>"
-            width="70"
-            height="70"
-            style="object-fit: cover; border-radius: 8px;">
-    <?php } else { ?>
-        No Image
-                    <?php } ?>
-                </td>
-
-                <td>
-                    <?= htmlspecialchars($member["name"]) ?>
-                </td>
-
-                <td>
-                    <?= htmlspecialchars($member["position"]) ?>
-                </td>
-
-                <td>
-                    <?= htmlspecialchars($member["description"] ?? "") ?>
-                </td>
-
-                <td>
-                    <?= htmlspecialchars($member["facebook"] ?? "") ?>
-                </td>
-
-                <td>
-                    <?= htmlspecialchars($member["instagram"] ?? "") ?>
-                </td>
-
-                <td>
-                    <?= htmlspecialchars($member["linkedin"] ?? "") ?>
-                </td>
-
-            <td>
-    <div class="action-buttons">
-
-        <a
-            href="edit.php?id=<?= $member["id"] ?>"
-            class="btn btn-primary btn-sm">
-            Edit
-        </a>
-
-        <a
-            href="delete.php?id=<?= $member["id"] ?>"
-            class="btn btn-danger btn-sm"
-            onclick="return confirm('Are you sure you want to delete this team member?')">
-            Delete
-        </a>
-
-    </div>
-</td>
-
-            </tr>
-
+                            <div class="entity-card-footer">
+                                <span class="badge badge-mint">Active Staff</span>
+                                <div class="icon-action-group">
+                                    <a href="edit.php?id=<?= $member['id']; ?>" class="icon-action action-edit" aria-label="Edit team member" title="Edit Member">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="delete.php?id=<?= $member['id']; ?>" class="icon-action action-delete" aria-label="Delete team member" title="Delete Member">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                <?php } ?>
+            </div>
+        <?php } else { ?>
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3>No Team Members Found</h3>
+                <p>There are currently no staff members in your team directory.</p>
+                <a href="create.php" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Add Member</span>
+                </a>
+            </div>
         <?php } ?>
-
-        </tbody>
-
-    </table>
-
+    </main>
 </div>
 
-<?php
-
-include "../../includes/footer.php";
-
-?>
+<?php include '../../includes/footer.php'; ?>

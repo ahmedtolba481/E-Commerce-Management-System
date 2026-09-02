@@ -1,5 +1,4 @@
 <?php
-
 include "../../includes/auth.php";
 include "../../../config/database.php";
 
@@ -21,13 +20,13 @@ $usersQuery = mysqli_query(
 );
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $userId = (int) ($_POST["user_id"] ?? 0);
+    $userId = (int)($_POST["user_id"] ?? 0);
     $phone = trim($_POST["phone"] ?? "");
     $address = trim($_POST["address"] ?? "");
     $city = trim($_POST["city"] ?? "");
 
     if ($userId <= 0 || $phone === "" || $address === "" || $city === "") {
-        $error = "Select a client and complete all profile fields.";
+        $error = "Select a client user account and complete all contact fields.";
     } else {
         try {
             $clientQuery = mysqli_prepare(
@@ -45,67 +44,85 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
+$pageTitle = "New Client | ShopEase Admin";
+$pageHeading = "New Client";
+
 include "../../includes/header.php";
-?>
-<link rel="stylesheet" href="../../assets/css/clients.css?v=20260903">
-<?php
-include "../../includes/navbar.php";
-include "../../includes/sidebar.php";
 ?>
 
 <div class="admin-layout">
-<main class="admin-content">
-<div class="clients-page">
-    <div class="clients-header">
-        <div>
-            <span class="clients-eyebrow">CUSTOMER DIRECTORY</span>
-            <h1>New Client</h1>
-            <p>Complete the profile for an existing client account.</p>
-        </div>
-    </div>
+    <?php include "../../includes/sidebar.php"; ?>
 
-    <div class="client-form-card">
-        <?php if ($error !== "") { ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+    <main class="admin-content">
+        <?php include "../../includes/navbar.php"; ?>
+
+        <div class="page-header">
+            <div>
+                <span class="page-eyebrow">CUSTOMER DIRECTORY</span>
+                <h1>Add New Client</h1>
+                <p>Complete the contact profile for a registered user account.</p>
+            </div>
+            <div class="page-actions">
+                <a href="index.php" class="btn btn-outline">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Clients</span>
+                </a>
+            </div>
+        </div>
+
+        <?php if (!empty($error)) { ?>
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span><?= htmlspecialchars($error) ?></span>
+            </div>
         <?php } ?>
 
-        <form method="POST">
-            <div class="client-form-grid">
-                <div class="client-form-section">
-                    <span class="clients-eyebrow">ACCOUNT</span>
-                    <h2>Select client</h2>
-                    <label for="user_id">Client account</label>
-                    <select id="user_id" name="user_id" class="form-select" required>
-                        <option value="">Choose an available client</option>
-                        <?php while ($user = mysqli_fetch_assoc($usersQuery)) { ?>
-                            <option value="<?= $user["id"] ?>" <?= $userId === (int) $user["id"] ? "selected" : "" ?>>
-                                <?= htmlspecialchars($user["name"] . " - " . $user["email"]) ?>
-                            </option>
-                        <?php } ?>
-                    </select>
-                    <small class="form-help">Name and email come from the selected user account.</small>
-                </div>
-
-                <div class="client-form-section">
-                    <span class="clients-eyebrow">PROFILE</span>
-                    <h2>Contact details</h2>
-                    <label for="phone">Phone</label>
-                    <input id="phone" type="text" name="phone" value="<?= htmlspecialchars($phone) ?>" required>
-                    <label for="address">Address</label>
-                    <input id="address" type="text" name="address" value="<?= htmlspecialchars($address) ?>" required>
-                    <label for="city">City</label>
-                    <input id="city" type="text" name="city" value="<?= htmlspecialchars($city) ?>" required>
-                </div>
+        <div class="form-card">
+            <div class="form-header">
+                <h2>Client Details</h2>
+                <p class="text-muted">Link a user account and enter address & contact details.</p>
             </div>
 
-            <div class="client-form-actions">
-                <a href="index.php" class="btn btn-light">Cancel</a>
-                <button type="submit" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Create Client</button>
-            </div>
-        </form>
-    </div>
-</div>
-</main>
+            <form method="POST">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="user_id" class="form-label">Client Account <span>*</span></label>
+                        <select id="user_id" name="user_id" class="form-select" required>
+                            <option value="">Choose an available user account...</option>
+                            <?php while ($user = mysqli_fetch_assoc($usersQuery)) { ?>
+                                <option value="<?= $user["id"] ?>" <?= $userId === (int)$user["id"] ? "selected" : "" ?>>
+                                    <?= htmlspecialchars($user["name"] . " (" . $user["email"] . ")") ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number <span>*</span></label>
+                        <input type="text" id="phone" name="phone" class="form-control" placeholder="+1 555 019 2831" value="<?= htmlspecialchars($phone) ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city" class="form-label">City <span>*</span></label>
+                        <input type="text" id="city" name="city" class="form-control" placeholder="New York" value="<?= htmlspecialchars($city) ?>" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="address" class="form-label">Full Address <span>*</span></label>
+                        <input type="text" id="address" name="address" class="form-control" placeholder="123 Shopping Avenue, Suite 400" value="<?= htmlspecialchars($address) ?>" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="index.php" class="btn btn-outline">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-person-plus-fill"></i>
+                        <span>Create Client Profile</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
 </div>
 
 <?php include "../../includes/footer.php"; ?>

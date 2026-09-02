@@ -2,7 +2,7 @@
   width: 100%;
   padding: 0;
   box-sizing: border-box;
-  color: #172033;
+  color: var(--dark);
 }
 
 .clients-header {
@@ -21,11 +21,11 @@
 
 .clients-header p {
   margin: 0;
-  color: #667085;
+  color: var(--text);
 }
 
 .clients-eyebrow {
-  color: #2563eb;
+  color: var(--primary);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.4px;
@@ -42,8 +42,8 @@
 .clients-table-wrap,
 .client-form-card {
   overflow-x: auto;
-  background: #ffffff;
-  border: 1px solid #e5eaf1;
+  background: var(--white);
+  border: 1px solid var(--line);
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(23, 32, 51, 0.06);
 }
@@ -55,8 +55,8 @@
 
 .clients-table thead th {
   padding: 16px;
-  color: #667085;
-  background: #f8fafc;
+  color: var(--text);
+  background: var(--mint);
   border-bottom: 1px solid #e5eaf1;
   font-size: 12px;
   text-transform: uppercase;
@@ -66,7 +66,7 @@
 .clients-table tbody td {
   padding: 16px;
   vertical-align: middle;
-  border-color: #edf0f5;
+  border-color: var(--line);
 }
 
 .client-form-card {
@@ -88,7 +88,7 @@
 .client-form-section label {
   display: block;
   margin: 16px 0 7px;
-  color: #344054;
+  color: var(--dark);
   font-size: 13px;
   font-weight: 600;
 }
@@ -99,8 +99,8 @@
   padding: 11px 13px;
   border: 1px solid #d0d5dd;
   border-radius: 6px;
-  color: #172033;
-  background: #ffffff;
+  color: var(--dark);
+  background: var(--white);
 }
 
 .client-form-section .form-control {
@@ -115,17 +115,17 @@
 
 .client-form-section .form-select:focus {
   outline: 2px solid rgba(37, 99, 235, 0.18);
-  border-color: #2563eb;
+  border-color: var(--primary);
 }
 
 .client-form-section .form-control:disabled {
-  background: #f8fafc;
-  color: #667085;
+  background: var(--background);
+  color: var(--text);
 }
 
 .client-form-section input:focus {
   outline: 2px solid rgba(37, 99, 235, 0.18);
-  border-color: #2563eb;
+  border-color: var(--primary);
 }
 
 .client-form-actions {
@@ -153,8 +153,8 @@
 .client-detail-card {
   max-width: 920px;
   padding: 32px;
-  background: #ffffff;
-  border: 1px solid #e5eaf1;
+  background: var(--white);
+  border: 1px solid var(--line);
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(23, 32, 51, 0.06);
 }
@@ -175,7 +175,7 @@
   flex: 0 0 auto;
   border-radius: 50%;
   background: #dbeafe;
-  color: #2563eb;
+  color: var(--primary);
   font-size: 22px;
   font-weight: 700;
 }
@@ -187,7 +187,7 @@
 
 .client-profile-heading p {
   margin: 0;
-  color: #667085;
+  color: var(--text);
 }
 
 .client-detail-grid {
@@ -212,7 +212,7 @@
 }
 
 .client-detail-grid strong {
-  color: #172033;
+  color: var(--dark);
   font-size: 14px;
   font-weight: 600;
   overflow-wrap: anywhere;

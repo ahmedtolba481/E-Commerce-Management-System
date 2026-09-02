@@ -1,198 +1,112 @@
 <?php
 include '../../includes/auth.php';
-$pageTitle = "Orders | SmartStore";
-$pageKey = "orders";
+$pageTitle = "Orders | ShopEase Admin";
+$pageHeading = "Orders";
 
+include '../../includes/header.php';
 include '../../../config/database.php';
 
-$query = "SELECT
+$query = 'SELECT
             orders.id,
             users.name AS client_name,
             orders.total_price,
             orders.status,
             orders.created_at
           FROM orders
-          LEFT JOIN clients
-          ON orders.client_id = clients.id
-          LEFT JOIN users
-          ON clients.user_id = users.id";
+          LEFT JOIN clients ON orders.client_id = clients.id
+          LEFT JOIN users ON clients.user_id = users.id
+          ORDER BY orders.id DESC;';
 
 $result = mysqli_query($conn, $query);
 
-include '../../includes/header.php';
-include '../../includes/navbar.php';
-
+$ordersList = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $ordersList[] = $row;
+    }
+}
 ?>
 
 <div class="admin-layout">
-
     <?php include '../../includes/sidebar.php'; ?>
 
     <main class="admin-content">
+        <?php include '../../includes/navbar.php'; ?>
 
         <div class="page-header">
-
             <div>
-
-                <div class="page-eyebrow">
-                    Management
-                </div>
-
-                <h1>Orders</h1>
-
-                <p>
-                    Manage system orders.
-                </p>
-
+                <span class="page-eyebrow">ORDER FULFILLMENT</span>
+                <h1>Customer Orders</h1>
+                <p>Track order statuses, total values, and customer purchases.</p>
             </div>
 
             <div class="page-actions">
-
                 <a href="create.php" class="btn btn-primary">
                     <i class="bi bi-plus-lg"></i>
-                    Add Order
+                    <span>Create Order</span>
                 </a>
-
             </div>
-
         </div>
 
+        <?php if (!empty($ordersList)) { ?>
+            <div class="entity-card-grid">
+                <?php foreach ($ordersList as $order) { 
+                    $statusClass = 'badge-mint';
+                    $st = strtolower($order['status'] ?? 'pending');
+                    if ($st === 'pending' || $st === 'processing') $statusClass = 'badge-warning';
+                    elseif ($st === 'cancelled') $statusClass = 'badge-danger';
+                    elseif ($st === 'shipped') $statusClass = 'badge-info';
+                ?>
+                    <article class="entity-card">
+                        <div class="entity-card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="entity-subtitle">ORDER #<?= $order['id']; ?></span>
+                                <span class="badge <?= $statusClass ?>"><?= htmlspecialchars(ucfirst($order['status'])); ?></span>
+                            </div>
 
-        <div class="users-table-card">
+                            <h2 class="entity-title mb-1"><?= htmlspecialchars($order['client_name'] ?? 'Guest Customer'); ?></h2>
+                            
+                            <div class="info-row mb-2">
+                                <i class="bi bi-calendar3"></i>
+                                <span class="small text-muted"><?= htmlspecialchars($order['created_at']); ?></span>
+                            </div>
 
-            <div
-                class="section-heading"
-                style="padding: 22px 24px 0;"
-            >
+                            <div class="d-flex align-items-center justify-content-between mt-3 pt-3 border-top">
+                                <div>
+                                    <span class="d-block text-muted small">Total Price</span>
+                                    <span class="entity-price">$<?= number_format($order['total_price'], 2); ?></span>
+                                </div>
 
-                <div>
-
-                    <div class="section-eyebrow">
-                        Orders
-                    </div>
-
-                    <h2>All Orders</h2>
-
+                                <div class="icon-action-group">
+                                    <a href="order_items.php?id=<?= $order['id']; ?>" class="icon-action action-view" aria-label="View order items" title="View Order Details">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="edit.php?id=<?= $order['id']; ?>" class="icon-action action-edit" aria-label="Edit order status" title="Edit Order Status">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="delete.php?id=<?= $order['id']; ?>" class="icon-action action-delete" aria-label="Delete order" title="Delete Order">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                <?php } ?>
+            </div>
+        <?php } else { ?>
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-receipt"></i>
                 </div>
-
+                <h3>No Orders Found</h3>
+                <p>There are currently no customer orders in the system.</p>
+                <a href="create.php" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Create Order</span>
+                </a>
             </div>
-
-
-            <div class="table-responsive">
-
-                <table class="users-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>#</th>
-                            <th>Client Name</th>
-                            <th>Total Price</th>
-                            <th>Status</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        <?php while ($order = mysqli_fetch_array($result)) { ?>
-
-                            <tr>
-
-                                <td>
-                                    <?php echo $order['id']; ?>
-                                </td>
-
-
-                                <td>
-
-                                    <strong>
-                                        <?php echo htmlspecialchars($order['client_name'] ?? 'Unknown Client'); ?>
-                                    </strong>
-
-                                </td>
-
-
-                                <td>
-
-                                    <?php echo number_format($order['total_price'], 2); ?>
-
-                                </td>
-
-
-                                <td>
-
-                                    <span class="order-status">
-                                        <?php echo htmlspecialchars($order['status']); ?>
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <?php echo $order['created_at']; ?>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="user-actions">
-
-
-                                        <a
-                                            href="order_items.php?order_id=<?= $order['id']; ?>"
-                                            class="user-action view"
-                                            title="View Items"
-                                        >
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-
-
-
-                                        <a
-                                            href="edit.php?id=<?= $order['id']; ?>"
-                                            class="user-action edit"
-                                            title="Edit"
-                                        >
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-
-
-
-                                        <a
-                                            href="delete.php?id=<?= $order['id']; ?>"
-                                            class="user-action delete"
-                                            title="Delete"
-                                        >
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        <?php } ?>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
+        <?php } ?>
     </main>
-
 </div>
-
 
 <?php include '../../includes/footer.php'; ?>

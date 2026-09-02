@@ -1,35 +1,32 @@
 <nav class="admin-navbar">
+    <div class="navbar-left">
+        <button
+            type="button"
+            class="sidebar-toggle"
+            aria-label="Toggle navigation"
+            aria-controls="admin-sidebar"
+            aria-expanded="false"
+        >
+            <i class="bi bi-list"></i>
+        </button>
 
-    <a
-        href="/E-Commerce-Management-System/admin/index.php"
-        class="admin-logo"
-    >
-
-        <div class="logo-icon">
-            <i class="bi bi-bag-heart-fill"></i>
+        <div class="page-title-wrap">
+            <h1><?= htmlspecialchars($pageHeading ?? ($pageTitle ?? 'Dashboard')) ?></h1>
         </div>
-
-        <div>
-            <span class="logo-main">SmartStore</span>
-            <!-- <span class="logo-small">ADMIN PANEL</span> -->
-        </div>
-
-    </a>
-
+    </div>
 
     <div class="navbar-right">
-
         <a
             href="/E-Commerce-Management-System/index.php"
             class="website-link"
+            target="_blank"
+            title="View Live Website"
         >
             <i class="bi bi-globe2"></i>
             <span>View Website</span>
         </a>
 
-
-        <div class="admin-profile">
-
+        <div class="admin-profile" tabindex="0">
             <div class="admin-avatar">
                 <?= strtoupper(substr($_SESSION['admin_name'] ?? 'A', 0, 1)) ?>
             </div>
@@ -43,14 +40,18 @@
                 </span>
             </div>
 
+            <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+
+            <div class="profile-dropdown-menu">
+                <a href="/E-Commerce-Management-System/admin/index.php" class="dropdown-item">
+                    <i class="bi bi-person"></i>
+                    Profile & Overview
+                </a>
+                <a href="/E-Commerce-Management-System/admin/logout.php" class="dropdown-item logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </div>
         </div>
-
-
-        <a href="/E-Commerce-Management-System/admin/logout.php">
-            <i class="bi bi-box-arrow-right"></i>
-            Logout
-        </a>
-
     </div>
-
 </nav>

@@ -1,189 +1,141 @@
 <?php
-
-include "../../includes/auth.php";
+include '../../includes/auth.php';
 require_admin_role();
-include "../../../config/database.php";
+$pageTitle = "Add Team Member | ShopEase Admin";
+$pageHeading = "Add Member";
+
+include '../../../config/database.php';
 
 $error = "";
 
-$name = "";
-$position = "";
-$description = "";
-$facebook = "";
-$instagram = "";
-$linkedin = "";
+if (isset($_POST['submit'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $position = mysqli_real_escape_string($conn, $_POST['position']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $facebook = mysqli_real_escape_string($conn, $_POST['facebook']);
+    $instagram = mysqli_real_escape_string($conn, $_POST['instagram']);
+    $linkedin = mysqli_real_escape_string($conn, $_POST['linkedin']);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $imageName = $_FILES['image']['name'] ?? '';
+    $imageTmpName = $_FILES['image']['tmp_name'] ?? '';
 
-    $name = trim($_POST["name"]);
-    $position = trim($_POST["position"]);
-    $description = trim($_POST["description"]);
-    $facebook = trim($_POST["facebook"]);
-    $instagram = trim($_POST["instagram"]);
-    $linkedin = trim($_POST["linkedin"]);
+    $uploadDirectory = '../../assets/images/team/';
+    if (!is_dir($uploadDirectory)) {
+        mkdir($uploadDirectory, 0777, true);
+    }
 
-    if ($name == "" || $position == "") {
+    $newImageName = "";
+    if (!empty($imageName)) {
+        $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
+        $newImageName = uniqid() . '.' . $imageExtension;
+        move_uploaded_file($imageTmpName, $uploadDirectory . $newImageName);
+    }
 
-        $error = "Name and position are required.";
+    $sql = "INSERT INTO team (name, position, description, image, facebook, instagram, linkedin)
+            VALUES ('$name', '$position', '$description', '$newImageName', '$facebook', '$instagram', '$linkedin')";
 
-    } else {
-
-        $image = "";
-
-        if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-
-            $image = time() . "_" . $_FILES["image"]["name"];
-
-            move_uploaded_file(
-                $_FILES["image"]["tmp_name"],
-                "../../assets/images/team/" . $image
-            );
-        }
-
-        $query = mysqli_prepare(
-            $conn,
-            "INSERT INTO team
-            (name, position, description, image, facebook, instagram, linkedin)
-            VALUES (?, ?, ?, ?, ?, ?, ?)"
-        );
-
-        mysqli_stmt_bind_param(
-            $query,
-            "sssssss",
-            $name,
-            $position,
-            $description,
-            $image,
-            $facebook,
-            $instagram,
-            $linkedin
-        );
-
-        mysqli_stmt_execute($query);
-
+    if (mysqli_query($conn, $sql)) {
         header("Location: index.php");
         exit;
+    } else {
+        $error = "Database Error: " . mysqli_error($conn);
     }
 }
 
-include "../../includes/header.php";
-?>
-<link rel="stylesheet" href="../../assets/css/team.css">
-<?php
-include "../../includes/navbar.php";
-include "../../includes/sidebar.php";
-
+include '../../includes/header.php';
 ?>
 
-<div class="team-page">
+<div class="admin-layout">
+    <?php include '../../includes/sidebar.php'; ?>
 
-    <h2 class="mb-4">Add Team Member</h2>
+    <main class="admin-content">
+        <?php include '../../includes/navbar.php'; ?>
 
-    <?php if ($error != "") { ?>
-
-        <div class="alert alert-danger">
-            <?= $error ?>
+        <div class="page-header">
+            <div>
+                <span class="page-eyebrow">ORGANIZATION</span>
+                <h1>Add Team Member</h1>
+                <p>Register a new staff member or executive profile.</p>
+            </div>
+            <div class="page-actions">
+                <a href="index.php" class="btn btn-outline">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Team</span>
+                </a>
+            </div>
         </div>
 
-    <?php } ?>
+        <?php if (!empty($error)) { ?>
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span><?= htmlspecialchars($error) ?></span>
+            </div>
+        <?php } ?>
 
-    <form method="POST" enctype="multipart/form-data">
+        <div class="form-card">
+            <div class="form-header">
+                <h2>Member Information</h2>
+                <p class="text-muted">Enter position, bio, photo, and social links.</p>
+            </div>
 
-        <div class="mb-3">
-            <label class="form-label">Name</label>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Full Name <span>*</span></label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Sarah Connor" required>
+                    </div>
 
-            <input
-                type="text"
-                name="name"
-                class="form-control"
-                value="<?= htmlspecialchars($name) ?>"
-                required>
+                    <div class="form-group">
+                        <label for="position" class="form-label">Position / Job Title <span>*</span></label>
+                        <input type="text" id="position" name="position" class="form-control" placeholder="e.g. Head of Customer Operations" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image" class="form-label">Profile Photo <span>*</span></label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="facebook" class="form-label">Facebook Profile URL</label>
+                        <input type="url" id="facebook" name="facebook" class="form-control" placeholder="https://facebook.com/username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="instagram" class="form-label">Instagram Profile URL</label>
+                        <input type="url" id="instagram" name="instagram" class="form-control" placeholder="https://instagram.com/username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkedin" class="form-label">LinkedIn Profile URL</label>
+                        <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/in/username">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description" class="form-label">Biography / Description <span>*</span></label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Write a short summary about this team member..." required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Profile Photo Preview</label>
+                        <div class="image-preview-container" style="height: 220px;">
+                            <div class="image-preview-placeholder">
+                                <i class="bi bi-person fs-1 text-primary"></i>
+                                <p class="m-0 small text-muted">Select a photo above to see live preview</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="index.php" class="btn btn-outline">Cancel</a>
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i>
+                        <span>Add Member</span>
+                    </button>
+                </div>
+            </form>
         </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Position</label>
-
-            <input
-                type="text"
-                name="position"
-                class="form-control"
-                value="<?= htmlspecialchars($position) ?>"
-                required>
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Description</label>
-
-            <textarea
-                name="description"
-                class="form-control"
-                rows="4"><?= htmlspecialchars($description) ?></textarea>
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Image</label>
-
-            <input
-                type="file"
-                name="image"
-                class="form-control">
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Facebook</label>
-
-            <input
-                type="url"
-                name="facebook"
-                class="form-control"
-                value="<?= htmlspecialchars($facebook) ?>">
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Instagram</label>
-
-            <input
-                type="url"
-                name="instagram"
-                class="form-control"
-                value="<?= htmlspecialchars($instagram) ?>">
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">LinkedIn</label>
-
-            <input
-                type="url"
-                name="linkedin"
-                class="form-control"
-                value="<?= htmlspecialchars($linkedin) ?>">
-        </div>
-
-
-        <button
-            type="submit"
-            class="btn btn-primary">
-            Add Member
-        </button>
-
-        <a
-            href="index.php"
-            class="btn btn-secondary">
-            Back
-        </a>
-
-    </form>
-
+    </main>
 </div>
 
-<?php
-
-include "../../includes/footer.php";
-
-?>
+<?php include '../../includes/footer.php'; ?>
