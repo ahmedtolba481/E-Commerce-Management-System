@@ -3,21 +3,92 @@
 
 $pageTitle = "Dashboard | SmartStore";
 $pageKey = "dashboard";
+include '../config/database.php';
 include './includes/auth.php';
+// 1. Total Revenue
+$revenueQuery = "
+    SELECT COALESCE(SUM(total_price), 0) AS total_revenue
+    FROM orders
+    WHERE status != 'cancelled'
+";
+$revenueResult = mysqli_query($conn, $revenueQuery);
+$revenueRow = mysqli_fetch_assoc($revenueResult);
+$totalRevenue = $revenueRow["total_revenue"];
+
+// 2. Total Orders
+$ordersQuery = "
+    SELECT COUNT(*) AS total_orders
+    FROM orders
+";
+$ordersResult = mysqli_query($conn, $ordersQuery);
+$ordersRow = mysqli_fetch_assoc($ordersResult);
+$totalOrders = $ordersRow["total_orders"];
+
+// 3. Products in Stock
+$stockQuery = "
+    SELECT COALESCE(SUM(stock), 0) AS products_in_stock
+    FROM products
+";
+$stockResult = mysqli_query($conn, $stockQuery);
+$stockRow = mysqli_fetch_assoc($stockResult);
+$productsInStock = $stockRow["products_in_stock"];
+
+// 4. Total Clients
+$clientsQuery = "
+    SELECT COUNT(*) AS total_clients
+    FROM clients
+";
+$clientsResult = mysqli_query($conn, $clientsQuery);
+$clientsRow = mysqli_fetch_assoc($clientsResult);
+$totalClients = $clientsRow["total_clients"];
+
+// 5. Low Stock Products
+$lowStockQuery = "
+    SELECT
+        products.id,
+        products.name,
+        products.stock,
+        categories.name AS category_name
+    FROM products
+    LEFT JOIN categories
+        ON products.category_id = categories.id
+    WHERE products.stock <= 10
+    ORDER BY products.stock ASC
+    LIMIT 4
+";
+
+$lowStockResult = mysqli_query($conn, $lowStockQuery);
+
+
+// 6. Top Selling Products
+$topProductsQuery = "
+    SELECT
+        products.id,
+        products.name,
+        SUM(order_items.quantity) AS total_sales,
+        SUM(order_items.quantity * order_items.price) AS total_revenue
+    FROM order_items
+    INNER JOIN products
+        ON order_items.product_id = products.id
+    INNER JOIN orders
+        ON order_items.order_id = orders.id
+    WHERE orders.status != 'cancelled'
+    GROUP BY products.id, products.name
+    ORDER BY total_sales DESC
+    LIMIT 4
+";
+
+$topProductsResult = mysqli_query($conn, $topProductsQuery);
 include './includes/header.php';
 include './includes/navbar.php';
-include '../config/database.php';
 ?>
 
 <div class="admin-layout">
-
-    
-
-    <?php require_once './includes/sidebar.php'; ?>
+    <?php require_once './includes/sidebar.php'; 
+    ?>
 
 
     
-
     <main class="admin-content">
 
         <!-- Page Header -->
@@ -66,9 +137,7 @@ include '../config/database.php';
         </div>
 
 
-        <!-- =========================
-             STATISTICS
-        ========================== -->
+        <!--  STATISTICS-->
 
         <div class="stats-grid">
 
@@ -76,43 +145,18 @@ include '../config/database.php';
             <!-- Total Revenue -->
 
             <div class="stat-card">
-
                 <div class="stat-card-top">
-
                     <div>
-
                         <span class="stat-label">
                             Total Revenue
                         </span>
-
-                        <h2>$48,290</h2>
-
+                        <h2>$<?= number_format($totalRevenue) ?></h2>
                     </div>
 
 
                     <div class="stat-icon stat-icon-blue">
-
                         <i class="bi bi-currency-dollar"></i>
-
                     </div>
-
-                </div>
-
-
-                <div class="stat-footer">
-
-                    <span class="positive">
-
-                        <i class="bi bi-arrow-up"></i>
-
-                        12.5%
-
-                    </span>
-
-                    <span>
-                        vs last month
-                    </span>
-
                 </div>
 
             </div>
@@ -130,7 +174,7 @@ include '../config/database.php';
                             Total Orders
                         </span>
 
-                        <h2>1,204</h2>
+                        <h2><?= $totalOrders ?></h2>
 
                     </div>
 
@@ -144,21 +188,6 @@ include '../config/database.php';
                 </div>
 
 
-                <div class="stat-footer">
-
-                    <span class="positive">
-
-                        <i class="bi bi-arrow-up"></i>
-
-                        8.2%
-
-                    </span>
-
-                    <span>
-                        vs last month
-                    </span>
-
-                </div>
 
             </div>
 
@@ -175,7 +204,7 @@ include '../config/database.php';
                             Products in Stock
                         </span>
 
-                        <h2>341</h2>
+                        <h2><?= $productsInStock ?></h2>
 
                     </div>
 
@@ -189,21 +218,6 @@ include '../config/database.php';
                 </div>
 
 
-                <div class="stat-footer">
-
-                    <span class="negative">
-
-                        <i class="bi bi-arrow-down"></i>
-
-                        2.4%
-
-                    </span>
-
-                    <span>
-                        vs last month
-                    </span>
-
-                </div>
 
             </div>
 
@@ -220,7 +234,7 @@ include '../config/database.php';
                             Total Clients
                         </span>
 
-                        <h2>3,482</h2>
+                        <h2><?= $totalClients ?></h2>
 
                     </div>
 
@@ -233,31 +247,14 @@ include '../config/database.php';
 
                 </div>
 
-
-                <div class="stat-footer">
-
-                    <span class="positive">
-
-                        <i class="bi bi-arrow-up"></i>
-
-                        5.7%
-
-                    </span>
-
-                    <span>
-                        vs last month
-                    </span>
-
-                </div>
-
             </div>
 
         </div>
 
 
-        <!-- =========================
-             STORE MANAGEMENT
-        ========================== -->
+        <!-- 
+            STORE MANAGEMENT
+        -->
 
         <div class="section-heading">
 
@@ -284,7 +281,7 @@ include '../config/database.php';
             <!-- Categories -->
 
             <a
-                href="/E-Commerce-Management-System/admin/categories/index.php"
+                href="./pages/categories/index.php"
                 class="management-card"
             >
 
@@ -310,7 +307,7 @@ include '../config/database.php';
             <!-- Brands -->
 
             <a
-                href="/E-Commerce-Management-System/admin/brands/index.php"
+                href="./pages/Brands/index.php"
                 class="management-card"
             >
 
@@ -336,7 +333,7 @@ include '../config/database.php';
             <!-- Products -->
 
             <a
-                href="/E-Commerce-Management-System/admin/products/index.php"
+                href="./pages/products/index.php"
                 class="management-card"
             >
 
@@ -362,7 +359,7 @@ include '../config/database.php';
             <!-- Orders -->
 
             <a
-                href="/E-Commerce-Management-System/admin/orders/index.php"
+                href="./pages/orders/index.php"
                 class="management-card"
             >
 
@@ -388,7 +385,7 @@ include '../config/database.php';
             <!-- Clients -->
 
             <a
-                href="/E-Commerce-Management-System/admin/pages/clients/index.php"
+                href="./pages/clients/index.php"
                 class="management-card"
             >
 
@@ -440,7 +437,7 @@ include '../config/database.php';
             <!-- Partners -->
 
             <a
-                href="/E-Commerce-Management-System/admin/partners/index.php"
+                href="./pages/Partners/index.php"
                 class="management-card"
             >
 
@@ -466,7 +463,7 @@ include '../config/database.php';
             <!-- Users -->
 
             <a
-                href="/E-Commerce-Management-System/admin/pages/users/index.php"
+                href="./pages/users/index.php"
                 class="management-card"
             >
 
@@ -490,898 +487,85 @@ include '../config/database.php';
 
         </div>
 
-
-        <!-- =========================
-             REVENUE + RECENT ORDERS
-        ========================== -->
-
-        <div class="dashboard-grid">
-
-
-            <!-- Revenue Overview -->
-
-            <div class="dashboard-card sales-card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <span class="card-eyebrow">
-                            FINANCIAL PULSE
-                        </span>
-
-                        <h3>
-                            Revenue Overview
-                        </h3>
-
-                        <p>
-                            Monthly sales performance
-                        </p>
-
-                    </div>
-
-
-                    <div class="chart-period">
-
-                        <button class="active">
-                            12M
-                        </button>
-
-                        <button>
-                            6M
-                        </button>
-
-                        <button>
-                            30D
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="sales-chart">
-
-                    <div class="chart-y-axis">
-
-                        <span>$20k</span>
-                        <span>$15k</span>
-                        <span>$10k</span>
-                        <span>$5k</span>
-                        <span>$0</span>
-
-                    </div>
-
-
-                    <div class="chart-area">
-
-                        <div class="chart-bars">
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 38%;"
-                                ></div>
-
-                                <span>Jan</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 52%;"
-                                ></div>
-
-                                <span>Feb</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 44%;"
-                                ></div>
-
-                                <span>Mar</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 64%;"
-                                ></div>
-
-                                <span>Apr</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 57%;"
-                                ></div>
-
-                                <span>May</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 75%;"
-                                ></div>
-
-                                <span>Jun</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 91%;"
-                                ></div>
-
-                                <span>Jul</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 100%;"
-                                ></div>
-
-                                <span>Aug</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 70%;"
-                                ></div>
-
-                                <span>Sep</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 56%;"
-                                ></div>
-
-                                <span>Oct</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 63%;"
-                                ></div>
-
-                                <span>Nov</span>
-
-                            </div>
-
-
-                            <div class="chart-column">
-
-                                <div
-                                    class="chart-bar"
-                                    style="height: 78%;"
-                                ></div>
-
-                                <span>Dec</span>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- Recent Orders -->
-
-            <div class="dashboard-card orders-card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <span class="card-eyebrow">
-                            LIVE QUEUE
-                        </span>
-
-                        <h3>
-                            Recent Orders
-                        </h3>
-
-                        <p>
-                            Latest customer orders
-                        </p>
-
-                    </div>
-
-
-                    <a
-                        href="/E-Commerce-Management-System/admin/orders/index.php"
-                        class="view-all"
-                    >
-
-                        View all
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-
-                <div class="table-responsive">
-
-                    <table class="table dashboard-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Order
-                                </th>
-
-                                <th>
-                                    Customer
-                                </th>
-
-                                <th>
-                                    Total
-                                </th>
-
-                                <th>
-                                    Status
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-
-                            <tr>
-
-                                <td>
-                                    <strong>#ORD-1024</strong>
-                                </td>
-
-                                <td>
-                                    John Doe
-                                </td>
-
-                                <td>
-                                    $245.00
-                                </td>
-
-                                <td>
-
-                                    <span class="status-badge status-completed">
-                                        Completed
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <strong>#ORD-1023</strong>
-                                </td>
-
-                                <td>
-                                    Sarah Smith
-                                </td>
-
-                                <td>
-                                    $189.50
-                                </td>
-
-                                <td>
-
-                                    <span class="status-badge status-pending">
-                                        Pending
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <strong>#ORD-1022</strong>
-                                </td>
-
-                                <td>
-                                    Michael Brown
-                                </td>
-
-                                <td>
-                                    $420.00
-                                </td>
-
-                                <td>
-
-                                    <span class="status-badge status-processing">
-                                        Processing
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <strong>#ORD-1021</strong>
-                                </td>
-
-                                <td>
-                                    Emma Wilson
-                                </td>
-
-                                <td>
-                                    $75.99
-                                </td>
-
-                                <td>
-
-                                    <span class="status-badge status-completed">
-                                        Completed
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <strong>#ORD-1020</strong>
-                                </td>
-
-                                <td>
-                                    David Lee
-                                </td>
-
-                                <td>
-                                    $310.00
-                                </td>
-
-                                <td>
-
-                                    <span class="status-badge status-pending">
-                                        Pending
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             BOTTOM CARDS
-        ========================== -->
+        <!-- 
+            BOTTOM CARDS
+        -->
 
         <div class="dashboard-grid dashboard-grid-bottom">
 
+    <!-- Low Stock -->
 
-            <!-- Low Stock -->
+<div class="dashboard-card">
 
-            <div class="dashboard-card">
+    <div class="card-header">
 
-                <div class="card-header">
+        <div>
 
-                    <div>
+            <span class="card-eyebrow">
+                INVENTORY
+            </span>
 
-                        <span class="card-eyebrow">
-                            INVENTORY
-                        </span>
+            <h3>
+                Low Stock Alert
+            </h3>
 
-                        <h3>
-                            Low Stock Alert
-                        </h3>
-
-                        <p>
-                            Products that need attention
-                        </p>
-
-                    </div>
-
-
-                    <a
-                        href="/E-Commerce-Management-System/admin/products/index.php"
-                        class="view-all"
-                    >
-                        View all
-                    </a>
-
-                </div>
-
-
-                <div class="product-list">
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-image">
-                                <i class="bi bi-phone"></i>
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    iPhone 15 Pro
-                                </strong>
-
-                                <span>
-                                    Electronics
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <span class="stock-danger">
-                            4 left
-                        </span>
-
-                    </div>
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-image">
-                                <i class="bi bi-headphones"></i>
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Wireless Headphones
-                                </strong>
-
-                                <span>
-                                    Accessories
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <span class="stock-warning">
-                            7 left
-                        </span>
-
-                    </div>
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-image">
-                                <i class="bi bi-keyboard"></i>
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Mechanical Keyboard
-                                </strong>
-
-                                <span>
-                                    Computer Accessories
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <span class="stock-warning">
-                            5 left
-                        </span>
-
-                    </div>
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-image">
-                                <i class="bi bi-mouse"></i>
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Gaming Mouse
-                                </strong>
-
-                                <span>
-                                    Computer Accessories
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <span class="stock-danger">
-                            3 left
-                        </span>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-            <!-- Top Products -->
-
-            <div class="dashboard-card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <span class="card-eyebrow">
-                            PERFORMANCE
-                        </span>
-
-                        <h3>
-                            Top Products
-                        </h3>
-
-                        <p>
-                            Best selling products
-                        </p>
-
-                    </div>
-
-
-                    <a
-                        href="/E-Commerce-Management-System/admin/products/index.php"
-                        class="view-all"
-                    >
-                        View all
-                    </a>
-
-                </div>
-
-
-                <div class="product-list">
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-rank">
-                                1
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    MacBook Pro 14"
-                                </strong>
-
-                                <span>
-                                    128 sales
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <strong>
-                            $18,240
-                        </strong>
-
-                    </div>
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-rank">
-                                2
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    iPhone 15 Pro
-                                </strong>
-
-                                <span>
-                                    96 sales
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <strong>
-                            $14,880
-                        </strong>
-
-                    </div>
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-rank">
-                                3
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    AirPods Pro
-                                </strong>
-
-                                <span>
-                                    82 sales
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <strong>
-                            $8,610
-                        </strong>
-
-                    </div>
-
-
-                    <div class="product-row">
-
-                        <div class="product-info">
-
-                            <div class="product-rank">
-                                4
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Apple Watch
-                                </strong>
-
-                                <span>
-                                    64 sales
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <strong>
-                            $6,560
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-            <!-- Recent Activity -->
-
-            <div class="dashboard-card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <span class="card-eyebrow">
-                            SYSTEM
-                        </span>
-
-                        <h3>
-                            Recent Activity
-                        </h3>
-
-                        <p>
-                            Latest system activity
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="activity-list">
-
-
-                    <div class="activity-item">
-
-                        <div class="activity-icon">
-                            <i class="bi bi-cart-check"></i>
-                        </div>
-
-                        <div class="activity-content">
-
-                            <strong>
-                                New order received
-                            </strong>
-
-                            <span>
-                                Order #ORD-1024 was placed
-                            </span>
-
-                            <small>
-                                5 minutes ago
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="activity-item">
-
-                        <div class="activity-icon">
-                            <i class="bi bi-person-plus"></i>
-                        </div>
-
-                        <div class="activity-content">
-
-                            <strong>
-                                New customer registered
-                            </strong>
-
-                            <span>
-                                Sarah Smith created an account
-                            </span>
-
-                            <small>
-                                24 minutes ago
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="activity-item">
-
-                        <div class="activity-icon">
-                            <i class="bi bi-box-seam"></i>
-                        </div>
-
-                        <div class="activity-content">
-
-                            <strong>
-                                Product updated
-                            </strong>
-
-                            <span>
-                                iPhone 15 Pro inventory updated
-                            </span>
-
-                            <small>
-                                1 hour ago
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="activity-item">
-
-                        <div class="activity-icon">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-
-                        <div class="activity-content">
-
-                            <strong>
-                                Order completed
-                            </strong>
-
-                            <span>
-                                Order #ORD-1021 was completed
-                            </span>
-
-                            <small>
-                                2 hours ago
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-            </div>
+            <p>
+                Products that need attention
+            </p>
 
         </div>
 
-    </main>
+        <a
+            href="./pages/products/index.php"
+            class="view-all"
+        >
+            View all
+        </a>
 
+    </div>
+
+
+    <div class="product-list">
+
+        <?php if (mysqli_num_rows($lowStockResult) > 0) { ?>
+
+            <?php while ($product = mysqli_fetch_assoc($lowStockResult)) { ?>
+
+                <div class="product-row">
+
+                    <div class="product-info">
+
+                        <div class="product-image">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                <?= htmlspecialchars($product["name"]) ?>
+                            </strong>
+
+                            <span>
+                                <?= htmlspecialchars($product["category_name"] ?? "No Category") ?>
+                            </span>
+                        </div>
+                    </div>
+                    <?php if ($product["stock"] <= 4) { ?>
+                        <span class="stock-danger">
+                            <?= $product["stock"] ?> left
+                        </span>
+                    <?php } else { ?>
+                        <span class="stock-warning">
+                            <?= $product["stock"] ?> left
+                        </span>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <p class="no-data">
+                No low stock products.
+            </p>
+        <?php } ?>
+    </div>
 </div>
-
-
-<?php
-
-require_once __DIR__ . '/includes/footer.php';
-
-?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
