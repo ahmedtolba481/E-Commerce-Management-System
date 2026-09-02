@@ -1,5 +1,5 @@
 <?php
-
+include '../../includes/auth.php';
 $pageTitle = "Edit Brand | SmartStore";
 $pageKey = "brands";
 

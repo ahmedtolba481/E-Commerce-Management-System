@@ -1,5 +1,5 @@
 <?php
-
+// include '../../includes/auth.php';
 $pageTitle = "Orders | SmartStore";
 $pageKey = "orders";
 
@@ -16,6 +16,7 @@ $query = "SELECT
           ON orders.client_id = clients.id
           LEFT JOIN users
           ON clients.user_id = users.id";
+
 $result = mysqli_query($conn, $query);
 
 include '../../includes/header.php';
@@ -144,6 +145,17 @@ include '../../includes/navbar.php';
 
                                     <div class="user-actions">
 
+
+                                        <a
+                                            href="order_items.php?order_id=<?= $order['id']; ?>"
+                                            class="user-action view"
+                                            title="View Items"
+                                        >
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+
+
                                         <a
                                             href="edit.php?id=<?= $order['id']; ?>"
                                             class="user-action edit"
@@ -151,6 +163,7 @@ include '../../includes/navbar.php';
                                         >
                                             <i class="bi bi-pencil"></i>
                                         </a>
+
 
 
                                         <a

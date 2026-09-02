@@ -1,5 +1,6 @@
 <?php
 
+
 $pageTitle = "Dashboard | SmartStore";
 $pageKey = "dashboard";
 include '../config/database.php';

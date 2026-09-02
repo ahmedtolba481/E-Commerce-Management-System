@@ -1,5 +1,5 @@
 <?php
-
+include '../../includes/auth.php';
 $pageTitle = "Add Partner | SmartStore";
 $pageKey = "partners";
 
