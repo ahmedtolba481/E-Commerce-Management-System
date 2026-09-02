@@ -45,9 +45,9 @@ if ($conn->connect_error) {
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav mx-auto align-items-lg-center">
                 <li class="nav-item"><a class="nav-link active" href="#">HOME</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">ABOUT</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">CATEGORY</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">CHECKOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="#product-collection">PRODUCTS</a></li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -60,19 +60,12 @@ if ($conn->connect_error) {
                     </ul>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        MEGAMENU
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Electronics</a></li>
-                        <li><a class="dropdown-item" href="#">Fashion</a></li>
-                        <li><a class="dropdown-item" href="#">Accessories</a></li>
-                    </ul>
-                </li>
+             
 
                 <li class="nav-item"><a class="nav-link" href="#">CART</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>
+
             </ul>
         </div>
     </div>
@@ -261,7 +254,7 @@ if ($conn->connect_error) {
 </section>
 
 <!-- ================= PRODUCTS SECTION ================= -->
-<section class="product-collection py-5">
+<section class="product-collection py-5" id="product-collection">
     <div class="container">
         
         <div class="collection-actions d-flex justify-content-center align-items-center flex-wrap gap-3 mb-4">
