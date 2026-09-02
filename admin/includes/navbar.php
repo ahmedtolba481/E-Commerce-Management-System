@@ -42,13 +42,9 @@
         </div>
 
 
-        <a
-            href="/E-Commerce-Management-System/admin/logout.php"
-            class="logout-btn"
-        >
+        <a href="/E-Commerce-Management-System/admin/logout.php">
             <i class="bi bi-box-arrow-right"></i>
-
-            <span>Logout</span>
+            Logout
         </a>
 
     </div>

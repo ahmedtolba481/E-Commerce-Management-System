@@ -1,19 +1,22 @@
 <?php
+// include '../../includes/auth.php';
 include '../../../config/database.php';
+
 $id = $_GET['id'];
 
-$sql = "DELETE FROM users
-        WHERE id = $id";
+try {
 
+    $sql = "DELETE FROM users WHERE id = $id";
 
-if (mysqli_query($conn, $sql)) {
+    mysqli_query($conn, $sql);
 
     header("Location: index.php");
-    exit();
+    exit;
 
-} else {
+} catch (mysqli_sql_exception $e) {
 
-    echo "Error: " . mysqli_error($conn);
+    header("Location: index.php?error=orders");
+    exit;
 
 }
 
