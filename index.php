@@ -50,22 +50,12 @@ if ($conn->connect_error) {
                 <li class="nav-item"><a class="nav-link" href="#product-collection">PRODUCTS</a></li>
                 <li class="nav-item"><a class="nav-link" href="cart.php">CART</a></li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        DROPDOWN
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#">Option 2</a></li>
-                        <li><a class="dropdown-item" href="#">Option 3</a></li>
-                    </ul>
-                </li>
-
+              
              
 
-                <li class="nav-item"><a class="nav-link" href="#">CART</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>
+                
+                <li class="nav-item"><a class="nav-link"   href="#contact" >CONTACT</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.php">LOGIN in</a></li>
 
             </ul>
         </div>
