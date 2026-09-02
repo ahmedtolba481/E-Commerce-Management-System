@@ -413,7 +413,7 @@ include '../config/database.php';
             <!-- Team -->
 
             <a
-                href="/E-Commerce-Management-System/admin/team/index.php"
+                href="./team/index.php"
                 class="management-card"
             >
 

@@ -1,13 +1,19 @@
+<?php
+$currentUrl = $_SERVER["REQUEST_URI"];
+?>
+<?php
+$currentUrl = $_SERVER["REQUEST_URI"];
+?>
+
 <aside class="admin-sidebar">
 
     <div class="sidebar-section-title">
         OVERVIEW
     </div>
 
-
     <a
         href="/E-Commerce-Management-System/admin/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/admin/index.php') !== false ? 'active' : '' ?>"
         data-page="dashboard"
     >
         <div class="sidebar-icon">
@@ -22,10 +28,9 @@
         STORE MANAGEMENT
     </div>
 
-
     <a
         href="/E-Commerce-Management-System/admin/categories/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/categories/') !== false ? 'active' : '' ?>"
         data-page="categories"
     >
         <div class="sidebar-icon">
@@ -38,7 +43,7 @@
 
     <a
         href="/E-Commerce-Management-System/admin/brands/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/brands/') !== false ? 'active' : '' ?>"
         data-page="brands"
     >
         <div class="sidebar-icon">
@@ -51,7 +56,7 @@
 
     <a
         href="/E-Commerce-Management-System/admin/products/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/products/') !== false ? 'active' : '' ?>"
         data-page="products"
     >
         <div class="sidebar-icon">
@@ -69,7 +74,7 @@
 
     <a
         href="/E-Commerce-Management-System/admin/orders/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/orders/') !== false ? 'active' : '' ?>"
         data-page="orders"
     >
         <div class="sidebar-icon">
@@ -77,14 +82,12 @@
         </div>
 
         <span>Orders</span>
-
-        
     </a>
 
 
     <a
         href="/E-Commerce-Management-System/admin/clients/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/clients/') !== false ? 'active' : '' ?>"
         data-page="clients"
     >
         <div class="sidebar-icon">
@@ -102,7 +105,7 @@
 
     <a
         href="/E-Commerce-Management-System/admin/team/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/team/') !== false ? 'active' : '' ?>"
         data-page="team"
     >
         <div class="sidebar-icon">
@@ -115,7 +118,7 @@
 
     <a
         href="/E-Commerce-Management-System/admin/partners/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/partners/') !== false ? 'active' : '' ?>"
         data-page="partners"
     >
         <div class="sidebar-icon">
@@ -133,7 +136,7 @@
 
     <a
         href="/E-Commerce-Management-System/admin/pages/users/index.php"
-        class="sidebar-link"
+        class="sidebar-link <?= strpos($currentUrl, '/users/') !== false ? 'active' : '' ?>"
         data-page="users"
     >
         <div class="sidebar-icon">

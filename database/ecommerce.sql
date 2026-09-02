@@ -15,7 +15,7 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+    role ENUM('admin', 'user') NOT NULL DEFAULT 'user' ,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -173,3 +173,5 @@ CREATE TABLE order_items (
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+ALTER TABLE users
+MODIFY role VARCHAR(100);
