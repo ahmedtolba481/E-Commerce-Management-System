@@ -1,5 +1,6 @@
 <?php
 
+include "../../includes/auth.php";
 include "../../../config/database.php";
 
 if (!isset($_GET["id"])) {
@@ -38,7 +39,7 @@ include "../../includes/header.php";
 
 ?>
 
-<link rel="stylesheet" href="../../assets/css/clients.css">
+<link rel="stylesheet" href="../../assets/css/clients.css?v=20260903">
 
 <?php
 
@@ -47,65 +48,40 @@ include "../../includes/sidebar.php";
 
 ?>
 
+<div class="admin-layout">
+<main class="admin-content">
 <div class="clients-page">
-
-    <h2 class="mb-4">Client Details</h2>
-
-    <div class="card">
-
-        <div class="card-body">
-
-            <p>
-                <strong>ID:</strong>
-                <?= $client["id"] ?>
-            </p>
-
-            <p>
-                <strong>Name:</strong>
-                <?= htmlspecialchars($client["name"]) ?>
-            </p>
-
-            <p>
-                <strong>Email:</strong>
-                <?= htmlspecialchars($client["email"]) ?>
-            </p>
-
-            <p>
-                <strong>Phone:</strong>
-                <?= htmlspecialchars($client["phone"]) ?>
-            </p>
-
-            <p>
-                <strong>Address:</strong>
-                <?= htmlspecialchars($client["address"]) ?>
-            </p>
-
-            <p>
-                <strong>City:</strong>
-                <?= htmlspecialchars($client["city"]) ?>
-            </p>
-
-            <p>
-                <strong>Created At:</strong>
-                <?= $client["created_at"] ?>
-            </p>
-
-            <a
-                href="edit.php?id=<?= $client["id"] ?>"
-                class="btn btn-primary">
-                Edit
-            </a>
-
-            <a
-                href="index.php"
-                class="btn btn-secondary">
-                Back
-            </a>
-
+    <div class="clients-header">
+        <div>
+            <span class="clients-eyebrow">CUSTOMER DIRECTORY</span>
+            <h1>Client profile</h1>
+            <p>Review contact information and account details.</p>
         </div>
-
+        <div class="client-header-actions">
+            <a href="index.php" class="btn btn-light"><i class="bi bi-arrow-left"></i> Back</a>
+            <a href="edit.php?id=<?= $client["id"] ?>" class="btn btn-primary"><i class="bi bi-pencil"></i> Edit client</a>
+        </div>
     </div>
 
+    <div class="client-detail-card">
+        <div class="client-profile-heading">
+            <div class="client-avatar"><?= strtoupper(substr($client["name"], 0, 1)) ?></div>
+            <div>
+                <span class="clients-eyebrow">CLIENT #<?= $client["id"] ?></span>
+                <h2><?= htmlspecialchars($client["name"]) ?></h2>
+                <p><?= htmlspecialchars($client["email"]) ?></p>
+            </div>
+        </div>
+
+        <div class="client-detail-grid">
+            <div><span>Phone</span><strong><?= htmlspecialchars($client["phone"]) ?></strong></div>
+            <div><span>City</span><strong><?= htmlspecialchars($client["city"]) ?></strong></div>
+            <div class="client-detail-wide"><span>Address</span><strong><?= htmlspecialchars($client["address"]) ?></strong></div>
+            <div><span>Created</span><strong><?= htmlspecialchars($client["created_at"]) ?></strong></div>
+        </div>
+    </div>
+</div>
+</main>
 </div>
 
 <?php

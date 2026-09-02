@@ -1,5 +1,6 @@
 <?php
 include '../../includes/auth.php';
+require_admin_role();
 $pageTitle = "Add Brand | SmartStore";
 $pageKey = "brands";
 

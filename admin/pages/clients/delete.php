@@ -1,5 +1,7 @@
 <?php
 
+include "../../includes/auth.php";
+require_admin_role();
 include "../../../config/database.php";
 
 if (!isset($_GET["id"])) {

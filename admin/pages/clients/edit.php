@@ -1,5 +1,6 @@
 <?php
 
+include "../../includes/auth.php";
 include "../../../config/database.php";
 
 if (!isset($_GET["id"])) {
@@ -79,7 +80,7 @@ include "../../includes/header.php";
 
 ?>
 
-<link rel="stylesheet" href="../../assets/css/clients.css">
+<link rel="stylesheet" href="../../assets/css/clients.css?v=20260903">
 
 <?php
 
@@ -88,9 +89,16 @@ include "../../includes/sidebar.php";
 
 ?>
 
+<div class="admin-layout">
+<main class="admin-content">
 <div class="clients-page">
-
-    <h2 class="mb-4">Edit Client</h2>
+    <div class="clients-header">
+        <div>
+            <span class="clients-eyebrow">CUSTOMER DIRECTORY</span>
+            <h1>Edit client</h1>
+            <p>Update the customer's contact information.</p>
+        </div>
+    </div>
 
     <?php if ($error != "") { ?>
 
@@ -100,9 +108,13 @@ include "../../includes/sidebar.php";
 
     <?php } ?>
 
+    <div class="client-form-card">
     <form method="POST">
 
-        <div class="mb-3">
+        <div class="client-form-grid">
+        <div class="client-form-section">
+            <span class="clients-eyebrow">ACCOUNT</span>
+            <h2>Account details</h2>
 
             <label class="form-label">Name</label>
 
@@ -115,7 +127,9 @@ include "../../includes/sidebar.php";
         </div>
 
 
-        <div class="mb-3">
+        <div class="client-form-section">
+            <span class="clients-eyebrow">PROFILE</span>
+            <h2>Contact details</h2>
 
             <label class="form-label">Email</label>
 
@@ -128,7 +142,7 @@ include "../../includes/sidebar.php";
         </div>
 
 
-        <div class="mb-3">
+        <div class="client-form-section">
 
             <label class="form-label">Phone</label>
 
@@ -142,7 +156,7 @@ include "../../includes/sidebar.php";
         </div>
 
 
-        <div class="mb-3">
+        <div class="client-form-section">
 
             <label class="form-label">Address</label>
 
@@ -156,7 +170,7 @@ include "../../includes/sidebar.php";
         </div>
 
 
-        <div class="mb-3">
+        <div class="client-form-section">
 
             <label class="form-label">City</label>
 
@@ -168,22 +182,19 @@ include "../../includes/sidebar.php";
                 required>
 
         </div>
+        </div>
 
 
-        <button
-            type="submit"
-            class="btn btn-primary">
-            Update Client
-        </button>
-
-        <a
-            href="show.php?id=<?= $id ?>"
-            class="btn btn-secondary">
-            Back
-        </a>
+        <div class="client-form-actions">
+            <a href="show.php?id=<?= $id ?>" class="btn btn-light">Cancel</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Save changes</button>
+        </div>
 
     </form>
+    </div>
 
+</div>
+</main>
 </div>
 
 <?php

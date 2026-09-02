@@ -28,6 +28,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
         STORE MANAGEMENT
     </div>
 
+    <?php if (($_SESSION['admin_role'] ?? '') === 'Admin') { ?>
     <a
         href="/E-Commerce-Management-System/admin/pages/categories/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/categories/') !== false ? 'active' : '' ?>"
@@ -52,6 +53,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
         <span>Brands</span>
     </a>
+    <?php } ?>
 
 
     <a
@@ -98,6 +100,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
     </a>
 
 
+    <?php if (($_SESSION['admin_role'] ?? '') === 'Admin') { ?>
     <div class="sidebar-section-title">
         WEBSITE
     </div>
@@ -145,5 +148,6 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
         <span>Users</span>
     </a>
+    <?php } ?>
 
 </aside>

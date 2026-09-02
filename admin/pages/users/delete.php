@@ -1,5 +1,6 @@
 <?php
-// include '../../includes/auth.php';
+include '../../includes/auth.php';
+require_admin_role();
 include '../../../config/database.php';
 
 $id = $_GET['id'];

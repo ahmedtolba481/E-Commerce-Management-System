@@ -1,28 +1,34 @@
 <?php
 
-session_start();
-
-
-// Check if user is logged in
-if (!isset($_SESSION['admin_id'])) {
-
-    header("Location: /E-Commerce-Management-System/admin/login.php");
-    exit;
-
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
 }
 
+function require_admin(): void
+{
+    if (!isset($_SESSION['admin_id'])) {
+        header("Location: /E-Commerce-Management-System/admin/login.php");
+        exit;
+    }
 
-// Check if user has an allowed admin role
-if (!isset($_SESSION['admin_role']) ||
-    ($_SESSION['admin_role'] !== 'admin' &&
-     $_SESSION['admin_role'] !== 'staff')) {
-
-    session_unset();
-    session_destroy();
-
-    header("Location: /E-Commerce-Management-System/admin/login.php");
-    exit;
-
+    if (!in_array($_SESSION['admin_role'] ?? '', ['Admin', 'Staff'], true)) {
+        $_SESSION = [];
+        session_destroy();
+        header("Location: /E-Commerce-Management-System/admin/login.php");
+        exit;
+    }
 }
+
+function require_admin_role(): void
+{
+    require_admin();
+
+    if ($_SESSION['admin_role'] !== 'Admin') {
+        http_response_code(403);
+        exit('You are not authorized to access this page.');
+    }
+}
+
+require_admin();
 
 ?>

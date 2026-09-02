@@ -1,5 +1,6 @@
 <?php
-// include '../../includes/auth.php';
+include '../../includes/auth.php';
+require_admin_role();
 $pageTitle = "Add User | SmartStore";
 $pageKey = "users";
 
@@ -10,15 +11,22 @@ include '../../../config/database.php';
 
 if (isset($_POST['submit'])) {
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
     $role = $_POST['role'];
 
-    $sql = "INSERT INTO users (name, email, password, role)
-            VALUES ('$name', '$email', '$password', '$role')";
+    if (!in_array($role, ['Admin', 'Staff', 'Client'], true)) {
+        echo "Invalid role selected.";
+        exit;
+    }
 
-    if (mysqli_query($conn, $sql)) {
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $hashedPassword, $role);
+
+    if (mysqli_stmt_execute($stmt)) {
 
         header("Location: index.php");
         exit;
@@ -197,7 +205,7 @@ if (isset($_POST['submit'])) {
                                     <option value="Admin">
                                         Administrator
                                     </option>
-                                    <option value="Clients">
+                                    <option value="Client">
                                         Client
                                     </option>
                                     <option value="Staff">

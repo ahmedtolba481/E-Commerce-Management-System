@@ -1,5 +1,6 @@
 <?php
 include '../../includes/auth.php';
+require_admin_role();
 $pageTitle = "Partners | SmartStore";
 $pageKey = "users";
 

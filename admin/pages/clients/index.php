@@ -1,5 +1,6 @@
 <?php
 
+include "../../includes/auth.php";
 include "../../../config/database.php";
 
 $query = "
@@ -19,7 +20,7 @@ include "../../includes/header.php";
 
 ?>
 
-<link rel="stylesheet" href="../../assets/css/clients.css">
+<link rel="stylesheet" href="../../assets/css/clients.css?v=20260903">
 
 <?php
 
@@ -28,6 +29,8 @@ include "../../includes/sidebar.php";
 
 ?>
 
+<div class="admin-layout">
+<main class="admin-content">
 <div class="clients-page">
 
     <div class="clients-header">
@@ -124,6 +127,8 @@ include "../../includes/sidebar.php";
     </table>
     </div>
 
+</div>
+</main>
 </div>
 
 <?php

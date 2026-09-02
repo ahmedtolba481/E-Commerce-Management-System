@@ -32,10 +32,15 @@
     
     <link
         rel="stylesheet"
-        href="/E-Commerce-Management-System/admin/assets/css/admin.css"
+        href="/E-Commerce-Management-System/admin/assets/css/admin.css?v=20260903"
     >
+
+    <script
+        src="/E-Commerce-Management-System/admin/assets/js/form-validation.js?v=20260903"
+        defer
+    ></script>
 
 </head>
 
 
-<body>
+<body class="<?= htmlspecialchars($bodyClass ?? '') ?>">

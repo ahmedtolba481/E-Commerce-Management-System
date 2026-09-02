@@ -1,5 +1,6 @@
 <?php
 include '../../includes/auth.php';
+require_admin_role();
 $pageTitle = "Add User | SmartStore";
 $pageKey = "users";
 
@@ -7,9 +8,9 @@ include '../../includes/header.php';
 include '../../includes/navbar.php';
 include '../../../config/database.php';
 
-$id = $_GET['id'];
+$id = (int) ($_GET['id'] ?? 0);
 
-    $sql = "SELECT * from users where id = $id";
+    $sql = "SELECT * FROM users WHERE id = $id";
 
     $result = mysqli_query($conn, $sql);
     $user = mysqli_fetch_array($result);
@@ -23,15 +24,23 @@ if (isset($_POST['submit'])) {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
+    if (!in_array($role, ['Admin', 'Staff', 'Client'], true)) {
+        echo "Invalid role selected.";
+        exit;
+    }
 
-    $sql = "UPDATE users SET
-                name = '$name',
-                role = '$role',
-                email = '$email',
-                password = '$password'
-            WHERE id = $id";
+    if ($password === "") {
+        $sql = "UPDATE users SET name = ?, role = ?, email = ? WHERE id = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "sssi", $name, $role, $email, $id);
+    } else {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET name = ?, role = ?, email = ?, password = ? WHERE id = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssi", $name, $role, $email, $hashedPassword, $id);
+    }
 
-    if (mysqli_query($conn, $sql)) {
+    if (mysqli_stmt_execute($stmt)) {
 
         header("Location: index.php");
         exit;
@@ -172,9 +181,7 @@ if (isset($_POST['submit'])) {
                                     id="password"
                                     name="password"
                                     class="form-input"
-                                    value="<?php echo $user['password']?>"
                                     placeholder="Enter password"
-                                    required
                                 >
 
                                 <small class="form-help">
@@ -213,7 +220,7 @@ if (isset($_POST['submit'])) {
                                     <option value="Admin">
                                         Administrator
                                     </option>
-                                    <option value="Clients">
+                                    <option value="Client">
                                         Client
                                     </option>
                                     <option value="Staff">

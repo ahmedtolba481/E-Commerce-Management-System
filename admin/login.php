@@ -2,9 +2,7 @@
 
 session_start();
 
-
-// If already logged in, go to dashboard
-if (isset($_SESSION['admin_id'])) {
+if (isset($_SESSION['admin_id']) && in_array($_SESSION['admin_role'] ?? '', ['Admin', 'Staff'], true)) {
 
     header("Location: index.php");
     exit;
@@ -14,12 +12,9 @@ if (isset($_SESSION['admin_id'])) {
 
 include '../config/database.php';
 
-
 $error = "";
 
-
-// Login
-if (isset($_POST['submit'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = trim($_POST['email']);
     $password = $_POST['password'];
@@ -27,7 +22,7 @@ if (isset($_POST['submit'])) {
 
     // Validation
 
-    if ($email == "" || $password == "") {
+    if ($email === "" || $password === "") {
 
         $error = "Please enter your email and password.";
 
@@ -37,55 +32,22 @@ if (isset($_POST['submit'])) {
 
     } else {
 
-        // Get user
-        $sql = "SELECT id, name, email, password, role
-                FROM users
-                WHERE email = ?
-                LIMIT 1";
-
-        $stmt = mysqli_prepare($conn, $sql);
-
+        $stmt = mysqli_prepare($conn, "SELECT id, name, email, password, role FROM users WHERE email = ? LIMIT 1");
         mysqli_stmt_bind_param($stmt, "s", $email);
-
         mysqli_stmt_execute($stmt);
-
         $result = mysqli_stmt_get_result($stmt);
-
         $user = mysqli_fetch_assoc($result);
 
-
-        // Verify user and password
-        if ($user && password_verify($password, $user['password'])) {
-
-            // Only admin and staff can access dashboard
-            if ($user['role'] !== 'admin' && $user['role'] !== 'staff') {
-
-                $error = "You do not have permission to access the admin dashboard.";
-
-            } else {
-
-                // Regenerate session ID
-                session_regenerate_id(true);
-
-
-                // Store admin information
-                $_SESSION['admin_id'] = $user['id'];
-                $_SESSION['admin_name'] = $user['name'];
-                $_SESSION['admin_email'] = $user['email'];
-                $_SESSION['admin_role'] = $user['role'];
-
-
-                // Go to dashboard
-                header("Location: index.php");
-                exit;
-
-            }
-
+        if ($user && password_verify($password, $user['password']) && in_array($user['role'], ['Admin', 'Staff'], true)) {
+            session_regenerate_id(true);
+            $_SESSION['admin_id'] = $user['id'];
+            $_SESSION['admin_name'] = $user['name'];
+            $_SESSION['admin_email'] = $user['email'];
+            $_SESSION['admin_role'] = $user['role'];
+            header("Location: index.php");
+            exit;
         } else {
-
-            // Generic error
             $error = "Invalid email or password.";
-
         }
 
     }
@@ -93,42 +55,32 @@ if (isset($_POST['submit'])) {
 }
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Admin Login | SmartStore</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="/E-Commerce-Management-System/admin/assets/css/admin.css"
-    >
-
-</head>
-
-
-<body class="login-page">
+<?php
+$pageTitle = "Admin Login | SmartStore";
+$bodyClass = "login-page";
+include './includes/header.php';
+?>
 
     <div class="login-container">
+
+        <section class="login-brief">
+            <div class="login-brief-mark">
+                <i class="bi bi-bag-heart-fill"></i>
+            </div>
+
+            <span class="login-brief-label">SMARTSTORE / CONTROL CENTER</span>
+
+            <h2>Keep every order moving.</h2>
+
+            <p>
+                A focused workspace for your store team, inventory, and customer operations.
+            </p>
+
+            <div class="login-brief-status">
+                <span class="status-dot"></span>
+                Secure staff access
+            </div>
+        </section>
 
         <div class="login-card">
 
@@ -235,5 +187,4 @@ if (isset($_POST['submit'])) {
     </div>
 
 </body>
-
 </html>

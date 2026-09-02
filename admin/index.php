@@ -3,7 +3,7 @@
 
 $pageTitle = "Dashboard | SmartStore";
 $pageKey = "dashboard";
-// include './includes/auth.php';
+include './includes/auth.php';
 include './includes/header.php';
 include './includes/navbar.php';
 include '../config/database.php';
@@ -32,7 +32,7 @@ include '../config/database.php';
                 <h1>Dashboard</h1>
 
                 <p>
-                    Welcome back, Admin. Here's what's happening with your
+                    Welcome back, <?= htmlspecialchars($_SESSION['admin_name'] ?? 'Admin') ?>. Here's what's happening with your
                     store today.
                 </p>
 

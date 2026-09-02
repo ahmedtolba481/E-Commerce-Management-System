@@ -1,5 +1,5 @@
 <?php
-// include '../../includes/auth.php';
+include '../../includes/auth.php';
 $pageTitle = "Add Product | SmartStore";
 $pageKey = "products";
 

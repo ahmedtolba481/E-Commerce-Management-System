@@ -31,12 +31,16 @@
         <div class="admin-profile">
 
             <div class="admin-avatar">
-                A
+                <?= strtoupper(substr($_SESSION['admin_name'] ?? 'A', 0, 1)) ?>
             </div>
 
             <div class="admin-info">
-                <span class="admin-name">Admin</span>
-                <span class="admin-role">Administrator</span>
+                <span class="admin-name">
+                    <?= htmlspecialchars($_SESSION['admin_name'] ?? 'Admin') ?>
+                </span>
+                <span class="admin-role">
+                    <?= htmlspecialchars($_SESSION['admin_role'] ?? 'Admin') ?>
+                </span>
             </div>
 
         </div>
