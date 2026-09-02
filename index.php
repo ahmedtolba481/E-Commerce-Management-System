@@ -109,6 +109,7 @@ if ($conn->connect_error) {
                     <div class="header-item">
                         <i class="bi bi-person"></i>
                         <span>my Account</span>
+                        
                     </div>
 
                     <div class="header-item cart">
@@ -324,6 +325,11 @@ if ($conn->connect_error) {
             ?>
         </div>
 
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Featured Products</h2>
+    <a href="all-products.php" class="text-decoration-none fw-semibold text-success">View All Products <i class="bi bi-arrow-right"></i></a>
+</div>
     </div>
 </section>
 
