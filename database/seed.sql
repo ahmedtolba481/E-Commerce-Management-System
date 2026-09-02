@@ -9,13 +9,15 @@ USE ecommerce;
 -- USERS
 -- =========================================================
 
+-- Development password for these accounts: ChangeMe123!
+
 INSERT INTO users
 (name, email, password, role)
 VALUES
-('Admin', 'admin@example.com', 'REPLACE_WITH_PASSWORD_HASH', 'admin'),
-('Ahmed Ali', 'ahmed@example.com', 'REPLACE_WITH_PASSWORD_HASH', 'user'),
-('Mohamed Hassan', 'mohamed@example.com', 'REPLACE_WITH_PASSWORD_HASH', 'user'),
-('Sara Mohamed', 'sara@example.com', 'REPLACE_WITH_PASSWORD_HASH', 'user');
+('Admin', 'admin@example.com', '$2y$10$pMCkQNOir9MxnkMc9speFePl/2Zo8jBVKBwrMa5YTRg7cRGPuwoCa', 'Admin'),
+('Ahmed Ali', 'ahmed@example.com', '$2y$10$pMCkQNOir9MxnkMc9speFePl/2Zo8jBVKBwrMa5YTRg7cRGPuwoCa', 'Client'),
+('Mohamed Hassan', 'mohamed@example.com', '$2y$10$pMCkQNOir9MxnkMc9speFePl/2Zo8jBVKBwrMa5YTRg7cRGPuwoCa', 'Client'),
+('Sara Mohamed', 'sara@example.com', '$2y$10$pMCkQNOir9MxnkMc9speFePl/2Zo8jBVKBwrMa5YTRg7cRGPuwoCa', 'Client');
 
 
 -- =========================================================

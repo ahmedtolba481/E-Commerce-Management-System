@@ -1,0 +1,43 @@
+.team-page {
+  width: 100%;
+}
+.team-page .btn-warning,
+.team-page .btn-danger {
+  width: 75px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.team-page .btn-primary {
+  background-color: var(--primary);
+  color: white;
+  width: 75px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.team-page .btn-danger {
+  background-color: var(--danger);
+  color: white;
+  margin-top: 6px;
+}
+
+.team-page .btn-warning:hover,
+.team-page .btn-danger:hover {
+  transform: translateY(-2px);
+}
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.team-page .btn-danger {
+  margin-top: 0;
+}
