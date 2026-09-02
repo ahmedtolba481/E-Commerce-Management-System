@@ -836,11 +836,46 @@ body {
     color: #ffffff;
 }
 
-
-
-
 .hover-white:hover {
     color: #ffffff !important;
     transition: color 0.2s ease-in-out;
 }
+}
+
+.footer-glow-link {
+    color: rgba(255, 255, 255, 0.6) !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+.footer-glow-link:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px #ffffff, 0 0 20px #198754, 0 0 30px #198754 !important;
+    padding-left: 5px;
+}
+
+.footer .social-btn:hover {
+    background-color: #198754 !important;
+    color: #fff !important;
+    transform: translateY(-3px);
+    box-shadow: 0 0 12px #198754;
+    transition: all 0.3s ease;
+}
+
+.footer .payment-icons i:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px #ffffff;
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+}
+
+.app-btn-custom {
+    transition: all 0.3s ease !important;
+}
+
+.app-btn-custom:hover {
+    border-color: #198754 !important;
+    background-color: #198754 !important;
+    box-shadow: 0 0 15px rgba(25, 135, 84, 0.8) !important;
+    transform: translateY(-3px);
 }
