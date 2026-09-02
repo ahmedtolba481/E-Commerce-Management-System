@@ -3,18 +3,18 @@
 $pageTitle = "Users | SmartStore";
 $pageKey = "users";
 
-include('../../includes/header.php');
-include('../../includes/navbar.php');
-include('../../includes/database.php');
+include '../../includes/header.php';
+include '../../includes/navbar.php';
+include '../../../config/database.php';
 
 $query = 'SELECT * from users;';
-$result = mysqli_query($connection, $query);
+$result = mysqli_query($conn, $query);
 
 ?>
 
 <div class="admin-layout">
 
-    <?php include('../../includes/sidebar.php'); ?>
+    <?php include '../../includes/sidebar.php'; ?>
 
     <main class="admin-content">
 
@@ -119,4 +119,4 @@ $result = mysqli_query($connection, $query);
 
 </div>
 
-<?php include('../../includes/footer.php'); ?>
+<?php include '../../includes/footer.php'; ?>

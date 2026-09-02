@@ -6,7 +6,7 @@
 
 
     <a
-        href="/Projects/E-Commerce-Management-System/admin/index.php"
+        href="/E-Commerce-Management-System/admin/index.php"
         class="sidebar-link"
         data-page="dashboard"
     >
@@ -132,7 +132,7 @@
 
 
     <a
-        href="./pages/users/index.php"
+        href="/E-Commerce-Management-System/admin/pages/users/index.php"
         class="sidebar-link"
         data-page="users"
     >

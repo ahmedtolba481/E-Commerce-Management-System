@@ -3,16 +3,16 @@
 $pageTitle = "Dashboard | SmartStore";
 $pageKey = "dashboard";
 
-include( './includes/header.php');
-include('./includes/navbar.php');
-include('./includes/database.php');
+include './includes/header.php';
+include './includes/navbar.php';
+include '../config/database.php';
 ?>
 
 <div class="admin-layout">
 
     
 
-    <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
+    <?php require_once './includes/sidebar.php'; ?>
 
 
     

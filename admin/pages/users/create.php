@@ -3,9 +3,9 @@
 $pageTitle = "Add User | SmartStore";
 $pageKey = "users";
 
-include('../../includes/header.php');
-include('../../includes/navbar.php');
-include('../../includes/database.php');
+include '../../includes/header.php';
+include '../../includes/navbar.php';
+include '../../../config/database.php';
 
 
 if (isset($_POST['submit'])) {
@@ -34,7 +34,7 @@ if (isset($_POST['submit'])) {
 
 <div class="admin-layout">
 
-    <?php include('../../includes/sidebar.php'); ?>
+    <?php include '../../includes/sidebar.php'; ?>
 
     <main class="admin-content">
 
