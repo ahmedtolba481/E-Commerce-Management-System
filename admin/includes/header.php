@@ -32,7 +32,7 @@
     
     <link
         rel="stylesheet"
-        href="/Projects/E-Commerce-Management-System/admin/assets/css/admin.css"
+        href="/E-Commerce-Management-System/admin/assets/css/admin.css"
     >
 
 </head>
