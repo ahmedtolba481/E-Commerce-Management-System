@@ -39,3 +39,33 @@ function updateCart() {
 }
 
 updateCart();
+
+
+
+
+
+
+// ===============================
+// CATEGORIES TOGGLE
+// ===============================
+
+const categoriesBtn = document.getElementById("categoriesBtn");
+const categoriesList = document.getElementById("categoriesList");
+
+categoriesBtn.addEventListener("click", function () {
+
+    categoriesList.classList.toggle("show");
+
+    if (categoriesList.classList.contains("show")) {
+
+        categoriesBtn.innerHTML =
+            '<i class="bi bi-x-lg"></i> Hide Categories';
+
+    } else {
+
+        categoriesBtn.innerHTML =
+            '<i class="bi bi-grid-3x3-gap"></i> View Categories';
+
+    }
+
+});
