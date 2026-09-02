@@ -86,7 +86,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
 
     <a
-        href="/E-Commerce-Management-System/admin/clients/index.php"
+        href="/E-Commerce-Management-System/admin/pages/clients/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/clients/') !== false ? 'active' : '' ?>"
         data-page="clients"
     >
@@ -104,7 +104,7 @@ $currentUrl = $_SERVER["REQUEST_URI"];
 
 
     <a
-        href="/E-Commerce-Management-System/admin/team/index.php"
+        href="/E-Commerce-Management-System/admin/pages/team/index.php"
         class="sidebar-link <?= strpos($currentUrl, '/team/') !== false ? 'active' : '' ?>"
         data-page="team"
     >

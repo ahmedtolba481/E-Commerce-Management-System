@@ -202,7 +202,6 @@ if (isset($_POST['submit'])) {
                                 <select
                                     id="role"
                                     name="role"
-                                    
                                     class="form-select"
                                     required
                                 >
@@ -211,11 +210,13 @@ if (isset($_POST['submit'])) {
                                         Select user role
                                     </option>
 
-                                    <option value="admin">
+                                    <option value="Admin">
                                         Administrator
                                     </option>
-
-                                    <option value="staff">
+                                    <option value="Clients">
+                                        Client
+                                    </option>
+                                    <option value="Staff">
                                         Staff
                                     </option>
 

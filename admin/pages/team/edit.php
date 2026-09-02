@@ -1,6 +1,6 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
 
 $error = "";
 
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($image)) {
 
                 $oldImagePath =
-                    "../assets/images/team/" . $image;
+                    "../../assets/images/team/" . $image;
 
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 basename($_FILES["image"]["name"]);
 
             $newImagePath =
-                "../assets/images/team/" . $image;
+                "../../assets/images/team/" . $image;
 
             move_uploaded_file(
                 $_FILES["image"]["tmp_name"],
@@ -134,11 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-include "../includes/header.php"; ?>
-<link rel="stylesheet" href="../assets/css/team.css">
+include "../../includes/header.php"; ?>
+<link rel="stylesheet" href="../../assets/css/team.css">
 <?php
-include "../includes/navbar.php";
-include "../includes/sidebar.php";
+include "../../includes/navbar.php";
+include "../../includes/sidebar.php";
 
 ?>
 
@@ -219,7 +219,7 @@ include "../includes/sidebar.php";
                 <br>
 
                 <img
-                    src="../assets/images/team/<?= htmlspecialchars($image) ?>"
+                    src="../../assets/images/team/<?= htmlspecialchars($image) ?>"
                     width="120"
                     height="120"
                     style="object-fit: cover; border-radius: 10px;">
@@ -309,6 +309,6 @@ include "../includes/sidebar.php";
 
 <?php
 
-include "../includes/footer.php";
+include "../../includes/footer.php";
 
 ?>

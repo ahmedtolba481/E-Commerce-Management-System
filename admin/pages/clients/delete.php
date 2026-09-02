@@ -1,6 +1,6 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
 
 if (!isset($_GET["id"])) {
     header("Location: index.php");
@@ -11,7 +11,7 @@ $id = (int) $_GET["id"];
 
 $delete = mysqli_prepare(
     $conn,
-    "DELETE FROM users WHERE id = ?"
+    "DELETE FROM clients WHERE id = ?"
 );
 
 mysqli_stmt_bind_param(

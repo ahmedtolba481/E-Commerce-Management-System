@@ -387,7 +387,7 @@ include '../config/database.php';
             <!-- Clients -->
 
             <a
-                href="/E-Commerce-Management-System/admin/clients/index.php"
+                href="/E-Commerce-Management-System/admin/pages/clients/index.php"
                 class="management-card"
             >
 
@@ -413,7 +413,7 @@ include '../config/database.php';
             <!-- Team -->
 
             <a
-                href="./team/index.php"
+                href="./pages/team/index.php"
                 class="management-card"
             >
 
@@ -465,7 +465,7 @@ include '../config/database.php';
             <!-- Users -->
 
             <a
-                href="/E-Commerce-Management-System/admin/users/index.php"
+                href="/E-Commerce-Management-System/admin/pages/users/index.php"
                 class="management-card"
             >
 

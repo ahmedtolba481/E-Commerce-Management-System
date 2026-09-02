@@ -1,6 +1,6 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
 
 if (!isset($_GET["id"])) {
     header("Location: index.php");
@@ -36,7 +36,7 @@ if ($member) {
     if (!empty($member["image"])) {
 
         $imagePath =
-            "../assets/images/team/" . $member["image"];
+            "../../assets/images/team/" . $member["image"];
 
         if (file_exists($imagePath)) {
             unlink($imagePath);

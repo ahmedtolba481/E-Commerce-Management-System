@@ -1,17 +1,17 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
 
 $query = "SELECT * FROM team ORDER BY id DESC";
 $result = mysqli_query($conn, $query);
 
-include "../includes/header.php";
+include "../../includes/header.php";
 
 ?>
-<link rel="stylesheet" href="../assets/css/team.css">
+<link rel="stylesheet" href="../../assets/css/team.css">
 <?php 
-include "../includes/navbar.php";
-include "../includes/sidebar.php";
+include "../../includes/navbar.php";
+include "../../includes/sidebar.php";
 ?>
 
 <div class="team-page">
@@ -53,7 +53,7 @@ include "../includes/sidebar.php";
                 <td>
                 <?php if (!empty($member["image"])) { ?>
         <img
-            src="../assets/images/team/<?= htmlspecialchars($member["image"]) ?>"
+            src="../../assets/images/team/<?= htmlspecialchars($member["image"]) ?>"
             width="70"
             height="70"
             style="object-fit: cover; border-radius: 8px;">
@@ -117,6 +117,6 @@ include "../includes/sidebar.php";
 
 <?php
 
-include "../includes/footer.php";
+include "../../includes/footer.php";
 
 ?>

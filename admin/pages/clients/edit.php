@@ -1,6 +1,6 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
 
 if (!isset($_GET["id"])) {
     header("Location: index.php");
@@ -75,16 +75,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-include "../includes/header.php";
+include "../../includes/header.php";
 
 ?>
 
-<link rel="stylesheet" href="../assets/css/clients.css">
+<link rel="stylesheet" href="../../assets/css/clients.css">
 
 <?php
 
-include "../includes/navbar.php";
-include "../includes/sidebar.php";
+include "../../includes/navbar.php";
+include "../../includes/sidebar.php";
 
 ?>
 
@@ -188,6 +188,6 @@ include "../includes/sidebar.php";
 
 <?php
 
-include "../includes/footer.php";
+include "../../includes/footer.php";
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
 
 $query = "
     SELECT
@@ -15,26 +15,36 @@ $query = "
 
 $result = mysqli_query($conn, $query);
 
-include "../includes/header.php";
+include "../../includes/header.php";
 
 ?>
 
-<link rel="stylesheet" href="../assets/css/clients.css">
+<link rel="stylesheet" href="../../assets/css/clients.css">
 
 <?php
 
-include "../includes/navbar.php";
-include "../includes/sidebar.php";
+include "../../includes/navbar.php";
+include "../../includes/sidebar.php";
 
 ?>
 
 <div class="clients-page">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Clients</h2>
+    <div class="clients-header">
+        <div>
+            <span class="clients-eyebrow">CUSTOMER DIRECTORY</span>
+            <h1>Clients</h1>
+            <p>Manage customer profiles and contact details.</p>
+        </div>
+
+        <a href="create.php" class="btn btn-primary client-create-button">
+            <i class="bi bi-person-plus-fill"></i>
+            New Client
+        </a>
     </div>
 
-    <table class="table table-bordered table-striped">
+    <div class="clients-table-wrap">
+    <table class="table clients-table">
 
         <thead>
             <tr>
@@ -112,11 +122,12 @@ include "../includes/sidebar.php";
         </tbody>
 
     </table>
+    </div>
 
 </div>
 
 <?php
 
-include "../includes/footer.php";
+include "../../includes/footer.php";
 
 ?>

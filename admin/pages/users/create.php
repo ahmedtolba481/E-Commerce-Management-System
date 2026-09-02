@@ -197,7 +197,7 @@ if (isset($_POST['submit'])) {
                                     <option value="Admin">
                                         Administrator
                                     </option>
-                                    <option value="Client">
+                                    <option value="Clients">
                                         Client
                                     </option>
                                     <option value="Staff">
