@@ -1,15 +1,7 @@
 <?php
-$host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ecommerce"; // اسم قاعدة البيانات عندك
-
-$conn = new mysqli($host, $username, $password, $dbname);
-$conn->set_charset("utf8");
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+session_start();
+require_once __DIR__ . '/config/database.php';
+$cartCount = array_sum(array_map('intval', $_SESSION['cart'] ?? []));
 ?>
 
 <!DOCTYPE html>
@@ -44,18 +36,18 @@ if ($conn->connect_error) {
 
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav mx-auto align-items-lg-center">
-                <li class="nav-item"><a class="nav-link active" href="#">HOME</a></li>
+                <li class="nav-item"><a class="nav-link active" href="index.php">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">ABOUT</a></li>
                 <li class="nav-item"><a class="nav-link" href="./categories.php" >CATEGORY</a></li>
-                <li class="nav-item"><a class="nav-link" href="#product-collection">PRODUCTS</a></li>
-                <li class="nav-item"><a class="nav-link" href="cart.php">CART</a></li>
+                <li class="nav-item"><a class="nav-link" href="categories.php">PRODUCTS</a></li>
+                <li class="nav-item"><a class="nav-link" href="cart.php">CART <span class="cart-nav-count"><?= $cartCount ?></span></a></li>
 
         
 
                 </li>
 
                 <li class="nav-item"><a class="nav-link" href="#contact">CONTACT us</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>
+                        <li class="nav-item"><?php if (isset($_SESSION["user_id"])): ?><a class="nav-link" href="logout.php">LOGOUT</a><?php else: ?><a class="nav-link" href="login.php">LOGIN</a><?php endif; ?></li>
 
             </ul>
         </div>
@@ -90,19 +82,18 @@ if ($conn->connect_error) {
                         <span>Location</span>
                     </div>
 
-                    <div class="header-item">
+                    <a href="my-orders.php" class="header-item text-decoration-none">
                         <i class="bi bi-person"></i>
-                        <span>my Account</span>
-                        
-                    </div>
+                        <span>My Orders</span>
+                    </a>
 
-                    <div class="header-item cart">
+                    <a href="cart.php" class="header-item cart text-decoration-none">
                         <div class="cart-icon">
                             <i class="bi bi-cart3"></i>
-                            <span id="cartCount">3</span>
+                            <span id="cartCount"><?= $cartCount ?></span>
                         </div>
                         <span>Cart</span>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -145,10 +136,10 @@ if ($conn->connect_error) {
                             </p>
 
                             <div class="hero-buttons d-flex justify-content-center justify-content-lg-start flex-wrap">
-                                <a href="#" class="btn-shop">
+                                <a href="categories.php" class="btn-shop">
                                     SHOP NOW <i class="bi bi-arrow-right"></i>
                                 </a>
-                                <a href="#" class="btn-explore">EXPLORE</a>
+                                <a href="categories.php" class="btn-explore">EXPLORE</a>
                             </div>
                         </div>
 
@@ -180,10 +171,10 @@ if ($conn->connect_error) {
                             </p>
 
                             <div class="hero-buttons d-flex justify-content-center justify-content-lg-start flex-wrap">
-                                <a href="#" class="btn-shop">
+                                <a href="categories.php" class="btn-shop">
                                     SHOP NOW <i class="bi bi-arrow-right"></i>
                                 </a>
-                                <a href="#" class="btn-explore">VIEW COLLECTION</a>
+                                <a href="categories.php" class="btn-explore">VIEW COLLECTION</a>
                             </div>
                         </div>
 
@@ -215,10 +206,10 @@ if ($conn->connect_error) {
                             </p>
 
                             <div class="hero-buttons d-flex justify-content-center justify-content-lg-start flex-wrap">
-                                <a href="#" class="btn-shop">
+                                <a href="categories.php" class="btn-shop">
                                     SHOP NOW <i class="bi bi-arrow-right"></i>
                                 </a>
-                                <a href="#" class="btn-explore">VIEW OFFERS</a>
+                                <a href="categories.php" class="btn-explore">VIEW OFFERS</a>
                             </div>
                         </div>
 
@@ -281,7 +272,7 @@ if ($conn->connect_error) {
                                 </span>
 
                                 <img
-                                    src="images/'.$image.'"
+                                    src="admin/assets/images/products/'.$image.'"
                                     alt="'.htmlspecialchars($name).'"
                                 >
                             </div>
@@ -341,7 +332,7 @@ if ($conn->connect_error) {
 
         <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">Featured Products</h2>
-    <a href="./products.php" class="text-decoration-none fw-semibold text-success">View All Products <i class="bi bi-arrow-right"></i></a>
+    <a href="categories.php" class="text-decoration-none fw-semibold text-success">View All Products <i class="bi bi-arrow-right"></i></a>
 </div>
     </div>
 </section>
@@ -417,7 +408,7 @@ if ($conn->connect_error) {
                     echo '
                     <div class="col-6 col-md-4 col-lg-2">
                         <a href="'.$website.'" target="_blank" class="partner-item d-block p-3 text-decoration-none">
-                            <img src="images/'.$logo.'" alt="'.$name.'" class="img-fluid grayscale-logo">
+                            <img src="admin/assets/images/partners/'.$logo.'" alt="'.$name.'" class="img-fluid grayscale-logo">
                         </a>
                     </div>
                     ';
@@ -448,7 +439,7 @@ if ($conn->connect_error) {
                     $name       = $member['name'] ?? 'Team Member';
                     $position   = $member['position'] ?? 'Team Position';
                     $description = $member['description'] ?? '';
-                    $image      = $member['image'] ?? 'images/default-user.jpg';
+                    $image      = $member['image'] ?? 'default-user.jpg';
                     $facebook   = $member['facebook'] ?? '#';
                     $instagram  = $member['instagram'] ?? '#';
                     $linkedin   = $member['linkedin'] ?? '#';
@@ -457,7 +448,7 @@ if ($conn->connect_error) {
                     <div class="col-md-6 col-lg-4">
                         <div class="team-card h-100 text-center p-4">
                             <div class="team-img-wrapper mb-3">
-                                <img src="images/'.$image.'" alt="'.$name.'" class="img-fluid rounded-circle">
+                                <img src="admin/assets/images/products/'.$image.'" alt="'.$name.'" class="img-fluid rounded-circle">
                             </div>
                             <h4 class="fw-bold mb-1">'.$name.'</h4>
                             <p class="text-muted small mb-3">'.$position.'</p>
@@ -465,7 +456,7 @@ if ($conn->connect_error) {
                             <div class="team-social d-flex justify-content-center gap-2">
                                 <a href="'.$facebook.'" target="_blank" class="social-icon"><i class="bi bi-facebook"></i></a>
                                 <a href="'.$instagram.'" target="_blank" class="social-icon"><i class="bi bi-instagram"></i></a>
-                                <a href="'.$linkedin.'" target="_blank" class="social-icon"><i class="bi biير-linkedin"></i></a>
+                                <a href="'.$linkedin.'" target="_blank" class="social-icon"><i class="bi bi-linkedin"></i></a>
                             </div>
                         </div>
                     </div>
@@ -502,7 +493,7 @@ if ($conn->connect_error) {
                     <div class="col-6 col-md-4 col-lg-3">
                         <div class="brand-item p-4 border rounded-3 bg-white shadow-sm h-100">
                             <div class="brand-img-wrapper mb-3">
-                                <img src="images/'.$brand_logo.'" alt="'.$brand_name.'" class="img-fluid" style="max-height: 50px; object-fit: contain;">
+                                <img src="admin/assets/images/brands/'.$brand_logo.'" alt="'.$brand_name.'" class="img-fluid" style="max-height: 50px; object-fit: contain;">
                             </div>
                             <h4 class="fw-bold fs-5 mb-1">'.$brand_name.'</h4>
                             <p class="text-muted small mb-0">'.$brand_description.'</p>
@@ -649,7 +640,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_message'])) {
                         </div>
                     </div>
 
-                    <a href="#products" class="btn btn-success px-4 py-2 fw-semibold">Shop Latest Gadgets</a>
+                    <a href="#product-collection" class="btn btn-success px-4 py-2 fw-semibold">Shop Latest Gadgets</a>
                 </div>
             </div>
 
