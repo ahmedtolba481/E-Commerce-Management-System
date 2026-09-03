@@ -1,3 +1,0 @@
-<?php
-session_start();require_once __DIR__.'/config/database.php';if($_SERVER['REQUEST_METHOD']!=='POST'){header('Location:categories.php');exit;}
-$id=(int)($_POST['product_id']??0);$qty=max(1,(int)($_POST['quantity']??1));$s=$conn->prepare("SELECT stock FROM products WHERE id=?");$s->bind_param("i",$id);$s->execute();$p=$s->get_result()->fetch_assoc();if(!$p){header('Location:categories.php');exit;}if($p['stock']<1){header("Location:product-details.php?id=$id&error=".urlencode('Product is out of stock.'));exit;}$_SESSION['cart'][$id]=min((int)$p['stock'],(int)($_SESSION['cart'][$id]??0)+$qty);header('Location:cart.php');exit;?>
