@@ -5,22 +5,36 @@ include "../includes/navbar.php";
 ?>
 
 <!-- ================= HERO ================= -->
-<section class="section" style="background: linear-gradient(135deg, #172B4D 0%, #19A974 100%); color: white; padding: 6rem 0;">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <h1 style="color: white; font-size: 3rem; margin-bottom: 1rem;">Discover Everything You Need</h1>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">Quality products. Simple shopping. Fast delivery.</p>
-                <a href="/E-Commerce-Management-System/pages/products/index.php" class="btn btn-secondary btn-lg" style="padding: 1rem 2rem; font-size: 1.1rem;">Shop Now <i class="bi bi-arrow-right"></i></a>
+<section class="home-hero">
+    <div class="container home-hero-inner">
+        <div class="home-hero-copy">
+            <div class="home-hero-kicker-row"><span class="home-eyebrow"><i class="bi bi-stars"></i> Curated tech, delivered simply</span><span class="home-hero-index">01 / 04</span></div>
+            <h1>Better tech for the way you live.</h1>
+            <p>Discover reliable devices, thoughtful accessories, and everyday upgrades selected for modern life.</p>
+            <div class="home-hero-actions">
+                <a href="/E-Commerce-Management-System/pages/products/index.php" class="btn btn-primary">Explore products <i class="bi bi-arrow-up-right"></i></a>
+                <a href="#categories" class="home-text-link">Browse categories <i class="bi bi-arrow-down"></i></a>
             </div>
-            <div class="col-md-6" style="text-align: center;">
-                <img src="../assets/images/slider/slide1.jpg" alt="Hero Image" style="max-width: 100%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
-            </div>
+        </div>
+        <div class="home-hero-media">
+            <span class="home-hero-label">ShopEase / New arrivals</span>
+            <img src="../assets/images/hero-tech.jpg" alt="Smartphone on a modern laptop workspace">
+            <div class="home-hero-caption"><i class="bi bi-lightning-charge-fill"></i><span><strong>Made for your day</strong><small>Smart picks, clear prices</small></span></div>
+            <div class="home-hero-float"><span class="home-hero-float-icon"><i class="bi bi-stars"></i></span><span><strong>New season</strong><small>Tech worth keeping</small></span></div>
         </div>
     </div>
 </section>
 
-<section class="section">
+<div class="home-trust-strip">
+    <div class="container home-trust-grid">
+        <div><i class="bi bi-truck"></i><span><strong>Fast delivery</strong><small>Across the city</small></span></div>
+        <div><i class="bi bi-shield-check"></i><span><strong>Original products</strong><small>Quality you can trust</small></span></div>
+        <div><i class="bi bi-headset"></i><span><strong>Helpful support</strong><small>Here when you need us</small></span></div>
+    </div>
+</div>
+
+<!-- ================= CATEGORIES ================= -->
+<section id="categories" class="section">
     <div class="container">
 
         <div class="section-title">
@@ -382,9 +396,9 @@ include "../includes/navbar.php";
 <!-- ================= ABOUT US ================= -->
 <section id="about" class="section">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center about-layout">
             <div class="col-md-6">
-                <img src="../assets/images/slider/slide2.jpg" alt="About Us" style="max-width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <img class="about-image" src="../assets/images/about-tech.jpg" alt="Laptop on a modern workspace">
             </div>
             <div class="col-md-6" style="padding-left: 2rem;">
                 <div style="color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">About Us</div>
@@ -401,43 +415,32 @@ include "../includes/navbar.php";
 </section>
 
 <!-- ================= CONTACT US ================= -->
-<section id="contact" class="section" style="background: var(--background);">
+<section id="contact" class="section contact-section">
     <div class="container">
-        <div class="section-title">
-            <h2>Contact Us</h2>
-            <p>We'd love to hear from you</p>
+        <div class="contact-heading">
+            <div>
+                <span class="home-eyebrow">Let's talk</span>
+                <h2>Have a question? <span>We are here to help.</span></h2>
+            </div>
+            <p>Whether you need help choosing a product or tracking an order, our team is ready to help.</p>
         </div>
-        <div class="row" style="justify-content: center;">
-            <div class="col-md-8">
-                <div class="card" style="padding: 3rem;">
-                    <form action="#" method="POST">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">Your Name</label>
-                                <input type="text" class="form-control" name="name" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Your Email</label>
-                                <input type="email" class="form-control" name="email" required>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top: 1rem;">
-                            <div class="col-12">
-                                <label class="form-label">Subject</label>
-                                <input type="text" class="form-control" name="subject" required>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top: 1rem;">
-                            <div class="col-12">
-                                <label class="form-label">Message</label>
-                                <textarea class="form-control" name="message" rows="5" required></textarea>
-                            </div>
-                        </div>
-                        <div style="text-align: center; margin-top: 2rem;">
-                            <button type="submit" class="btn btn-primary btn-lg" style="padding: 0.75rem 3rem;">Send Message</button>
-                        </div>
-                    </form>
-                </div>
+        <div class="contact-layout">
+            <div class="contact-info">
+                <div class="contact-info-item"><i class="bi bi-envelope"></i><span><small>Email us</small><strong>support@shopease.com</strong></span></div>
+                <div class="contact-info-item"><i class="bi bi-telephone"></i><span><small>Call us</small><strong>+1 234 567 890</strong></span></div>
+                <div class="contact-info-item"><i class="bi bi-geo-alt"></i><span><small>Visit us</small><strong>123 Tech Street, City</strong></span></div>
+                <div class="contact-response"><i class="bi bi-clock"></i> Usually replies within one business day</div>
+            </div>
+            <div class="card contact-form-card">
+                <form action="#" method="POST">
+                    <div class="contact-form-grid">
+                        <div><label class="form-label">Your Name</label><input type="text" class="form-control" name="name" required placeholder="Your full name"></div>
+                        <div><label class="form-label">Your Email</label><input type="email" class="form-control" name="email" required placeholder="you@example.com"></div>
+                    </div>
+                    <div class="contact-form-field"><label class="form-label">Subject</label><input type="text" class="form-control" name="subject" required placeholder="How can we help?"></div>
+                    <div class="contact-form-field"><label class="form-label">Message</label><textarea class="form-control" name="message" rows="5" required placeholder="Tell us a little more..."></textarea></div>
+                    <button type="submit" class="btn btn-primary contact-submit">Send message <i class="bi bi-arrow-up-right"></i></button>
+                </form>
             </div>
         </div>
     </div>

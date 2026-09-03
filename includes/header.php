@@ -20,9 +20,8 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/style.css">
-    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/navbar.css">
-    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/footer.css">
-    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/cart.css">
+    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/style.css?v=checkout-2">
+    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/navbar.css?v=1">
+    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/footer.css?v=1">
 </head>
 <body>

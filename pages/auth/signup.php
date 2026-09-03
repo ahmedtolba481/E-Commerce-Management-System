@@ -12,63 +12,69 @@ $error = isset($_SESSION['auth_error']) ? $_SESSION['auth_error'] : '';
 unset($_SESSION['auth_error']);
 ?>
 
-<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--background); padding: 2rem;">
-    <div class="card" style="width: 100%; max-width: 600px; padding: 3rem 2rem;">
-        <div style="text-align: center; margin-bottom: 2rem;">
-            <a href="../home.php" style="font-size: 1.75rem; font-weight: 700; color: var(--dark); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                <i class="bi bi-bag-check-fill" style="color: var(--primary);"></i> ShopEase
-            </a>
-            <h2 style="margin-top: 1.5rem; font-size: 1.5rem;">Create Account</h2>
-            <p style="color: var(--text);">Join us for the best shopping experience</p>
-        </div>
+<main class="auth-page auth-signup-page">
+    <div class="auth-shell">
+        <aside class="auth-panel">
+            <a href="../home.php" class="auth-brand"><i class="bi bi-bag-check-fill"></i> ShopEase</a>
+            <div class="auth-panel-copy">
+                <span class="auth-kicker">Make shopping personal</span>
+                <h1>Everything you like, in one place.</h1>
+                <p>Create your account to save your details and make every checkout simpler.</p>
+            </div>
+            <div class="auth-panel-footer"><i class="bi bi-lightning-charge-fill"></i> Quick, simple shopping</div>
+        </aside>
+
+        <section class="auth-form-panel">
+            <div class="auth-form-header">
+                <span class="auth-kicker">Join ShopEase</span>
+                <h2>Create your account</h2>
+                <p>Set up your details once and shop with ease.</p>
+            </div>
         
         <?php if ($error): ?>
-            <div style="background: #FEE2E2; color: #DC2626; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">
-                <?php echo htmlspecialchars($error); ?>
+            <div class="auth-alert">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                <span><?php echo htmlspecialchars($error); ?></span>
             </div>
         <?php endif; ?>
         
-        <form action="../../actions/auth/signup.php" method="POST">
-            <div class="row">
-                <div class="col-md-6" style="margin-bottom: 1rem;">
+            <form action="../../actions/auth/signup.php" method="POST" class="auth-signup-form">
+                <div class="auth-form-grid">
+                <div class="auth-field">
                     <label class="form-label">Full Name</label>
-                    <input type="text" name="name" class="form-control" required>
+                    <div class="auth-input-wrap"><i class="bi bi-person"></i><input type="text" name="name" class="form-control" required autocomplete="name" placeholder="Your full name"></div>
                 </div>
-                <div class="col-md-6" style="margin-bottom: 1rem;">
+                <div class="auth-field">
                     <label class="form-label">Email Address</label>
-                    <input type="email" name="email" class="form-control" required>
+                    <div class="auth-input-wrap"><i class="bi bi-envelope"></i><input type="email" name="email" class="form-control" required autocomplete="email" placeholder="you@example.com"></div>
                 </div>
-            </div>
             
-            <div class="row">
-                <div class="col-md-6" style="margin-bottom: 1rem;">
+                <div class="auth-field">
                     <label class="form-label">Phone Number</label>
-                    <input type="text" name="phone" class="form-control" required>
+                    <div class="auth-input-wrap"><i class="bi bi-telephone"></i><input type="text" name="phone" class="form-control" required autocomplete="tel" placeholder="Your phone number"></div>
                 </div>
-                <div class="col-md-6" style="margin-bottom: 1rem;">
+                <div class="auth-field">
                     <label class="form-label">City</label>
-                    <input type="text" name="city" class="form-control" required>
+                    <div class="auth-input-wrap"><i class="bi bi-geo-alt"></i><input type="text" name="city" class="form-control" required autocomplete="address-level2" placeholder="Your city"></div>
                 </div>
-            </div>
-            
-            <div style="margin-bottom: 1rem;">
+                </div>
+            <div class="auth-field">
                 <label class="form-label">Address</label>
-                <input type="text" name="address" class="form-control" required>
+                <div class="auth-input-wrap"><i class="bi bi-house"></i><input type="text" name="address" class="form-control" required autocomplete="street-address" placeholder="Street and building address"></div>
             </div>
             
-            <div style="margin-bottom: 2rem;">
+            <div class="auth-field auth-password-field">
                 <label class="form-label">Password (Min 6 characters)</label>
-                <input type="password" name="password" class="form-control" required minlength="6">
+                <div class="auth-input-wrap"><i class="bi bi-lock"></i><input type="password" name="password" class="form-control" required minlength="6" autocomplete="new-password" placeholder="At least 6 characters"></div>
             </div>
             
-            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Create Account</button>
-        </form>
+                <button type="submit" class="btn btn-primary auth-submit">Create account <i class="bi bi-arrow-right"></i></button>
+            </form>
         
-        <div style="text-align: center; margin-top: 2rem; font-size: 0.9rem; color: var(--text);">
-            Already have an account? <a href="login.php" style="color: var(--primary); font-weight: 600; text-decoration: none;">Sign in</a>
-        </div>
+            <div class="auth-signup">Already have an account? <a href="login.php">Sign in</a></div>
+        </section>
     </div>
-</div>
+</main>
 
 </body>
 </html>
