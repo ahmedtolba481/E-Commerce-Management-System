@@ -27,7 +27,7 @@ $client_id = (int)$_SESSION['client_id'];
         if ($result && mysqli_num_rows($result) > 0) {
             while ($order = mysqli_fetch_assoc($result)) {
                 $order_id = $order['id'];
-                $total_amount = $order['total_amount'] ?? $order['total'] ?? 0;
+                $total_amount = $order['total_price'] ?? 0;
                 $status = $order['status'] ?? 'pending';
                 // Some status colors
                 $status_color = '#9CA3AF'; // default gray
@@ -74,10 +74,10 @@ $client_id = (int)$_SESSION['client_id'];
                                 </div>
                                 <div style="flex: 1;">
                                     <div style="font-weight: 600; color: var(--dark);"><?php echo htmlspecialchars($item['name']); ?></div>
-                                    <div style="font-size: 0.85rem; color: #6B7280;">Qty: <?php echo htmlspecialchars($item['quantity'] ?? $item['qty'] ?? 1); ?> &times; $<?php echo htmlspecialchars($item['price']); ?></div>
+                                    <div style="font-size: 0.85rem; color: #6B7280;">Qty: <?php echo htmlspecialchars($item['quantity'] ?? 1); ?> &times; $<?php echo htmlspecialchars($item['price']); ?></div>
                                 </div>
                                 <div style="font-weight: 600;">
-                                    $<?php echo number_format((float)($item['price']) * (int)($item['quantity'] ?? $item['qty'] ?? 1), 2); ?>
+                                    $<?php echo number_format((float)($item['price']) * (int)($item['quantity'] ?? 1), 2); ?>
                                 </div>
                             </div>
                         <?php
