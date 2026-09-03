@@ -64,8 +64,8 @@ unset($_SESSION['auth_error']);
             </div>
             
             <div class="auth-field auth-password-field">
-                <label class="form-label">Password (Min 6 characters)</label>
-                <div class="auth-input-wrap"><i class="bi bi-lock"></i><input type="password" name="password" class="form-control" required minlength="6" autocomplete="new-password" placeholder="At least 6 characters"></div>
+                <label class="form-label">Password (Min 8 characters)</label>
+                <div class="auth-input-wrap"><i class="bi bi-lock"></i><input type="password" name="password" class="form-control" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div>
             </div>
             
                 <button type="submit" class="btn btn-primary auth-submit">Create account <i class="bi bi-arrow-right"></i></button>
