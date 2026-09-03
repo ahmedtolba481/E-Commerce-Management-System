@@ -36,7 +36,7 @@ include "../../includes/navbar.php";
                         <div class="category-image">
 
                             <img
-                                src="/E-Commerce-Management-System/assets/images/categories/<?php echo htmlspecialchars($image); ?>"
+                                src="/E-Commerce-Management-System/admin/assets/images/categories/<?php echo htmlspecialchars($image); ?>"
                                 alt="<?php echo htmlspecialchars($category['name']); ?>"
                             >
 

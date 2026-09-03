@@ -41,7 +41,7 @@ include "../../includes/navbar.php";
                         <div class="partner-image">
 
                             <img
-                                src="../../assets/images/partners/<?php echo htmlspecialchars($partner['logo'] ?? 'default.png'); ?>"
+                                src="../../admin/assets/images/partners/<?php echo htmlspecialchars($partner['logo'] ?? 'default.png'); ?>"
                                 alt="<?php echo htmlspecialchars($partner['name']); ?>"
                             >
 

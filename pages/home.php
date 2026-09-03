@@ -18,7 +18,7 @@ include "../includes/navbar.php";
         </div>
         <div class="home-hero-media">
             <span class="home-hero-label">ShopEase / New arrivals</span>
-            <img src="../assets/images/hero-tech.jpg" alt="Smartphone on a modern laptop workspace">
+            <img src="../admin/assets/images/hero-tech.jpg" alt="Smartphone on a modern laptop workspace">
             <div class="home-hero-caption"><i class="bi bi-lightning-charge-fill"></i><span><strong>Made for your day</strong><small>Smart picks, clear prices</small></span></div>
             <div class="home-hero-float"><span class="home-hero-float-icon"><i class="bi bi-stars"></i></span><span><strong>New season</strong><small>Tech worth keeping</small></span></div>
         </div>
@@ -65,7 +65,7 @@ include "../includes/navbar.php";
                         <div class="category-image">
 
                             <img
-                                src="/E-Commerce-Management-System/assets/images/categories/<?php echo htmlspecialchars($image); ?>"
+                                src="/E-Commerce-Management-System/admin/assets/images/categories/<?php echo htmlspecialchars($image); ?>"
                                 alt="<?php echo htmlspecialchars($category['name']); ?>"
                             >
 
@@ -119,7 +119,7 @@ include "../includes/navbar.php";
                 <div class="col-md-3">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <img src="../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>">
                         </div>
                         <div class="product-info">
                             <?php if(!empty($product['brand_name'])): ?>
@@ -168,7 +168,7 @@ include "../includes/navbar.php";
                 <div class="col-md-3">
                     <div class="brand-card card">
                         <div class="brand-image">
-                            <img src="../assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'default.png'); ?>" onerror="this.src='../assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'apple.png'); ?>'" alt="<?php echo htmlspecialchars($brand['name']); ?>">
+                            <img src="../admin/assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'default.png'); ?>" onerror="this.src='../admin/assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'apple.png'); ?>'" alt="<?php echo htmlspecialchars($brand['name']); ?>">
                         </div>
                         <h4 style="margin-top: 1rem; margin-bottom: 0; font-size: 1.1rem;"><?php echo htmlspecialchars($brand['name']); ?></h4>
                     </div>
@@ -259,7 +259,7 @@ include "../includes/navbar.php";
                     <div class="partner-image">
 
                         <img
-                            src="../assets/images/partners/<?php echo htmlspecialchars($partner['logo']); ?>"
+                            src="../admin/assets/images/partners/<?php echo htmlspecialchars($partner['logo']); ?>"
                             alt="<?php echo htmlspecialchars($partner['name']); ?>"
                         >
 
@@ -335,7 +335,7 @@ include "../includes/navbar.php";
                             <div class="team-image">
 
                                 <img
-                                    src="/E-Commerce-Management-System/assets/images/team/<?php echo htmlspecialchars($teamImage); ?>"
+                                    src="/E-Commerce-Management-System/admin/assets/images/team/<?php echo htmlspecialchars($teamImage); ?>"
                                     alt="<?php echo htmlspecialchars($member['name']); ?>"
                                 >
 
@@ -398,7 +398,7 @@ include "../includes/navbar.php";
     <div class="container">
         <div class="row align-items-center about-layout">
             <div class="col-md-6">
-                <img class="about-image" src="../assets/images/about-tech.jpg" alt="Laptop on a modern workspace">
+                <img class="about-image" src="../admin/assets/images/about-tech.jpg" alt="Laptop on a modern workspace">
             </div>
             <div class="col-md-6" style="padding-left: 2rem;">
                 <div style="color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">About Us</div>

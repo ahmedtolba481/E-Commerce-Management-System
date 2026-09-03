@@ -32,7 +32,7 @@ include "../../includes/navbar.php";
                         <div class="brand-image">
 
                             <img
-                                src="../../assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'default.png'); ?>"
+                                src="../../admin/assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'default.png'); ?>"
                                 alt="<?php echo htmlspecialchars($brand['name']); ?>"
                             >
 

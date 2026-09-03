@@ -43,7 +43,7 @@ $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
                 <div class="col-md-3" style="margin-bottom: 1.5rem;">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="../../assets/images/products<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>">
                         </div>
                         <div class="product-info">
                             <?php if(!empty($product['brand_name'])): ?>

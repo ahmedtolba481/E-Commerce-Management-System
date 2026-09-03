@@ -38,7 +38,7 @@ $subtotal = 0;
                         ?>
                             <div style="display: flex; align-items: center; border-bottom: 1px solid #E5E7EB; padding-bottom: 1.5rem; margin-bottom: 1.5rem; gap: 1.5rem;">
                                 <div style="width: 100px; height: 100px; background: var(--background); border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0.5rem;">
-                                    <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                    <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                 </div>
                                 <div style="flex: 1;">
                                     <h4 style="margin-bottom: 0.2rem;"><?php echo htmlspecialchars($product['name']); ?></h4>
