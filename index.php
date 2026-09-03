@@ -46,23 +46,15 @@ if ($conn->connect_error) {
             <ul class="navbar-nav mx-auto align-items-lg-center">
                 <li class="nav-item"><a class="nav-link active" href="#">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">ABOUT</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">CATEGORY</a></li>
+                <li class="nav-item"><a class="nav-link" href="./categories.php" >CATEGORY</a></li>
                 <li class="nav-item"><a class="nav-link" href="#product-collection">PRODUCTS</a></li>
                 <li class="nav-item"><a class="nav-link" href="cart.php">CART</a></li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        DROPDOWN
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#">Option 2</a></li>
-                        <li><a class="dropdown-item" href="#">Option 3</a></li>
-                    </ul>
+        
 
                 </li>
 
-                <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">CONTACT us</a></li>
                         <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>
 
             </ul>
@@ -257,26 +249,14 @@ if ($conn->connect_error) {
     <div class="container">
         
         <div class="collection-actions d-flex justify-content-center align-items-center flex-wrap gap-3 mb-4">
-            <button class="collection-btn btn">
-                Explore Collection
-            </button>
+             <button  class="collection-btn btn" ><a href="./categories.php" class="text-decoration-none text-dark">Explore Collection</a>
+              
+     
 
-            <button class="categories-btn btn" id="categoriesBtn" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#categoriesList"
-                    aria-expanded="false" aria-controls="categoriesList">
-                <i class="bi bi-grid-3x3-gap"></i>
-                <span>View Categories</span>
-            </button>
+    
         </div>
 
-        <div class="collapse mb-4" id="categoriesList">
-            <div class="categories-list d-flex justify-content-center gap-2 flex-wrap">
-                <span class="badge bg-light text-dark p-2">Hoodies</span>
-                <span class="badge bg-light text-dark p-2">Shoes</span>
-                <span class="badge bg-light text-dark p-2">Accessories</span>
-                <span class="badge bg-light text-dark p-2">New Arrivals</span>
-            </div>
-        </div>
+  
 
         <div class="row g-4 mt-1">
             <?php
@@ -306,8 +286,21 @@ if ($conn->connect_error) {
                                     <span class="text-success fw-bold fs-5">$'.$price.'</span>
                                 </div>
                                 <span class="text-muted d-block mt-2" style="font-size: 0.8rem;">Stock: '.$stock.' available</span>
+
                             </div>
-                        </div>
+                        
+                            <button
+                                class="order-btn btn btn-outline-dark btn-sm rounded-pill  px-3"
+                                onclick="window.location.href=\'product-details.php?id='.$row['id'].'\'">
+                               Order now
+            
+                        </button>
+                                 <button
+                                class="order-btn btn btn-outline-dark btn-sm rounded-pill  px-3"
+                                onclick="window.location.href=\'product-details.php?id='.$row['id'].'\'">
+                           view detalies
+            
+                        </button>
                     </div>
                     ';
                 }
@@ -320,7 +313,7 @@ if ($conn->connect_error) {
 
         <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">Featured Products</h2>
-    <a href="all-products.php" class="text-decoration-none fw-semibold text-success">View All Products <i class="bi bi-arrow-right"></i></a>
+    <a href="./products.php" class="text-decoration-none fw-semibold text-success">View All Products <i class="bi bi-arrow-right"></i></a>
 </div>
     </div>
 </section>
@@ -539,7 +532,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_message'])) {
 ?>
 
 <!-- ================= CONTACT US SECTION ================= -->
-<section class="contact-section py-5 bg-light">
+<section id="contact" class="contact-section py-5 bg-light">
     <div class="container">
         <div class="section-title text-center mb-5">
             <h2 class="fw-bold">Contact Us</h2>
