@@ -63,43 +63,86 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Category Card */
+/* //////////////////////////////////// */
+
+/* Category Card */
+
 .category-card {
     text-align: center;
     background: var(--white);
+
     padding: 1.5rem;
+
     border-radius: 12px;
+
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+
     display: block;
+
     text-decoration: none;
+
     color: var(--dark);
+
+    height: 100%;
+
+    box-sizing: border-box;
 }
+
 
 .category-card:hover {
     transform: translateY(-4px);
+
     box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 }
+
 
 .category-image {
     height: 180px;
     width: 100%;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     margin-bottom: 1rem;
+
     overflow: hidden;
+
+    border-radius: 8px;
+
+    background: var(--background);
 }
 
+
 .category-image img {
-    height: 100%;
     width: 100%;
+    height: 100%;
+
     object-fit: cover;
+
+    display: block;
+
     border-radius: 8px;
+
     transition: transform 0.2s ease;
 }
 
+
 .category-card:hover .category-image img {
     transform: scale(1.03);
+}
+
+
+.category-card h3 {
+    margin: 0;
+
+    color: var(--dark);
+
+    font-size: 1.1rem;
 }
 
 /* Product Card */
