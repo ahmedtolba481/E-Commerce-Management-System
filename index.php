@@ -1,3 +1,4 @@
 <?php
-echo "Hello, World! real website";
+header("Location: pages/home.php");
+exit;
 ?>
