@@ -99,7 +99,7 @@ $user = $user_result ? mysqli_fetch_assoc($user_result) : null;
                             <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F3F4F6; padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
                                 <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
                                     <div style="width: 40px; height: 40px; background: #F3F4F6; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                        <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                        <img src="../../assets/images/products<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                     </div>
                                     <div style="font-size: 0.9rem;">
                                         <div style="font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;"><?php echo htmlspecialchars($product['name']); ?></div>

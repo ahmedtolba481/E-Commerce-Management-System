@@ -24,7 +24,7 @@ if (!$product) {
         <div class="row align-items-center">
             <div class="col-md-6">
                 <div class="card" style="padding: 2rem; background: var(--background); display: flex; align-items: center; justify-content: center; height: 500px;">
-                    <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    <img src="../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
             </div>
             <div class="col-md-6" style="padding-left: 3rem;">

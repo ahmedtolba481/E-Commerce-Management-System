@@ -23,5 +23,6 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
     <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/style.css">
     <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/navbar.css">
     <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/footer.css">
+    <link rel="stylesheet" href="/E-Commerce-Management-System/assets/css/cart.css">
 </head>
 <body>
