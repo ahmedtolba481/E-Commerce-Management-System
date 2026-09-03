@@ -880,3 +880,75 @@ body {
     box-shadow: 0 0 15px rgba(25, 135, 84, 0.8) !important;
     transform: translateY(-3px);
 }
+
+
+/* ================= PRODUCT ACTIONS ================= */
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 23px 23px;
+    margin-top: auto;
+}
+
+.product-btn {
+    flex: 1;
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.product-btn-primary {
+    background: var(--primary);
+    border: 1px solid var(--primary);
+    color: var(--white);
+}
+
+.product-btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.product-btn-secondary {
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--dark);
+}
+
+.product-btn-secondary:hover {
+    background: var(--mint);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.collection-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.collection-info {
+    flex: 1;
+}
+
+@media (max-width: 576px) {
+
+    .product-actions {
+        flex-direction: column;
+    }
+
+    .product-btn {
+        width: 100%;
+    }
+
+}

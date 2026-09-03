@@ -271,36 +271,64 @@ if ($conn->connect_error) {
                     $stock       = $row['stock'] ?? '0';
                     $image       = $row['image'] ?? 'default.jpg';
                     $badge       = ($stock > 0) ? 'In Stock' : 'Out of Stock';
-
                     echo '
                     <div class="col-md-6 col-lg-4">
-                        <div class="collection-card h-100 p-3 border rounded-3 bg-white shadow-sm">
-                            <div class="collection-image position-relative mb-3">
-                                <span class="collection-badge badge bg-success position-absolute top-0 start-0 m-2">'.$badge.'</span>
-                                <img src="images/'.$image.'" alt="'.$name.'" class="img-fluid w-100 rounded" style="height: 200px; object-fit: cover;">
+                        <div class="collection-card h-100">
+
+                            <div class="collection-image">
+                                <span class="collection-badge">
+                                    '.$badge.'
+                                </span>
+
+                                <img
+                                    src="images/'.$image.'"
+                                    alt="'.htmlspecialchars($name).'"
+                                >
                             </div>
+
                             <div class="collection-info">
-                                <h4 class="fw-bold fs-5 mb-1">'.$name.'</h4>
-                                <p class="text-muted small mb-2">'.$description.'</p>
-                                <div class="collection-price d-flex align-items-center gap-2">
-                                    <span class="text-success fw-bold fs-5">$'.$price.'</span>
+
+                                <h3>
+                                    '.htmlspecialchars($name).'
+                                </h3>
+
+                                <p class="text-muted small mb-2">
+                                    '.htmlspecialchars($description).'
+                                </p>
+
+                                <div class="collection-price">
+                                    <span>
+                                        $'.$price.'
+                                    </span>
                                 </div>
-                                <span class="text-muted d-block mt-2" style="font-size: 0.8rem;">Stock: '.$stock.' available</span>
+
+                                <span class="text-muted d-block mt-2" style="font-size: 0.8rem;">
+                                    Stock: '.$stock.' available
+                                </span>
 
                             </div>
-                        
-                            <button
-                                class="order-btn btn btn-outline-dark btn-sm rounded-pill  px-3"
-                                onclick="window.location.href=\'product-details.php?id='.$row['id'].'\'">
-                               Order now
-            
-                        </button>
-                                 <button
-                                class="order-btn btn btn-outline-dark btn-sm rounded-pill  px-3"
-                                onclick="window.location.href=\'product-details.php?id='.$row['id'].'\'">
-                           view detalies
-            
-                        </button>
+
+                            <div class="product-actions">
+
+                                <a
+                                    href="product-details.php?id='.$row['id'].'"
+                                    class="product-btn product-btn-primary"
+                                >
+                                    <i class="bi bi-cart3"></i>
+                                    Order Now
+                                </a>
+
+                                <a
+                                    href="product-details.php?id='.$row['id'].'"
+                                    class="product-btn product-btn-secondary"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                    View Details
+                                </a>
+
+                            </div>
+
+                        </div>
                     </div>
                     ';
                 }
