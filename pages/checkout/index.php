@@ -29,20 +29,30 @@ $user_result = mysqli_query($conn, $user_query);
 $user = $user_result ? mysqli_fetch_assoc($user_result) : null;
 ?>
 
-<section class="section" style="background: var(--background); min-height: 80vh;">
+<section class="section checkout-page">
     <div class="container">
-        <h1 style="margin-bottom: 2rem;">Checkout</h1>
+        <div class="checkout-heading">
+            <div>
+                <span class="checkout-kicker">Almost there</span>
+                <h1>Complete your order</h1>
+                <p>Review your details and place your order securely.</p>
+            </div>
+            <a class="checkout-back-link" href="../cart/index.php"><i class="bi bi-arrow-left"></i> Back to cart</a>
+        </div>
         
         <?php if ($error): ?>
-            <div style="background: #FEE2E2; color: #DC2626; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+            <div class="checkout-alert">
                 <i class="bi bi-exclamation-triangle-fill"></i> <?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
         
-        <div class="row">
-            <div class="col-md-7">
-                <div class="card" style="padding: 2rem; margin-bottom: 1.5rem;">
-                    <h3 style="margin-bottom: 1.5rem;"><i class="bi bi-person-lines-fill"></i> Customer Information</h3>
+        <div class="checkout-layout">
+            <div class="checkout-details">
+                <div class="card checkout-card">
+                    <div class="checkout-card-heading">
+                        <span class="checkout-icon"><i class="bi bi-person-lines-fill"></i></span>
+                        <div><span class="checkout-step">01</span><h3>Customer information</h3></div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6" style="margin-bottom: 1rem;">
                             <label class="form-label">Full Name</label>
@@ -55,9 +65,12 @@ $user = $user_result ? mysqli_fetch_assoc($user_result) : null;
                     </div>
                 </div>
                 
-                <div class="card" style="padding: 2rem;">
-                    <h3 style="margin-bottom: 1.5rem;"><i class="bi bi-truck"></i> Shipping Information</h3>
-                    <div style="background: var(--light-mint); color: var(--primary); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                <div class="card checkout-card">
+                    <div class="checkout-card-heading">
+                        <span class="checkout-icon"><i class="bi bi-truck"></i></span>
+                        <div><span class="checkout-step">02</span><h3>Shipping information</h3></div>
+                    </div>
+                    <div class="checkout-note">
                         <i class="bi bi-info-circle-fill"></i> To update your shipping details, please visit your <a href="../profile/index.php" style="color: var(--primary); font-weight: bold;">Profile page</a>.
                     </div>
                     <div class="row">
@@ -77,9 +90,12 @@ $user = $user_result ? mysqli_fetch_assoc($user_result) : null;
                 </div>
             </div>
             
-            <div class="col-md-5">
-                <div class="card" style="padding: 2rem; position: sticky; top: 100px;">
-                    <h3 style="margin-bottom: 1.5rem;">Order Summary</h3>
+            <div class="checkout-sidebar">
+                <div class="card checkout-summary">
+                    <div class="checkout-summary-heading">
+                        <div><span class="checkout-kicker">Your basket</span><h3>Order summary</h3></div>
+                        <i class="bi bi-bag-check"></i>
+                    </div>
                     
                     <div style="max-height: 300px; overflow-y: auto; padding-right: 1rem; margin-bottom: 1rem;">
                         <?php
@@ -96,17 +112,17 @@ $user = $user_result ? mysqli_fetch_assoc($user_result) : null;
                                 $item_total = $product['price'] * $quantity;
                                 $subtotal += $item_total;
                         ?>
-                            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F3F4F6; padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+                            <div class="checkout-item">
                                 <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
-                                    <div style="width: 40px; height: 40px; background: #F3F4F6; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <div class="checkout-item-image">
                                         <img src="../../assets/images/products<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                     </div>
-                                    <div style="font-size: 0.9rem;">
+                                    <div class="checkout-item-info">
                                         <div style="font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;"><?php echo htmlspecialchars($product['name']); ?></div>
                                         <div style="color: #6B7280;">Qty: <?php echo $quantity; ?></div>
                                     </div>
                                 </div>
-                                <div style="font-weight: 600;">$<?php echo number_format($item_total, 2); ?></div>
+                                <div class="checkout-item-price">$<?php echo number_format($item_total, 2); ?></div>
                             </div>
                         <?php
                             }
@@ -114,7 +130,7 @@ $user = $user_result ? mysqli_fetch_assoc($user_result) : null;
                         ?>
                     </div>
                     
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--text);">
+                    <div class="checkout-total-row">
                         <span>Subtotal</span>
                         <span>$<?php echo number_format($subtotal, 2); ?></span>
                     </div>
@@ -124,22 +140,22 @@ $user = $user_result ? mysqli_fetch_assoc($user_result) : null;
                     $total = $subtotal + $delivery;
                     ?>
                     
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: var(--text); padding-bottom: 1rem; border-bottom: 1px solid #E5E7EB;">
+                    <div class="checkout-total-row checkout-delivery-row">
                         <span>Delivery</span>
                         <span><?php echo $delivery > 0 ? '$'.number_format($delivery, 2) : 'FREE'; ?></span>
                     </div>
                     
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; font-weight: 700; font-size: 1.25rem;">
+                    <div class="checkout-grand-total">
                         <span>Grand Total</span>
-                        <span style="color: var(--primary);">$<?php echo number_format($total, 2); ?></span>
+                        <span>$<?php echo number_format($total, 2); ?></span>
                     </div>
                     
                     <form action="../../actions/checkout/place-order.php" method="POST">
-                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem;"><i class="bi bi-lock-fill"></i> Place Order Securely</button>
+                        <button type="submit" class="btn btn-primary checkout-submit"><i class="bi bi-lock-fill"></i> Place order securely</button>
                     </form>
                     
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <a href="../cart/index.php" style="color: var(--text); text-decoration: none; font-size: 0.9rem;">Return to Cart</a>
+                    <div class="checkout-secure-note">
+                        <i class="bi bi-shield-check"></i> Secure checkout · Free delivery over $300
                     </div>
                 </div>
             </div>

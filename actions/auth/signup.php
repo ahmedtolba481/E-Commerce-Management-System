@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = mysqli_real_escape_string($conn, $name);
     $hashed_password = mysqli_real_escape_string($conn, $hashed_password);
     
-    $user_insert = "INSERT INTO users (name, email, password, role) VALUES ('$name', '$email', '$hashed_password', 'user')";
+    $user_insert = "INSERT INTO users (name, email, password, role) VALUES ('$name', '$email', '$hashed_password', 'Client')";
     
     if (mysqli_query($conn, $user_insert)) {
         $user_id = mysqli_insert_id($conn);
