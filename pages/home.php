@@ -154,7 +154,7 @@ include "../includes/navbar.php";
                 <div class="col-md-3">
                     <div class="brand-card card">
                         <div class="brand-image">
-                            <img src="../admin/assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'default.png'); ?>" onerror="this.src='../assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'apple.png'); ?>'" alt="<?php echo htmlspecialchars($brand['name']); ?>">
+                            <img src="../assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'default.png'); ?>" onerror="this.src='../assets/images/brands/<?php echo htmlspecialchars($brand['logo'] ?? 'apple.png'); ?>'" alt="<?php echo htmlspecialchars($brand['name']); ?>">
                         </div>
                         <h4 style="margin-top: 1rem; margin-bottom: 0; font-size: 1.1rem;"><?php echo htmlspecialchars($brand['name']); ?></h4>
                     </div>
@@ -166,6 +166,13 @@ include "../includes/navbar.php";
             }
             ?>
         </div>
+<div style="text-align: center; margin-top: 3rem;">
+    <a href="/E-Commerce-Management-System/pages/brands/index.php"
+    class="btn btn-primary btn-lg">
+        View All Brands
+    </a>
+</div>
+
     </div>
 </section>
 
@@ -211,75 +218,165 @@ include "../includes/navbar.php";
 
 <!-- ================= PARTNERS ================= -->
 <section class="section">
+
     <div class="container">
+
         <div class="section-title">
             <h2>Our Partners</h2>
             <p>Trusted companies we collaborate with</p>
         </div>
-        <div class="row">
+
+
+        <div class="partners-grid">
+
             <?php
-            $query = "SELECT * FROM partners LIMIT 6";
+
+            $query = "SELECT * FROM partners LIMIT 3";
             $result = mysqli_query($conn, $query);
+
             if ($result && mysqli_num_rows($result) > 0) {
+
                 while ($partner = mysqli_fetch_assoc($result)) {
+
             ?>
-                <div class="col-md-2" style="padding: 1rem;">
-                    <div class="partner-card">
-                        <div class="partner-image">
-                            <img src="../admin/assets/images/partners/<?php echo htmlspecialchars($partner['logo'] ?? 'default.png'); ?>" onerror="this.src='../assets/images/partners/<?php echo htmlspecialchars($partner['logo'] ?? 'partner1.png'); ?>'" alt="<?php echo htmlspecialchars($partner['name']); ?>">
-                        </div>
+
+                <div class="partner-card">
+
+                    <div class="partner-image">
+
+                        <img
+                            src="../assets/images/partners/<?php echo htmlspecialchars($partner['logo']); ?>"
+                            alt="<?php echo htmlspecialchars($partner['name']); ?>"
+                        >
+
                     </div>
+
                 </div>
+
             <?php
+
                 }
+
             } else {
-                echo "<p style='text-align:center;width:100%;'>No partners found.</p>";
+
+                echo "<p style='text-align:center;width:100%;'>
+                        No partners found.
+                      </p>";
+
             }
+
             ?>
+
         </div>
+
+
+        <div class="partners-button">
+
+            <a
+                href="/E-Commerce-Management-System/pages/partners/index.php"
+                class="btn btn-primary btn-lg"
+            >
+                View All Partners
+            </a>
+
+        </div>
+
+
     </div>
+
 </section>
 
 <!-- ================= TEAM ================= -->
+
 <section class="section" style="background: var(--background);">
+
     <div class="container">
+
         <div class="section-title">
             <h2>Meet Our Team</h2>
             <p>The people behind ShopEase</p>
         </div>
-        <div class="row">
-            <?php
-            $query = "SELECT * FROM team LIMIT 3";
-            $result = mysqli_query($conn, $query);
-            if ($result && mysqli_num_rows($result) > 0) {
-                while ($member = mysqli_fetch_assoc($result)) {
-            ?>
-                <div class="col-md-4">
-                    <div class="team-card">
-                        <div class="team-image">
-                            <!-- Note: Old logic loaded team images from products. We will try products then team folder -->
-                            <img src="../admin/assets/images/products/<?php echo htmlspecialchars($member['image'] ?? 'default.jpg'); ?>" onerror="this.src='../assets/images/team/<?php echo htmlspecialchars($member['image'] ?? 'ahmed.jpg'); ?>'" alt="<?php echo htmlspecialchars($member['name']); ?>">
-                        </div>
-                        <div class="team-info">
-                            <h4 style="margin-bottom: 0.2rem;"><?php echo htmlspecialchars($member['name']); ?></h4>
-                            <div style="color: var(--primary); font-weight: 500; margin-bottom: 1rem;"><?php echo htmlspecialchars($member['position'] ?? 'Team Member'); ?></div>
-                            <p style="color: var(--text); font-size: 0.9rem; margin-bottom: 1.5rem;"><?php echo htmlspecialchars($member['description'] ?? ''); ?></p>
-                            <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                <a href="<?php echo htmlspecialchars($member['facebook'] ?? '#'); ?>" class="icon-btn"><i class="bi bi-facebook"></i></a>
-                                <a href="<?php echo htmlspecialchars($member['instagram'] ?? '#'); ?>" class="icon-btn"><i class="bi bi-instagram"></i></a>
-                                <a href="<?php echo htmlspecialchars($member['linkedin'] ?? '#'); ?>" class="icon-btn"><i class="bi bi-linkedin"></i></a>
+
+        <div class="team-carousel">
+
+            <div class="team-carousel-track" id="teamCarouselTrack">
+
+                <?php
+                $query = "SELECT * FROM team ORDER BY id ASC";
+                $result = mysqli_query($conn, $query);
+
+                if ($result && mysqli_num_rows($result) > 0) {
+
+                    while ($member = mysqli_fetch_assoc($result)) {
+
+                        $teamImage = !empty($member['image'])
+                            ? $member['image']
+                            : 'ahmed.jpg';
+                ?>
+
+                    <div class="team-carousel-slide">
+
+                        <div class="team-card">
+
+                            <div class="team-image">
+
+                                <img
+                                    src="/E-Commerce-Management-System/assets/images/team/<?php echo htmlspecialchars($teamImage); ?>"
+                                    alt="<?php echo htmlspecialchars($member['name']); ?>"
+                                >
+
                             </div>
+
+                            <div class="team-info">
+
+                                <h4>
+                                    <?php echo htmlspecialchars($member['name']); ?>
+                                </h4>
+
+                                <div class="team-position">
+                                    <?php echo htmlspecialchars($member['position'] ?? 'Team Member'); ?>
+                                </div>
+
+                                <p>
+                                    <?php echo htmlspecialchars($member['description'] ?? ''); ?>
+                                </p>
+
+                                <div class="team-socials">
+
+                                    <a href="<?php echo htmlspecialchars($member['facebook'] ?? '#'); ?>"
+                                       class="icon-btn">
+                                        <i class="bi bi-facebook"></i>
+                                    </a>
+
+                                    <a href="<?php echo htmlspecialchars($member['instagram'] ?? '#'); ?>"
+                                       class="icon-btn">
+                                        <i class="bi bi-instagram"></i>
+                                    </a>
+
+                                    <a href="<?php echo htmlspecialchars($member['linkedin'] ?? '#'); ?>"
+                                       class="icon-btn">
+                                        <i class="bi bi-linkedin"></i>
+                                    </a>
+
+                                </div>
+
+                            </div>
+
                         </div>
+
                     </div>
-                </div>
-            <?php
+
+                <?php
+                    }
                 }
-            } else {
-                echo "<p style='text-align:center;width:100%;'>No team members found.</p>";
-            }
-            ?>
+                ?>
+
+            </div>
+
         </div>
+
     </div>
+
 </section>
 
 <!-- ================= ABOUT US ================= -->

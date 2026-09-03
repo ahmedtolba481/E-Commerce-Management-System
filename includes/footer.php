@@ -56,5 +56,6 @@
         }
     });
 </script>
+<script src="/E-Commerce-Management-System/assets/js/team-slider.js"></script>
 </body>
 </html>
