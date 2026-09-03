@@ -71,6 +71,10 @@ h6 {
 }
 
 /* Category Card */
+/* //////////////////////////////////// */
+
+/* Category Card */
+
 .category-card {
   text-align: center;
   background: var(--white);
@@ -85,10 +89,12 @@ h6 {
   color: var(--dark);
 }
 
+
 .category-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 .category-image {
   height: 180px;
@@ -100,6 +106,7 @@ h6 {
   overflow: hidden;
 }
 
+
 .category-image img {
   height: 100%;
   width: 100%;
@@ -108,8 +115,18 @@ h6 {
   transition: transform 0.2s ease;
 }
 
+
 .category-card:hover .category-image img {
   transform: scale(1.03);
+}
+
+
+.category-card h3 {
+    margin: 0;
+
+    color: var(--dark);
+
+    font-size: 1.1rem;
 }
 
 /* Product Card */

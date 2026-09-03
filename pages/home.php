@@ -36,33 +36,65 @@ include "../includes/navbar.php";
 <!-- ================= CATEGORIES ================= -->
 <section id="categories" class="section">
     <div class="container">
+
         <div class="section-title">
             <h2>Shop by Category</h2>
             <p>Find what you're looking for easily</p>
         </div>
+
         <div class="row">
+
             <?php
-            $query = "SELECT * FROM categories LIMIT 4";
-            $result = mysqli_query($conn, $query);
-            if ($result && mysqli_num_rows($result) > 0) {
-                while ($category = mysqli_fetch_assoc($result)) {
+            $categoryQuery = "SELECT * FROM categories ORDER BY id ASC LIMIT 4";
+            $categoryResult = mysqli_query($conn, $categoryQuery);
+
+            if ($categoryResult && mysqli_num_rows($categoryResult) > 0) {
+
+                while ($category = mysqli_fetch_assoc($categoryResult)) {
+
+                    $image = !empty($category['image'])
+                        ? $category['image']
+                        : 'default.jpg';
             ?>
+
                 <div class="col-md-3">
-                    <a href="/E-Commerce-Management-System/pages/products/index.php?category=<?php echo $category['id']; ?>" class="category-card">
+
+                <a href="/E-Commerce-Management-System/pages/products/index.php?category=<?php echo $category['id']; ?>"
+                    class="category-card">
+
                         <div class="category-image">
-                            <!-- Try to use the original path format requested by existing app -->
-                            <img src="../admin/assets/images/categories/<?php echo htmlspecialchars($category['image'] ?? 'default.jpg'); ?>" onerror="this.src='../assets/images/categories/<?php echo htmlspecialchars($category['image'] ?? 'laptops.jpg'); ?>'" alt="<?php echo htmlspecialchars($category['name']); ?>">
+
+                            <img
+                                src="/E-Commerce-Management-System/assets/images/categories/<?php echo htmlspecialchars($image); ?>"
+                                alt="<?php echo htmlspecialchars($category['name']); ?>"
+                            >
+
                         </div>
-                        <h4><?php echo htmlspecialchars($category['name']); ?></h4>
+
+                        <h3>
+                            <?php echo htmlspecialchars($category['name']); ?>
+                        </h3>
+
                     </a>
+
                 </div>
+
             <?php
                 }
-            } else {
-                echo "<p style='text-align:center;width:100%;'>No categories found.</p>";
             }
             ?>
+
         </div>
+<div style="text-align: center; margin-top: 3rem;">
+            <a href="/E-Commerce-Management-System/pages/categories/index.php"
+               class="btn btn-primary btn-lg">
+                View All Categories
+            </a>
+        </div>
+
+
+
+
     </div>
 </section>
 
@@ -79,7 +111,7 @@ include "../includes/navbar.php";
                       FROM products 
                       LEFT JOIN categories ON products.category_id = categories.id 
                       LEFT JOIN brands ON products.brand_id = brands.id 
-                      LIMIT 8";
+                      LIMIT 4";
             $result = mysqli_query($conn, $query);
             if ($result && mysqli_num_rows($result) > 0) {
                 while ($product = mysqli_fetch_assoc($result)) {
