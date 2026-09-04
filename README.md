@@ -13,7 +13,6 @@
     <strong>A professional, modern, and fully responsive E-Commerce platform featuring a stunning Mint-Green UI.</strong>
   </p>
 
-  <img src="admin/assets/images/slider/slide1.jpg" alt="ShopEase tech and gadgets storefront banner" width="720" />
 </div>
 
 <hr>
@@ -22,11 +21,11 @@
 
 ### 🛒 Client storefront
 
-- Browse products, categories, brands, and product details
-- Add products to a session-based shopping cart
-- Register and sign in as a client
-- Manage profile information and delivery details
-- Place orders, review order history, and cancel eligible orders
+- 🧾 Browse products, categories, brands, and product details
+- 🛒 Add products to a session-based shopping cart
+- 🔐 Register and sign in as a client
+- 📍 Manage profile information and delivery details
+- 📦 Place orders, review order history, and cancel eligible orders
 
 ### 🧰 Staff portal
 
@@ -38,30 +37,30 @@ Staff accounts cannot access administrator-only user management and other restri
 
 Administrators have full management access, including everything available to staff plus:
 
-- Create, edit, and delete users
-- Assign the `Admin`, `Staff`, or `Client` role
-- Manage all catalog, order, client, team, and partner records
-- Monitor inventory, revenue, orders, and registered users
+- 👤 Create, edit, and delete users
+- 🏷️ Assign the `Admin`, `Staff`, or `Client` role
+- 🗂️ Manage all catalog, order, client, team, and partner records
+- 📊 Monitor inventory, revenue, orders, and registered users
 
 ## 👥 User roles
 
-| Role     | Main access                                                     | Login location          |
-| -------- | --------------------------------------------------------------- | ----------------------- |
-| `Client` | Storefront, cart, checkout, profile, and personal orders        | `/pages/auth/login.php` |
-| `Staff`  | Store management and operational dashboard pages                | `/admin/login.php`      |
-| `Admin`  | Full dashboard access, including user and permission management | `/admin/login.php`      |
+| Role        | Main access                                                     | Login location          |
+| ----------- | --------------------------------------------------------------- | ----------------------- |
+| 🛒 `Client` | Storefront, cart, checkout, profile, and personal orders        | `/pages/auth/login.php` |
+| 🧰 `Staff`  | Store management and operational dashboard pages                | `/admin/login.php`      |
+| 🛡️ `Admin`  | Full dashboard access, including user and permission management | `/admin/login.php`      |
 
 The role is stored in the `users.role` column. New public registrations are created as `Client` accounts. Staff and administrator accounts should be created by an administrator or inserted into the database by a trusted developer.
 
-## Technology
+## 💻 Technology
 
-- PHP 8 or newer
-- MySQL or MariaDB
-- HTML5, CSS3, and Vanilla JavaScript
-- Bootstrap Icons
-- XAMPP, WAMP, MAMP, or another Apache/PHP environment
+- 🐘 PHP 8 or newer
+- 🗄️ MySQL or MariaDB
+- 🌐 HTML5, CSS3, and Vanilla JavaScript
+- 🎨 Bootstrap Icons
+- 🖥️ XAMPP, WAMP, MAMP, or another Apache/PHP environment
 
-## Project Structure
+## 📂 Project Structure
 
 ```text
 E-Commerce-Management-System/
@@ -78,26 +77,26 @@ E-Commerce-Management-System/
 └── index.php         # Storefront entry point
 ```
 
-## Installation
+## ⚙️ Installation
 
-1. Install and start Apache and MySQL in XAMPP.
-2. Copy the project into the web root, for example:
+1. 🚀 Install and start Apache and MySQL in XAMPP.
+2. 📁 Copy the project into the web root, for example:
 
 ```text
 C:\xampp\htdocs\E-Commerce-Management-System
 ```
 
-3. Open `http://localhost/phpmyadmin` and create a database named `ecommerce`.
-4. Import `database/ecommerce.sql`.
-5. Optionally import `database/seed.sql` to add sample users, products, categories, brands, and other data.
-6. Check `config/database.php` and update the host, database name, username, and password for your local MySQL installation.
-7. Open the application:
+3. 🗃️ Open `http://localhost/phpmyadmin` and create a database named `ecommerce`.
+4. 📥 Import `database/ecommerce.sql`.
+5. 🌱 Optionally import `database/seed.sql` to add sample users, products, categories, brands, and other data.
+6. 🔧 Check `config/database.php` and update the host, database name, username, and password for your local MySQL installation.
+7. 🔗 Open the application:
 
-- Storefront: `http://localhost/E-Commerce-Management-System/`
-- Client login: `http://localhost/E-Commerce-Management-System/pages/auth/login.php`
-- Staff and admin login: `http://localhost/E-Commerce-Management-System/admin/login.php`
+- 🛍️ Storefront: `http://localhost/E-Commerce-Management-System/`
+- 🛒 Client login: `http://localhost/E-Commerce-Management-System/pages/auth/login.php`
+- 🔐 Staff and admin login: `http://localhost/E-Commerce-Management-System/admin/login.php`
 
-## Demo accounts
+## 🔑 Demo accounts
 
 The accounts in `database/seed.sql` use the development password `ChangeMe123!`:
 
@@ -112,17 +111,17 @@ The seed file does not currently include a `Staff` account. To test the staff po
 
 Change all development passwords before using the application outside a local test environment.
 
-## Database overview
+## 🗄️ Database overview
 
-- `users`: login identities and role assignments
-- `clients`: client contact and delivery information
-- `products`, `categories`, and `brands`: product catalog
-- `orders` and `order_items`: purchases and their products
-- `team` and `partners`: storefront content managed from the portal
+- 👥 `users`: login identities and role assignments
+- 📇 `clients`: client contact and delivery information
+- 🛍️ `products`, `categories`, and `brands`: product catalog
+- 📦 `orders` and `order_items`: purchases and their products
+- 🤝 `team` and `partners`: storefront content managed from the portal
 
-## Security notes
+## 🔒 Security notes
 
-- Use HTTPS in production.
-- Store a strong, unique password for every account.
-- Do not commit production credentials or uploaded files containing sensitive information.
-- Review permissions before assigning the `Admin` role.
+- 🔐 Use HTTPS in production.
+- 🔑 Store a strong, unique password for every account.
+- 🚫 Do not commit production credentials or uploaded files containing sensitive information.
+- 🛡️ Review permissions before assigning the `Admin` role.
