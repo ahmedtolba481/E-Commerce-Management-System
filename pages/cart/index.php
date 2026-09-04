@@ -36,28 +36,29 @@ $subtotal = 0;
                                 $item_total = $product['price'] * $quantity;
                                 $subtotal += $item_total;
                         ?>
-                            <div style="display: flex; align-items: center; border-bottom: 1px solid #E5E7EB; padding-bottom: 1.5rem; margin-bottom: 1.5rem; gap: 1.5rem;">
-                                <div style="width: 100px; height: 100px; background: var(--background); border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0.5rem;">
+                            <div class="cart-item" style="display: flex; align-items: center; gap: 1.5rem; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #E5E7EB;">
+                                <div class="cart-item-image" style="width: 110px; height: 110px; border-radius: 12px; overflow: hidden; background: #F8FAFC; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 0.75rem; border: 1px solid #F1F5F9;">
                                     <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                 </div>
-                                <div style="flex: 1;">
-                                    <h4 style="margin-bottom: 0.2rem;"><?php echo htmlspecialchars($product['name']); ?></h4>
-                                    <div style="color: var(--primary); font-weight: 600;">$<?php echo htmlspecialchars($product['price']); ?></div>
+                                <div class="cart-item-details" style="flex: 1;">
+                                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.15rem; color: var(--dark); font-weight: 600;"><?php echo htmlspecialchars($product['name']); ?></h4>
+                                    <div style="color: var(--primary); font-weight: 700; font-size: 1.05rem;">$<?php echo number_format($product['price'], 2); ?></div>
                                 </div>
-                                <div>
-                                    <form action="../../actions/cart/update.php" method="POST" style="display: flex; align-items: center; gap: 0.5rem;">
+                                
+                                <div class="cart-item-actions" style="display: flex; align-items: center; gap: 2rem;">
+                                    <form action="../../actions/cart/update.php" method="POST" style="display: flex; align-items: center; background: white; border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                                         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                        <input type="number" name="quantity" value="<?php echo $quantity; ?>" min="1" max="<?php echo $product['stock']; ?>" class="form-control" style="width: 70px; padding: 0.5rem; text-align: center;">
-                                        <button type="submit" class="btn btn-secondary icon-btn" style="width: 35px; height: 35px;" title="Update"><i class="bi bi-arrow-clockwise"></i></button>
+                                        <input type="number" name="quantity" value="<?php echo $quantity; ?>" min="1" max="<?php echo $product['stock']; ?>" style="width: 60px; border: none; text-align: center; font-weight: 600; font-size: 1rem; outline: none; padding: 0.5rem 0; background: transparent;" onchange="this.form.submit()">
+                                        <button type="submit" style="background: #F9FAFB; border: none; border-left: 1px solid #E5E7EB; padding: 0.5rem 0.75rem; cursor: pointer; color: var(--primary); transition: background 0.2s;" onmouseover="this.style.background='#F3F4F6'" onmouseout="this.style.background='#F9FAFB'" title="Update"><i class="bi bi-arrow-clockwise"></i></button>
                                     </form>
-                                </div>
-                                <div style="font-weight: 700; font-size: 1.1rem; width: 100px; text-align: right;">
-                                    $<?php echo number_format($item_total, 2); ?>
-                                </div>
-                                <div>
+                                    
+                                    <div style="font-weight: 700; font-size: 1.25rem; color: var(--dark); min-width: 90px; text-align: right;">
+                                        $<?php echo number_format($item_total, 2); ?>
+                                    </div>
+                                    
                                     <form action="../../actions/cart/remove.php" method="POST">
                                         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                        <button type="submit" class="btn icon-btn" style="background: #FEE2E2; color: #DC2626; width: 35px; height: 35px;" title="Remove"><i class="bi bi-trash"></i></button>
+                                        <button type="submit" style="background: none; border: none; color: #EF4444; padding: 0.5rem; cursor: pointer; border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;" onmouseover="this.style.background='#FEE2E2'" onmouseout="this.style.background='none'" title="Remove"><i class="bi bi-trash3-fill" style="font-size: 1.25rem;"></i></button>
                                     </form>
                                 </div>
                             </div>
@@ -69,12 +70,12 @@ $subtotal = 0;
                 </div>
                 
                 <div class="col-md-4">
-                    <div class="card" style="padding: 2rem;">
-                        <h3 style="margin-bottom: 1.5rem;">Order Summary</h3>
+                    <div class="card" style="padding: 2rem; border-top: 4px solid var(--primary); position: sticky; top: 100px;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">Order Summary</h3>
                         
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: var(--text);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: #4B5563; font-size: 1.05rem;">
                             <span>Subtotal</span>
-                            <span>$<?php echo number_format($subtotal, 2); ?></span>
+                            <span style="font-weight: 600;">$<?php echo number_format($subtotal, 2); ?></span>
                         </div>
                         
                         <?php 
@@ -82,20 +83,20 @@ $subtotal = 0;
                         $total = $subtotal + $delivery;
                         ?>
                         
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: var(--text); padding-bottom: 1rem; border-bottom: 1px solid #E5E7EB;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; color: #4B5563; padding-bottom: 1.5rem; border-bottom: 1px solid #E5E7EB; font-size: 1.05rem;">
                             <span>Delivery</span>
-                            <span><?php echo $delivery > 0 ? '$'.number_format($delivery, 2) : 'FREE'; ?></span>
+                            <span style="font-weight: 600;"><?php echo $delivery > 0 ? '$'.number_format($delivery, 2) : '<span style="color: var(--primary);">FREE</span>'; ?></span>
                         </div>
                         
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; font-weight: 700; font-size: 1.25rem;">
-                            <span>Total</span>
-                            <span style="color: var(--primary);">$<?php echo number_format($total, 2); ?></span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; background: #F8FAFC; padding: 1rem; border-radius: 8px;">
+                            <span style="font-weight: 600; font-size: 1.2rem;">Total</span>
+                            <span style="color: var(--primary); font-weight: 800; font-size: 1.5rem;">$<?php echo number_format($total, 2); ?></span>
                         </div>
                         
-                        <a href="../checkout/index.php" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1rem;">Proceed to Checkout</a>
+                        <a href="../checkout/index.php" class="btn btn-primary " style="display: flex; width: 88%; r justify-content: center; align-items: center; padding: 1rem; font-size: 1.1rem; font-weight: 600; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);">Proceed to Checkout <i class="bi bi-arrow-right ms-2"></i></a>
                         
-                        <div style="text-align: center; margin-top: 1rem;">
-                            <a href="../products/index.php" style="color: var(--text); text-decoration: none; font-size: 0.9rem;">or Continue Shopping</a>
+                        <div style="text-align: center; margin-top: 1.5rem;">
+                            <a href="../products/index.php" style="color: #6B7280; text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='#6B7280'">or Continue Shopping</a>
                         </div>
                     </div>
                 </div>

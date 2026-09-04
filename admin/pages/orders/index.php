@@ -56,6 +56,7 @@ if ($result) {
                     if ($st === 'pending' || $st === 'processing') $statusClass = 'badge-warning';
                     elseif ($st === 'cancelled') $statusClass = 'badge-danger';
                     elseif ($st === 'shipped') $statusClass = 'badge-info';
+                    elseif ($st === 'completed' || $st === 'delivered') $statusClass = 'badge-mint';
                 ?>
                     <article class="entity-card">
                         <div class="entity-card-body">

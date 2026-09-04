@@ -35,6 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'id' => $product_id,
                     'quantity' => $new_qty
                 ];
+            } else {
+                $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '../../pages/cart/index.php';
+                if (strpos($referer, '?') !== false) {
+                    $referer .= '&error=out_of_stock';
+                } else {
+                    $referer .= '?error=out_of_stock';
+                }
+                header("Location: $referer");
+                exit;
             }
         }
     }
@@ -42,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Redirect back
 $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '../../pages/cart/index.php';
+// Clean up existing error param if present to avoid duplication
+$referer = preg_replace('/(\?|&)error=out_of_stock/', '', $referer);
 header("Location: $referer");
 exit;
 ?>

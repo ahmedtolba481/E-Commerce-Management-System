@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $city = trim($_POST['city'] ?? '');
     $password = $_POST['password'] ?? '';
     
-    if (!$name || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$phone || !$address || !$city || strlen($password) < 6) {
-        $_SESSION['auth_error'] = 'Please complete all fields correctly. Password must be at least 6 characters.';
+    if (!$name || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$phone || !$address || !$city || strlen($password) < 8) {
+        $_SESSION['auth_error'] = 'Please complete all fields correctly. Password must be at least 8 characters.';
         header("Location: ../../pages/auth/signup.php");
         exit;
     }
@@ -28,13 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../../pages/auth/signup.php");
         exit;
     }
-    
-    // Hash password
+
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    
-    // Transaction-like functionality (simple mysqli queries as requested)
-    // We will do it without PDO or complicated try-catch if possible, but we need to ensure both inserts work.
-    
+
     $name = mysqli_real_escape_string($conn, $name);
     $hashed_password = mysqli_real_escape_string($conn, $hashed_password);
     
@@ -61,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: ../../pages/home.php");
             exit;
         } else {
-            // Rollback manually
             mysqli_query($conn, "DELETE FROM users WHERE id = $user_id");
             $_SESSION['auth_error'] = 'Registration failed due to client details error.';
         }

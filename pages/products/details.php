@@ -23,7 +23,10 @@ if (!$product) {
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <div class="card" style="padding: 2rem; background: var(--background); display: flex; align-items: center; justify-content: center; height: 500px;">
+                <div class="card" style="padding: 2rem; background: var(--background); display: flex; align-items: center; justify-content: center; height: 500px; position: relative; <?php echo ((int)$product['stock'] <= 0) ? 'opacity: 0.6;' : ''; ?>">
+                    <?php if ((int)$product['stock'] <= 0): ?>
+                        <span class="badge" style="position: absolute; top: 20px; right: 20px; background: #DC2626; color: white; z-index: 10; padding: 0.5rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">Out of Stock</span>
+                    <?php endif; ?>
                     <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
             </div>
@@ -62,6 +65,14 @@ if (!$product) {
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg" style="flex: 1;"><i class="bi bi-cart-plus"></i> Add to Cart</button>
                     </form>
+                <?php else: ?>
+                    <div style="display: flex; gap: 1rem; align-items: center; padding: 1.5rem; background: var(--background); border-radius: 12px; opacity: 0.7;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <label style="font-weight: 600; color: #9CA3AF;">Quantity:</label>
+                            <input type="number" value="0" class="form-control" style="width: 80px; text-align: center; cursor: not-allowed;" disabled>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-lg" style="flex: 1; cursor: not-allowed; background: #E5E7EB; color: #9CA3AF; border-color: #E5E7EB;" disabled><i class="bi bi-x-circle"></i> Out of Stock</button>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>

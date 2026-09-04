@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($product_id > 0 && isset($_SESSION['cart'][$product_id])) {
         if ($quantity > 0) {
-            // Verify stock
+
             $query = "SELECT stock FROM products WHERE id = $product_id";
             $result = mysqli_query($conn, $query);
             if ($result && mysqli_num_rows($result) > 0) {

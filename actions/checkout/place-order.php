@@ -15,7 +15,7 @@ if (empty($_SESSION['cart'])) {
 
 $client_id = (int)$_SESSION['client_id'];
 
-// Get cart items and calculate total
+
 $cart = $_SESSION['cart'];
 $subtotal = 0;
 $items = [];
@@ -24,7 +24,7 @@ foreach ($cart as $item) {
     $product_id = $item['id'];
     $quantity = $item['quantity'];
     
-    $query = "SELECT id, price, stock FROM products WHERE id = $product_id";
+    $query = "SELECT id, name, price, stock FROM products WHERE id = $product_id";
     $result = mysqli_query($conn, $query);
     
     if ($result && mysqli_num_rows($result) > 0) {
@@ -32,7 +32,9 @@ foreach ($cart as $item) {
         
         // Final stock check
         if ($quantity > $product['stock']) {
-            $quantity = $product['stock'];
+            $_SESSION['checkout_error'] = "Insufficient stock for product: " . htmlspecialchars($product['name']) . ". Only " . $product['stock'] . " available.";
+            header("Location: ../../pages/checkout/index.php");
+            exit;
         }
         
         if ($quantity > 0) {
@@ -45,6 +47,10 @@ foreach ($cart as $item) {
                 'price' => $product['price']
             ];
         }
+    } else {
+        $_SESSION['checkout_error'] = "One of the products in your cart is invalid.";
+        header("Location: ../../pages/checkout/index.php");
+        exit;
     }
 }
 
@@ -76,7 +82,7 @@ if (mysqli_query($conn, $order_query)) {
         }
         
         // Update stock
-        $stock_query = "UPDATE products SET stock = stock - $qty WHERE id = $pid";
+        $stock_query = "UPDATE products SET stock = stock - $qty WHERE id = $pid AND stock >= $qty";
         if (!mysqli_query($conn, $stock_query)) {
             $success = false;
         }

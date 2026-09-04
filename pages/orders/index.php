@@ -13,11 +13,27 @@ include "../../includes/header.php";
 include "../../includes/navbar.php";
 
 $client_id = (int)$_SESSION['client_id'];
+
+$order_error = isset($_SESSION['order_error']) ? $_SESSION['order_error'] : '';
+$order_success = isset($_SESSION['order_success']) ? $_SESSION['order_success'] : '';
+unset($_SESSION['order_error'], $_SESSION['order_success']);
 ?>
 
 <section class="section" style="background: var(--background); min-height: 80vh;">
     <div class="container">
         <h1 style="margin-bottom: 2rem;">My Orders</h1>
+        
+        <?php if ($order_error): ?>
+            <div class="alert alert-danger" style="background: #FEE2E2; color: #DC2626; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <i class="bi bi-exclamation-triangle-fill"></i> <?php echo htmlspecialchars($order_error); ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($order_success): ?>
+            <div class="alert alert-success" style="background: #D1FAE5; color: #059669; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <i class="bi bi-check-circle-fill"></i> <?php echo htmlspecialchars($order_success); ?>
+            </div>
+        <?php endif; ?>
         
         <?php
         // Try to get orders, using simple mysqli
@@ -35,7 +51,7 @@ $client_id = (int)$_SESSION['client_id'];
                 if ($status == 'pending') { $status_color = '#D97706'; $status_bg = '#FEF3C7'; }
                 if ($status == 'processing') { $status_color = '#2563EB'; $status_bg = '#DBEAFE'; }
                 if ($status == 'shipped') { $status_color = '#7C3AED'; $status_bg = '#EDE9FE'; }
-                if ($status == 'delivered') { $status_color = '#059669'; $status_bg = '#D1FAE5'; }
+                if ($status == 'delivered' || $status == 'completed') { $status_color = '#059669'; $status_bg = '#D1FAE5'; }
                 if ($status == 'cancelled') { $status_color = '#DC2626'; $status_bg = '#FEE2E2'; }
         ?>
                 <div class="card" style="margin-bottom: 1.5rem; overflow: visible;">
@@ -52,6 +68,19 @@ $client_id = (int)$_SESSION['client_id'];
                             <span style="display: inline-block; padding: 0.35rem 1rem; border-radius: 99px; font-size: 0.85rem; font-weight: 600; background: <?php echo $status_bg; ?>; color: <?php echo $status_color; ?>; text-transform: capitalize;">
                                 <?php echo htmlspecialchars($status); ?>
                             </span>
+                            <?php 
+                            if ($status == 'pending' && isset($order['created_at'])) {
+                                $created_at = strtotime($order['created_at']);
+                                $current_time = time();
+                                $hours_diff = ($current_time - $created_at) / 3600;
+                                
+                                if ($hours_diff <= 2) {
+                            ?>
+                                    <button type="button" class="btn btn-secondary btn-sm" style="color: #DC2626; border-color: #FCA5A5; background: white;" onclick="openCancelModal(<?php echo $order_id; ?>)"><i class="bi bi-x-circle"></i> Cancel</button>
+                            <?php
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                     <div style="padding: 1.5rem;">
@@ -101,6 +130,92 @@ $client_id = (int)$_SESSION['client_id'];
         ?>
     </div>
 </section>
+
+<!-- Custom Cancel Modal -->
+<style>
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 1050;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+.modal-content {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    text-align: center;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+.modal-icon {
+    font-size: 3.5rem;
+    color: #DC2626;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+}
+.modal-text {
+    color: #6B7280;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+}
+.modal-actions .btn {
+    flex: 1;
+    padding: 0.75rem;
+    font-weight: 600;
+}
+</style>
+
+<div class="modal-overlay" id="cancelModal">
+    <div class="modal-content">
+        <div class="modal-icon"><i class="bi bi-exclamation-circle"></i></div>
+        <div class="modal-title">Cancel Order?</div>
+        <div class="modal-text">Are you sure you want to cancel this order? This action cannot be undone and your items will be released back to stock.</div>
+        <form action="../../actions/orders/cancel.php" method="POST" class="modal-actions">
+            <input type="hidden" name="order_id" id="modalOrderId" value="">
+            <button type="button" class="btn btn-secondary" onclick="closeCancelModal()">Keep Order</button>
+            <button type="submit" class="btn btn-primary" style="background: #DC2626; border-color: #DC2626; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);">Yes, Cancel It</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function openCancelModal(orderId) {
+    document.getElementById('modalOrderId').value = orderId;
+    document.getElementById('cancelModal').classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+function closeCancelModal() {
+    document.getElementById('cancelModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+</script>
 
 <?php
 include "../../includes/footer.php";

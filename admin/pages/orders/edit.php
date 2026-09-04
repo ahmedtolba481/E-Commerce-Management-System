@@ -57,29 +57,65 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    $sql = "UPDATE orders SET client_id = '$client_id', total_price = '$total_price', status = '$status' WHERE id = $id";
+    // Get old order status
+    $oldStatusSql = "SELECT status FROM orders WHERE id = $id";
+    $oldStatusResult = mysqli_query($conn, $oldStatusSql);
+    $oldOrder = mysqli_fetch_assoc($oldStatusResult);
+    $old_status = $oldOrder['status'];
 
-    if (mysqli_query($conn, $sql)) {
-        mysqli_query($conn, "DELETE FROM order_items WHERE order_id = $id");
+    // Enforce business rules
+    if ($old_status === 'cancelled' && $status !== 'cancelled') {
+        $error = "A cancelled order cannot be changed to another status.";
+        $status = 'cancelled';
+    } else if ($old_status === 'delivered' && $status !== 'delivered') {
+        $error = "A delivered order cannot be changed to another status.";
+        $status = 'delivered';
+    } else if ($old_status === 'shipped' && $status === 'cancelled') {
+        $error = "Shipped orders cannot be cancelled.";
+        $status = $old_status;
+    }
 
-        foreach ($product_ids as $index => $product_id) {
-            $product_id = (int)$product_id;
-            $quantity = (int)$quantities[$index];
-            $productQuery = "SELECT price FROM products WHERE id = $product_id";
-            $productResult = mysqli_query($conn, $productQuery);
-            $product = mysqli_fetch_assoc($productResult);
-            if ($product) {
-                $price = $product['price'];
-                $itemSql = "INSERT INTO order_items (order_id, product_id, quantity, price)
-                            VALUES ('$id', '$product_id', '$quantity', '$price')";
-                mysqli_query($conn, $itemSql);
+    if (empty($error)) {
+        $sql = "UPDATE orders SET client_id = '$client_id', total_price = '$total_price', status = '$status' WHERE id = $id";
+
+        if (mysqli_query($conn, $sql)) {
+            // Revert old stock if order was not cancelled
+            if ($old_status !== 'cancelled') {
+                $oldItemsQuery = "SELECT product_id, quantity FROM order_items WHERE order_id = $id";
+                $oldItemsResult = mysqli_query($conn, $oldItemsQuery);
+                while ($oldItem = mysqli_fetch_assoc($oldItemsResult)) {
+                    $pid = (int)$oldItem['product_id'];
+                    $qty = (int)$oldItem['quantity'];
+                    mysqli_query($conn, "UPDATE products SET stock = stock + $qty WHERE id = $pid");
+                }
             }
-        }
+            
+            mysqli_query($conn, "DELETE FROM order_items WHERE order_id = $id");
 
-        header("Location: index.php");
-        exit;
-    } else {
-        $error = "Database Error: " . mysqli_error($conn);
+            foreach ($product_ids as $index => $product_id) {
+                $product_id = (int)$product_id;
+                $quantity = (int)$quantities[$index];
+                $productQuery = "SELECT price FROM products WHERE id = $product_id";
+                $productResult = mysqli_query($conn, $productQuery);
+                $product = mysqli_fetch_assoc($productResult);
+                if ($product) {
+                    $price = $product['price'];
+                    $itemSql = "INSERT INTO order_items (order_id, product_id, quantity, price)
+                                VALUES ('$id', '$product_id', '$quantity', '$price')";
+                    mysqli_query($conn, $itemSql);
+                    
+                    // Deduct new stock if order is not cancelled
+                    if ($status !== 'cancelled') {
+                        mysqli_query($conn, "UPDATE products SET stock = stock - $quantity WHERE id = $product_id AND stock >= $quantity");
+                    }
+                }
+            }
+
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Database Error: " . mysqli_error($conn);
+        }
     }
 }
 
@@ -135,13 +171,28 @@ include '../../includes/header.php';
 
                     <div class="form-group">
                         <label for="status" class="form-label">Order Status <span>*</span></label>
-                        <select id="status" name="status" class="form-select" required>
-                            <option value="pending" <?= ($order['status'] == 'pending') ? 'selected' : ''; ?>>Pending</option>
-                            <option value="processing" <?= ($order['status'] == 'processing') ? 'selected' : ''; ?>>Processing</option>
-                            <option value="shipped" <?= ($order['status'] == 'shipped') ? 'selected' : ''; ?>>Shipped</option>
-                            <option value="completed" <?= ($order['status'] == 'completed') ? 'selected' : ''; ?>>Completed</option>
-                            <option value="cancelled" <?= ($order['status'] == 'cancelled') ? 'selected' : ''; ?>>Cancelled</option>
-                        </select>
+                        <?php if ($order['status'] === 'cancelled'): ?>
+                            <input type="text" class="form-control bg-light text-danger font-weight-bold" value="Cancelled (Final)" readonly>
+                            <input type="hidden" name="status" value="cancelled">
+                            <small class="text-muted d-block mt-1">This order is cancelled and its status cannot be changed.</small>
+                        <?php elseif ($order['status'] === 'delivered'): ?>
+                            <input type="text" class="form-control bg-light text-success font-weight-bold" value="Delivered (Final)" readonly>
+                            <input type="hidden" name="status" value="delivered">
+                            <small class="text-muted d-block mt-1">This order is delivered and its status cannot be changed.</small>
+                        <?php else: ?>
+                            <select id="status" name="status" class="form-select" required>
+                                <option value="pending" <?= ($order['status'] == 'pending') ? 'selected' : ''; ?>>Pending</option>
+                                <option value="processing" <?= ($order['status'] == 'processing') ? 'selected' : ''; ?>>Processing</option>
+                                <option value="shipped" <?= ($order['status'] == 'shipped') ? 'selected' : ''; ?>>Shipped</option>
+                                <option value="delivered" <?= ($order['status'] == 'delivered') ? 'selected' : ''; ?>>Delivered</option>
+                                <?php if ($order['status'] !== 'shipped'): ?>
+                                    <option value="cancelled" <?= ($order['status'] == 'cancelled') ? 'selected' : ''; ?>>Cancelled</option>
+                                <?php endif; ?>
+                            </select>
+                            <?php if ($order['status'] === 'shipped'): ?>
+                                <small class="text-muted d-block mt-1">Shipped orders can no longer be cancelled.</small>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Products list -->

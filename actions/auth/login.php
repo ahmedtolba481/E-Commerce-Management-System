@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     
-    // Using simple mysqli queries as requested
     $email = mysqli_real_escape_string($conn, $email);
     
     $query = "SELECT id, name, email, password, role FROM users WHERE email = '$email' LIMIT 1";

@@ -42,8 +42,11 @@ $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
             ?>
                 <div class="col-md-3" style="margin-bottom: 1.5rem;">
                     <div class="product-card">
-                        <div class="product-image">
-                            <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <div class="product-image" style="position: relative;">
+                            <?php if ((int)$product['stock'] <= 0): ?>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(220, 38, 38, 0.9); color: white; z-index: 10; padding: 0.5rem 1rem; border-radius: 99px; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.3); white-space: nowrap;">Out of Stock</div>
+                            <?php endif; ?>
+                            <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="<?php echo ((int)$product['stock'] <= 0) ? 'opacity: 0.5; filter: grayscale(100%);' : ''; ?>">
                         </div>
                         <div class="product-info">
                             <?php if(!empty($product['brand_name'])): ?>
@@ -57,7 +60,11 @@ $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
                                 <form action="../../actions/cart/add.php" method="POST" style="flex:1;">
                                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                                     <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-cart-plus"></i> Add</button>
+                                    <?php if ((int)$product['stock'] > 0): ?>
+                                        <button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-cart-plus"></i> Add</button>
+                                    <?php else: ?>
+                                        <button type="button" class="btn btn-secondary" style="width:100%; cursor: not-allowed; background: #F3F4F6; color: #9CA3AF; border-color: #F3F4F6; font-weight: 600; padding-left: 0; padding-right: 0;" disabled>Sold Out</button>
+                                    <?php endif; ?>
                                 </form>
                             </div>
                         </div>

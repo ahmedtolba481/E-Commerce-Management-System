@@ -54,6 +54,10 @@ if (isset($_POST['submit'])) {
                 $itemSql = "INSERT INTO order_items (order_id, product_id, quantity, price)
                             VALUES ('$order_id', '$product_id', '$quantity', '$price')";
                 mysqli_query($conn, $itemSql);
+                
+                if ($status !== 'cancelled') {
+                    mysqli_query($conn, "UPDATE products SET stock = stock - $quantity WHERE id = $product_id AND stock >= $quantity");
+                }
             }
         }
         header("Location: index.php");
