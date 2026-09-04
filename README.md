@@ -98,14 +98,19 @@ C:\xampp\htdocs\E-Commerce-Management-System
 
 ## 🔑 Demo accounts
 
-The accounts in `database/seed.sql` use the development password `ChangeMe123!`:
+The accounts in `database/seed.sql` use the development password `password`:
 
-| Role   | Email                 |
-| ------ | --------------------- |
-| Admin  | `admin@example.com`   |
-| Client | `ahmed@example.com`   |
-| Client | `mohamed@example.com` |
-| Client | `sara@example.com`    |
+| Role   | Email                  |
+|--------|------------------------|
+| Admin  | `admin@shopease.com`   |
+| Staff  | `staff@shopease.com`   |
+| Client | `ahmed@example.com`    |
+| Client | `mohamed@example.com`  |
+| Client | `omar@example.com`     |
+| Client | `youssef@example.com`  |
+| Client | `ali@example.com`      |
+
+**Password for all accounts:** `password`
 
 The seed file does not currently include a `Staff` account. To test the staff portal, create a user with `role = 'Staff'` through the administrator user page or directly in the database, using a securely generated password hash.
 
