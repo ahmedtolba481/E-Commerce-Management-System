@@ -809,6 +809,30 @@ a:hover {
   justify-content: space-between;
 }
 
+.category-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 30px;
+  padding: 0 0.8rem;
+  border: 1px solid #9be2c0;
+  border-radius: 999px;
+  background: #d8f7e8;
+  color: #087443;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.category-status-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 3px rgba(25, 169, 116, 0.12);
+}
+
 .entity-price {
   font-size: 1.25rem;
   font-weight: 800;

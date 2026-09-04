@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- ShopEase Admin CSS -->
-    <link rel="stylesheet" href="/E-Commerce-Management-System/admin/assets/css/admin.css">
+    <link rel="stylesheet" href="/E-Commerce-Management-System/admin/assets/css/admin.css?v=20260904">
 
     <script src="/E-Commerce-Management-System/admin/assets/js/form-validation.js" defer></script>
     <script src="/E-Commerce-Management-System/admin/assets/js/admin.js" defer></script>

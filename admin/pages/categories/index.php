@@ -57,7 +57,7 @@ if ($result) {
                             <p class="entity-description"><?= htmlspecialchars($category['description'] ?? 'No description available.'); ?></p>
 
                             <div class="entity-card-footer">
-                                <span class="badge badge-mint">Active Category</span>
+                                <span class="category-status"><span class="category-status-dot" aria-hidden="true"></span>Active</span>
                                 <div class="icon-action-group">
                                     <a href="show.php?id=<?= $category['id']; ?>" class="icon-action action-view" aria-label="View category" title="View Category">
                                         <i class="bi bi-eye"></i>
