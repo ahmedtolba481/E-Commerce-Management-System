@@ -5,6 +5,12 @@ $pageHeading = "Products";
 
 include '../../../config/database.php';
 
+$sort = $_GET['sort'] ?? 'id';
+$orderBy = "products.id DESC";
+if ($sort === 'sold') {
+    $orderBy = "total_sold DESC, products.id DESC";
+}
+
 $query = "SELECT 
             products.id,
             categories.name AS category_name,
@@ -14,13 +20,15 @@ $query = "SELECT
             products.price,
             products.stock,
             products.image,
-            products.created_at
+            products.created_at,
+            COALESCE(SUM(order_items.quantity), 0) AS total_sold
           FROM products
-          LEFT JOIN categories
-            ON products.category_id = categories.id
-          LEFT JOIN brands
-            ON products.brand_id = brands.id
-          ORDER BY products.id DESC";
+          LEFT JOIN categories ON products.category_id = categories.id
+          LEFT JOIN brands ON products.brand_id = brands.id
+          LEFT JOIN order_items ON products.id = order_items.product_id
+          LEFT JOIN orders ON order_items.order_id = orders.id AND orders.status != 'cancelled'
+          GROUP BY products.id
+          ORDER BY $orderBy";
 
 $result = mysqli_query($conn, $query);
 
@@ -47,7 +55,11 @@ include '../../includes/header.php';
                 <p>Manage product items, pricing, and stock levels.</p>
             </div>
 
-            <div class="page-actions">
+            <div class="page-actions" style="display: flex; gap: 1rem; align-items: center;">
+                <a href="?sort=<?= $sort === 'sold' ? 'id' : 'sold' ?>" class="btn btn-outline">
+                    <i class="bi bi-sort-numeric-down"></i>
+                    <span><?= $sort === 'sold' ? 'Sort by Latest' : 'Sort by Top Sellers' ?></span>
+                </a>
                 <a href="create.php" class="btn btn-primary">
                     <i class="bi bi-plus-lg"></i>
                     <span>Add Product</span>
@@ -82,9 +94,12 @@ include '../../includes/header.php';
 
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <span class="entity-price">$<?= number_format($product['price'], 2); ?></span>
-                                <span class="badge <?= $isLowStock ? 'badge-danger' : 'badge-mint' ?>">
-                                    <?= $product['stock']; ?> in stock
-                                </span>
+                                <div class="d-flex flex-column align-items-end gap-1">
+                                    <span class="badge <?= $isLowStock ? 'badge-danger' : 'badge-mint' ?>">
+                                        <?= $product['stock']; ?> in stock
+                                    </span>
+                                    <span class="text-muted fw-bold" style="font-size: 0.8rem;"><i class="bi bi-graph-up-arrow"></i> <?= (int)$product['total_sold'] ?> Sold</span>
+                                </div>
                             </div>
 
                             <div class="entity-card-footer">

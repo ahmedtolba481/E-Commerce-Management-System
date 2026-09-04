@@ -4,6 +4,7 @@ include "../../includes/header.php";
 include "../../includes/navbar.php";
 
 $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+$sort = $_GET['sort'] ?? '';
 ?>
 
 <section class="section" style="background: var(--background); padding: 3rem 0;">
@@ -21,20 +22,40 @@ $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
             if ($cat_result) {
                 while ($cat = mysqli_fetch_assoc($cat_result)) {
                     $active = ($category_id == $cat['id']) ? 'btn-primary' : 'btn-secondary';
-                    echo '<a href="index.php?category='.$cat['id'].'" class="btn '.$active.'" style="border-radius: 99px;">'.htmlspecialchars($cat['name']).'</a>';
+                    echo '<a href="index.php?category='.$cat['id'].'&sort='.htmlspecialchars($sort).'" class="btn '.$active.'" style="border-radius: 99px;">'.htmlspecialchars($cat['name']).'</a>';
                 }
             }
             ?>
         </div>
         
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: center;">
+            <a href="index.php?category=<?= $category_id ?>" class="btn <?= ($sort !== 'bestselling') ? 'btn-primary' : 'btn-outline' ?> btn-sm" style="border-radius: 99px; font-weight: 600;"><i class="bi bi-stars"></i> Latest</a>
+            <a href="index.php?category=<?= $category_id ?>&sort=bestselling" class="btn <?= ($sort === 'bestselling') ? 'btn-primary' : 'btn-outline' ?> btn-sm" style="border-radius: 99px; font-weight: 600;"><i class="bi bi-fire"></i> Best Selling</a>
+        </div>
+        
         <div class="row">
             <?php
-            $query = "SELECT products.*, categories.name AS category_name, brands.name AS brand_name 
+            $query = "SELECT products.*, categories.name AS category_name, brands.name AS brand_name,
+                      COALESCE(SUM(order_items.quantity), 0) AS total_sold
                       FROM products 
                       LEFT JOIN categories ON products.category_id = categories.id 
-                      LEFT JOIN brands ON products.brand_id = brands.id";
+                      LEFT JOIN brands ON products.brand_id = brands.id
+                      LEFT JOIN order_items ON products.id = order_items.product_id
+                      LEFT JOIN orders ON order_items.order_id = orders.id AND orders.status != 'cancelled'
+                      ";
+            $where = [];
             if ($category_id > 0) {
-                $query .= " WHERE products.category_id = $category_id";
+                $where[] = "products.category_id = $category_id";
+            }
+            if (!empty($where)) {
+                $query .= " WHERE " . implode(" AND ", $where);
+            }
+            $query .= " GROUP BY products.id";
+            
+            if ($sort === 'bestselling') {
+                $query .= " ORDER BY total_sold DESC, products.id DESC";
+            } else {
+                $query .= " ORDER BY products.id DESC";
             }
             $result = mysqli_query($conn, $query);
             if ($result && mysqli_num_rows($result) > 0) {
@@ -45,6 +66,8 @@ $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
                         <div class="product-image" style="position: relative;">
                             <?php if ((int)$product['stock'] <= 0): ?>
                                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(220, 38, 38, 0.9); color: white; z-index: 10; padding: 0.5rem 1rem; border-radius: 99px; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.3); white-space: nowrap;">Out of Stock</div>
+                            <?php elseif ((int)$product['total_sold'] >= 3 || ((int)$product['total_sold'] > 0 && $sort === 'bestselling')): ?>
+                                <div style="position: absolute; top: 10px; left: 10px; background: linear-gradient(135deg, #F59E0B, #D97706); color: white; z-index: 10; padding: 0.35rem 0.75rem; border-radius: 99px; font-weight: 700; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);"><i class="bi bi-fire"></i> Top Seller</div>
                             <?php endif; ?>
                             <img src="../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>" onerror="this.src='../../admin/assets/images/products/<?php echo htmlspecialchars($product['image'] ?? 'iphone15.jpg'); ?>'" alt="<?php echo htmlspecialchars($product['name']); ?>" style="<?php echo ((int)$product['stock'] <= 0) ? 'opacity: 0.5; filter: grayscale(100%);' : ''; ?>">
                         </div>
