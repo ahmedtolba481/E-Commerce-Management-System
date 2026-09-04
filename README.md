@@ -5,94 +5,124 @@
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
   <img src="https://img.shields.io/badge/Bootstrap_Icons-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white" />
 
-  <br><br>
+<br><br>
 
   <h1 align="center">🛍️ E-Commerce Management System</h1>
   
   <p align="center">
     <strong>A professional, modern, and fully responsive E-Commerce platform featuring a stunning Mint-Green UI.</strong>
   </p>
+
+  <img src="admin/assets/images/slider/slide1.jpg" alt="ShopEase tech and gadgets storefront banner" width="720" />
 </div>
 
 <hr>
 
-## ✨ Highlights
+## Features
 
-- 🌟 **Premium Mint-Green Aesthetic**: A unique, glassmorphic design that immediately captivates users.
-- 🛡️ **Secure Admin Dashboard**: Complete administrative control with a sleek backend management system.
-- ⚡ **Lightweight & Fast**: Built with procedural PHP without bloated frameworks—perfect for high-performance and university-level projects.
-- 📱 **Fully Responsive**: Flawless experience across mobile, tablet, and desktop viewports.
+### 🛒 Client storefront
 
----
+- Browse products, categories, brands, and product details
+- Add products to a session-based shopping cart
+- Register and sign in as a client
+- Manage profile information and delivery details
+- Place orders, review order history, and cancel eligible orders
 
-## 🚀 Features
+### 🧰 Staff portal
 
-### 🛒 Client-Side (Storefront)
-| Feature | Description |
-| :--- | :--- |
-| 🎨 **Modern UI/UX** | Premium, card-based responsive design featuring a distinct dark-mint color palette. |
-| 📦 **Product Catalog** | Browse products by category, view detailed product pages, and search. |
-| 🛍️ **Cart & Checkout** | Session-based cart system allowing users to manage their basket and checkout. |
-| 🎬 **Dynamic Content** | Database-driven hero sliders, featured products, top brands, and partner showcases. |
+Staff members use the management portal to support daily store operations. Depending on the page, staff can view the dashboard, products, clients, and orders; review order items; manage inventory, categories, brands, partners, and team information.
 
-### 🛠️ Admin-Side (Dashboard)
-| Feature | Description |
-| :--- | :--- |
-| 🔐 **Secure Login** | High-end, modern login interface for administrators with error handling. |
-| 📊 **Inventory System** | Full CRUD functionality for products, stock levels, and pricing. |
-| 🏷️ **Categories & Brands** | Organize the store perfectly by managing product categories and brands. |
-| 📦 **Order Tracking** | View customer orders, track statuses, and manage items effortlessly. |
-| 👥 **Team Management** | Update the "About Us", "Partners", and "Team" sections directly from the backend. |
-| 🖼️ **Centralized Media** | All images are managed within a single `admin/assets/images` directory to avoid duplication. |
+Staff accounts cannot access administrator-only user management and other restricted actions.
 
----
+### 🛡️ Administrator portal
 
-## 💻 Tech Stack
+Administrators have full management access, including everything available to staff plus:
 
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" alt="php" width="20" height="20"/> **Backend**: Procedural PHP (PHP 8+)
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" alt="mysql" width="20" height="20"/> **Database**: MySQL
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" alt="html5" width="20" height="20"/> **Frontend**: HTML5, CSS3, Vanilla JS
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-original.svg" alt="bootstrap" width="20" height="20"/> **Icons**: Bootstrap Icons
-- 📐 **Architecture**: Custom Procedural Pattern
+- Create, edit, and delete users
+- Assign the `Admin`, `Staff`, or `Client` role
+- Manage all catalog, order, client, team, and partner records
+- Monitor inventory, revenue, orders, and registered users
 
----
+## 👥 User roles
 
-## 📂 Project Structure
+| Role     | Main access                                                     | Login location          |
+| -------- | --------------------------------------------------------------- | ----------------------- |
+| `Client` | Storefront, cart, checkout, profile, and personal orders        | `/pages/auth/login.php` |
+| `Staff`  | Store management and operational dashboard pages                | `/admin/login.php`      |
+| `Admin`  | Full dashboard access, including user and permission management | `/admin/login.php`      |
+
+The role is stored in the `users.role` column. New public registrations are created as `Client` accounts. Staff and administrator accounts should be created by an administrator or inserted into the database by a trusted developer.
+
+## Technology
+
+- PHP 8 or newer
+- MySQL or MariaDB
+- HTML5, CSS3, and Vanilla JavaScript
+- Bootstrap Icons
+- XAMPP, WAMP, MAMP, or another Apache/PHP environment
+
+## Project Structure
 
 ```text
 E-Commerce-Management-System/
-├── ⚙️ actions/          # Backend logic for processing forms (cart, checkout)
-├── 🛡️ admin/            # Administrative dashboard and secure backend
-│   ├── 📁 assets/       # Admin CSS, JS, and centralized images directory
-│   ├── 🧩 includes/     # Reusable admin components (sidebar, header, auth)
-│   └── 📄 pages/        # Admin CRUD interfaces (products, categories, orders)
-├── 🎨 assets/           # Client-side CSS and JS
-├── 🔌 config/           # Database connection and configuration files
-├── 🗄️ database/         # SQL schema exports and initial data dumps
-├── 🧩 includes/         # Reusable client components (navbar, footer, header)
-├── 📄 pages/            # Client-facing pages (home, products, cart, checkout)
-└── 🚀 index.php         # Main entry point (redirects to storefront home)
+├── actions/          # Form handlers for authentication, cart, checkout, orders, and profile
+├── admin/            # Staff and administrator portal
+│   ├── includes/     # Dashboard authentication and shared layout files
+│   ├── pages/        # Catalog, client, order, team, partner, and user management
+│   └── assets/       # Admin styles, scripts, and uploaded images
+├── assets/           # Storefront styles and JavaScript
+├── config/           # Database connection
+├── database/         # Database schema and seed data
+├── includes/         # Shared storefront header, navigation, and footer
+├── pages/            # Storefront, authentication, cart, checkout, and account pages
+└── index.php         # Storefront entry point
 ```
 
----
+## Installation
 
-## 🛠️ Setup & Installation
+1. Install and start Apache and MySQL in XAMPP.
+2. Copy the project into the web root, for example:
 
-Follow these simple steps to get the project running locally on your machine:
+```text
+C:\xampp\htdocs\E-Commerce-Management-System
+```
 
-1. **Install a Local Server Environment**: Ensure you have <a href="https://www.apachefriends.org/">XAMPP</a>, WAMP, or MAMP installed.
-2. **Clone the Repository**: Place the project folder into your web server's root directory (e.g., `C:\xampp\htdocs\E-Commerce-Management-System`).
-3. **Database Configuration**:
-   - Open **phpMyAdmin** (`http://localhost/phpmyadmin`).
-   - Create a new database (e.g., `ecommerce_db`).
-   - Import the provided SQL file located in the `database/` folder.
-   - Open `config/database.php` and update the database credentials (`host`, `username`, `password`, `database`) to match your local setup.
-4. **Run the Application**:
-   - 🏬 **Storefront**: [http://localhost/E-Commerce-Management-System/](http://localhost/E-Commerce-Management-System/)
-   - 🔒 **Admin Panel**: [http://localhost/E-Commerce-Management-System/admin/login.php](http://localhost/E-Commerce-Management-System/admin/login.php)
+3. Open `http://localhost/phpmyadmin` and create a database named `ecommerce`.
+4. Import `database/ecommerce.sql`.
+5. Optionally import `database/seed.sql` to add sample users, products, categories, brands, and other data.
+6. Check `config/database.php` and update the host, database name, username, and password for your local MySQL installation.
+7. Open the application:
 
----
+- Storefront: `http://localhost/E-Commerce-Management-System/`
+- Client login: `http://localhost/E-Commerce-Management-System/pages/auth/login.php`
+- Staff and admin login: `http://localhost/E-Commerce-Management-System/admin/login.php`
 
-<div align="center">
-  <p>Built with ❤️ for a modern web experience.</p>
-</div>
+## Demo accounts
+
+The accounts in `database/seed.sql` use the development password `ChangeMe123!`:
+
+| Role   | Email                 |
+| ------ | --------------------- |
+| Admin  | `admin@example.com`   |
+| Client | `ahmed@example.com`   |
+| Client | `mohamed@example.com` |
+| Client | `sara@example.com`    |
+
+The seed file does not currently include a `Staff` account. To test the staff portal, create a user with `role = 'Staff'` through the administrator user page or directly in the database, using a securely generated password hash.
+
+Change all development passwords before using the application outside a local test environment.
+
+## Database overview
+
+- `users`: login identities and role assignments
+- `clients`: client contact and delivery information
+- `products`, `categories`, and `brands`: product catalog
+- `orders` and `order_items`: purchases and their products
+- `team` and `partners`: storefront content managed from the portal
+
+## Security notes
+
+- Use HTTPS in production.
+- Store a strong, unique password for every account.
+- Do not commit production credentials or uploaded files containing sensitive information.
+- Review permissions before assigning the `Admin` role.
