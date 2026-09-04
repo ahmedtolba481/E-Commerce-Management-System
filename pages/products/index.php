@@ -36,7 +36,7 @@ $sort = $_GET['sort'] ?? '';
         <div class="row">
             <?php
             $query = "SELECT products.*, categories.name AS category_name, brands.name AS brand_name,
-                      COALESCE(SUM(order_items.quantity), 0) AS total_sold
+                      COALESCE(SUM(CASE WHEN orders.id IS NOT NULL THEN order_items.quantity ELSE 0 END), 0) AS total_sold
                       FROM products 
                       LEFT JOIN categories ON products.category_id = categories.id 
                       LEFT JOIN brands ON products.brand_id = brands.id

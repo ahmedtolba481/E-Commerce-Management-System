@@ -21,7 +21,7 @@ $query = "SELECT
             products.stock,
             products.image,
             products.created_at,
-            COALESCE(SUM(order_items.quantity), 0) AS total_sold
+            COALESCE(SUM(CASE WHEN orders.id IS NOT NULL THEN order_items.quantity ELSE 0 END), 0) AS total_sold
           FROM products
           LEFT JOIN categories ON products.category_id = categories.id
           LEFT JOIN brands ON products.brand_id = brands.id
